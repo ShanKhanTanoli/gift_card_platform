@@ -53,7 +53,7 @@
                                     <li class="nav-item">
                                         <a class="nav-link me-2" href="{{ route('AdminDashboard') }}">
                                             <i class="fas fa-key opacity-6 text-dark me-1"></i>
-                                            Sign In
+                                            Login
                                         </a>
                                     </li>
                                 </ul>
@@ -74,16 +74,6 @@
     <script src="{{ asset('dashboard/js/core/bootstrap.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @livewireScripts
-    <script>
-        $(document).ready(function() {
-            Livewire.on('site', site => {
-
-                $('#MakeAppointment').modal('show');
-
-            });
-        });
-        //MakeAppointment
-    </script>
 </body>
 
 </html>

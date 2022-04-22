@@ -197,6 +197,7 @@ return [
         'Admin' => App\Helpers\Admin\Admin::class,
         'Client' => App\Helpers\Client\Client::class,
         'Business' => App\Helpers\Business\Business::class,
+        'Currency' => App\Helpers\Currency\Currency::class,
 
     ])->toArray(),
 

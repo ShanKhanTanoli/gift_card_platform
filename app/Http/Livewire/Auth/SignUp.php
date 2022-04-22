@@ -25,7 +25,7 @@ class SignUp extends Component
     public function mount()
     {
         if (auth()->user()) {
-            redirect('/dashboard');
+            redirect(Redirect::ToDashboard());
         }
     }
 

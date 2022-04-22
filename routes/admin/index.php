@@ -3,10 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\Admin\Dashboard\Index as AdminDashboard;
 
+/*Begin::Settings*/
 use App\Http\Livewire\Admin\Dashboard\Settings\Index as Settings;
-
-use App\Http\Livewire\Admin\Dashboard\Profile\Index as EditProfile;
-use App\Http\Livewire\Admin\Dashboard\Password\Index as EditPassword;
+use App\Http\Livewire\Admin\Dashboard\Settings\Profile\Index as EditProfile;
+use App\Http\Livewire\Admin\Dashboard\Settings\Lease\Types\Index as LeaseTypes;
+use App\Http\Livewire\Admin\Dashboard\Settings\Tenant\Types\Index as TenantTypes;
+use App\Http\Livewire\Admin\Dashboard\Settings\Currencies\Index as Currency;
+use App\Http\Livewire\Admin\Dashboard\Settings\Currencies\Edit\Index as EditCurrency;
+use App\Http\Livewire\Admin\Dashboard\Settings\Password\Index as EditPassword;
+/*End::Settings*/
 
 use App\Http\Livewire\Admin\Dashboard\Business\Index as ViewAllBusiness;
 use App\Http\Livewire\Admin\Dashboard\Business\Add\Index as AddBusiness;
@@ -40,13 +45,15 @@ Route::middleware(['auth', 'admin'])->prefix('Admin')->group(function () {
         ->name('AdminUpdateClientPassword');
     /*End::Clients*/
 
-    /*Begin::Edit Profile & Password*/
-    Route::get('EditProfile', EditProfile::class)->name('AdminEditProfile');
-    Route::get('EditPassword', EditPassword::class)->name('AdminEditPassword');
-    /*End::Edit Profile & Password*/
-
     /*Begin::Settings*/
-    Route::get('Settings', Settings::class)->name('AdminSettings');
+    Route::get('Settings/General', Settings::class)->name('AdminSettings');
+    Route::get('Settings/Profile', EditProfile::class)->name('AdminEditProfile');
+    Route::get('Settings/LeaseTypes', LeaseTypes::class)->name('AdminLeaseTypes');
+    Route::get('Settings/TenantTypes', TenantTypes::class)->name('AdminTenantTypes');
+    Route::get('Settings/Currency', Currency::class)->name('AdminCurrency');
+    Route::get('Settings/EditCurrency/{slug}', EditCurrency::class)
+        ->name('AdminEditCurrency');
+    Route::get('Settings/Password', EditPassword::class)->name('AdminEditPassword');
     /*End::Settings*/
 });
 /*End::Auth,Admin Group*/

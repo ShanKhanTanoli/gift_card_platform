@@ -12,14 +12,14 @@
                         <div class="card card-plain">
                             <div class="card-header text-center">
                                 <h4 class="font-weight-bolder">Reset Password</h4>
-                                <p class="mb-0">Enter your email</p>
                             </div>
                             <div class="card-body">
                                 <form role="form">
                                     <div class="input-group input-group-outline mb-3">
                                         <input id="email" type="email" wire:model.defer="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
-                                            value="{{ old('email') }}" autocomplete="email" placeholder="Enter Email">
+                                            value="{{ old('email') }}" autocomplete="email"
+                                            placeholder="Enter Your Email">
                                         @error('email')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -28,20 +28,18 @@
                                     </div>
                                     <div class="text-center">
                                         <button wire:click='recoverPassword()' type="button"
-                                            class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">
+                                            class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">
                                             <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>
-                                            {{ __('Enter Email') }}
+                                            {{ __('Send Password Reset Link') }}
                                         </button>
                                     </div>
                                 </form>
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <p class="mb-2 text-sm mx-auto">
-                                    Already have an Account ?
-                                    <a href="{{ route('login') }}"
-                                        class="text-primary text-gradient font-weight-bold">
-                                        Login here
+                                    <a href="{{ route('login') }}" class="text-dark text-gradient font-weight-bold">
+                                        Already have an Account ? Login here
                                     </a>
                                 </p>
                             </div>

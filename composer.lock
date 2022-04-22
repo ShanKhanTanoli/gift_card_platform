@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fcb55166a95fcf195279b0aae9848ad",
+    "content-hash": "7d1b0f9ca1c471c5c42ae98c1afad1cb",
     "packages": [
         {
             "name": "brick/math",
@@ -436,6 +436,71 @@
                 }
             ],
             "time": "2021-10-11T09:18:27+00:00"
+        },
+        {
+            "name": "frittenkeez/laravel-vouchers",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FrittenKeeZ/laravel-vouchers.git",
+                "reference": "98ac8283031d344df885fe3b35521b9994533eb4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FrittenKeeZ/laravel-vouchers/zipball/98ac8283031d344df885fe3b35521b9994533eb4",
+                "reference": "98ac8283031d344df885fe3b35521b9994533eb4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/config": "~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/console": "~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "~5.6.0|~5.7.0|~5.8.0|^6.0|^7.0|^8.0|^9.0",
+                "php": "^7.1.3|^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "orchestra/testbench": "~3.6.0|~3.7.0|~3.8.0|^4.0|^5.0|^6.0|^7.0",
+                "phpunit/phpunit": "~7.0|^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "FrittenKeeZ\\Vouchers\\VouchersServiceProvider"
+                    ],
+                    "aliases": {
+                        "Vouchers": "FrittenKeeZ\\Vouchers\\Facades\\Vouchers"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "FrittenKeeZ\\Vouchers\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frederik Sauer",
+                    "email": "fritten.keez@gmail.com"
+                }
+            ],
+            "description": "Voucher system for Laravel 5.6+",
+            "keywords": [
+                "coupon",
+                "discount",
+                "laravel",
+                "voucher"
+            ],
+            "support": {
+                "issues": "https://github.com/FrittenKeeZ/laravel-vouchers/issues",
+                "source": "https://github.com/FrittenKeeZ/laravel-vouchers/tree/0.3.1"
+            },
+            "time": "2022-02-09T08:59:17+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -7870,7 +7935,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.0.2"
+        "php": "^7.1|^8.0.2"
     },
     "platform-dev": [],
     "plugin-api-version": "2.2.0"

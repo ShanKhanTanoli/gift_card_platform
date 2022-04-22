@@ -7,16 +7,21 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $text_logo;
+    public $company_name, $company_email, $company_phone, $company_address, $currency_id;
 
     public function mount()
     {
-        $settings = Setting::first();
-
-        if ($settings) {
-            $this->text_logo = $settings->text_logo;
+        if ($settings = Setting::first()) {
+            $this->company_name = $settings->company_name;
+            $this->company_email = $settings->company_email;
+            $this->company_phone = $settings->company_phone;
+            $this->company_address = $settings->company_address;
+            $this->currency_id = $settings->currency_id;
         } else {
-            $this->text_logo = "Home";
+            $this->company_name = "Home";
+            $this->company_email = "Company Email";
+            $this->company_phone = "00000000000";
+            $this->company_address = "Company Address";
         }
     }
 
@@ -30,25 +35,23 @@ class Index extends Component
     public function Update()
     {
         $msg = [
-            'text_logo.required' => 'Enter Site Name',
-            'text_logo.max' => 'Site Name should not be more than 10 characters',
+            'company_name.required' => 'Enter Company Name',
         ];
 
         $validated = $this->validate([
-            'text_logo' => 'required|string|max:10',
+            'company_name' => 'required|string',
+            'company_email' => 'required|email',
+            'company_phone' => 'required|numeric',
+            'company_address' => 'required|string',
+            'currency_id' => 'required|numeric',
         ], $msg);
 
-        $settings = Setting::first();
-
-        if ($settings) {
-
+        if ($settings = Setting::first()) {
             $settings->update($validated);
-
-            return session()->flash('success', 'Settings updated successfully');
+            session()->flash('success', 'Updated Successfully');
         } else {
-
             Setting::create($validated);
-            return session()->flash('success', 'Settings updated successfully');
+            return session()->flash('success', 'Updated Successfully');
         }
     }
 }

@@ -1,16 +1,26 @@
 <?php
 
+use App\Models\User;
+use Carbon\CarbonInterval;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Logout;
 use App\Http\Livewire\Auth\SignUp;
 use Illuminate\Support\Facades\Route;
+use App\Http\Livewire\Auth\VerifyEmail;
 use App\Http\Livewire\Auth\ResetPassword;
 use App\Http\Livewire\Auth\ForgotPassword;
-use App\Http\Livewire\Auth\VerifyEmail;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
 
 //Auth::routes();
 
 Route::get('debug', function () {
+    //dd(CarbonInterval::create('P30D'));
+    $user = User::find(10);
+    $vouchers = Vouchers::withOwner($user)
+    ->withExpireDateIn(CarbonInterval::create('P30D'))
+    ->withPrefix('USR')->create(5);
+    dd($vouchers);
+    dd($success = Vouchers::redeem('2639-1593-0535-3580', $user, ['name' => $user->name]));
     return "done";
 });
 

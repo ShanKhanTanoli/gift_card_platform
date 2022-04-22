@@ -8,7 +8,7 @@
                         <i class="fas fa-business-time opacity-10"></i>
                     </div>
                     <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Business</p>
+                        <p class="text-sm mb-0 text-capitalize">Business</p>
                         <h4 class="mb-0">
                             {{ Business::count() }}
                         </h4>
@@ -30,9 +30,9 @@
                         <i class="fas fa-users opacity-10"></i>
                     </div>
                     <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Clients</p>
+                        <p class="text-sm mb-0 text-capitalize">Clients</p>
                         <h4 class="mb-0">
-                            {{ Business::count() }}
+                            {{ Client::count() }}
                         </h4>
                     </div>
                 </div>
