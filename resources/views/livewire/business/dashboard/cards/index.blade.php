@@ -7,12 +7,12 @@
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
                             class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                            <i class="fas fa-users opacity-10"></i>
+                            <i class="fas fa-credit-card opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Client</p>
+                            <p class="text-sm mb-0 text-capitalize">Card</p>
                             <h4 class="mb-0">
-                                {{ Business::CountClients(Auth::user()->id) }}
+                                {{ Business::CountCards(Auth::user()) }}
                             </h4>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
             </a>
         </div>
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-            <a href="{{ route('BusinessAddClient') }}">
+            <a href="{{ route('BusinessAddCard') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -30,7 +30,7 @@
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Add New</p>
                             <h4 class="mb-0">
-                                Client
+                                Card
                             </h4>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Client Accounts
+                            Cards
                         </h6>
                     </div>
                 </div>
@@ -57,16 +57,22 @@
                                         #
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Name
+                                        Code
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        User Name
+                                        Amount
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Email
+                                        Starts At
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Number
+                                        Expires At
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Redeemed At
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Created At
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Edit
@@ -77,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($clients as $user)
+                                @foreach ($cards as $card)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -92,7 +98,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $user->name }}
+                                                        {{ $card->code }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -101,7 +107,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $user->user_name }}
+                                                        amount
                                                     </h6>
                                                 </div>
                                             </div>
@@ -110,7 +116,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $user->email }}
+                                                        {{ date('d M Y', strtotime($card->starts_at)) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -119,15 +125,33 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $user->number }}
+                                                        {{ date('d M Y', strtotime($card->expires_at)) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ date('d M Y', strtotime($card->redeemed_at)) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ date('d M Y', strtotime($card->created_at)) }}
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $user->id }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $user->id }}")'
+                                                wire:click='Edit("{{ $card->id }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $card->id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
@@ -135,8 +159,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='Delete("{{ $user->id }}")'>
-                                                <span wire:loading wire:target='Delete("{{ $user->id }}")'
+                                                wire:click='Delete("{{ $card->id }}")'>
+                                                <span wire:loading wire:target='Delete("{{ $card->id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete
@@ -149,7 +173,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    {{ $clients->render() }}
+                    {{ $cards->render() }}
                 </div>
             </div>
         </div>

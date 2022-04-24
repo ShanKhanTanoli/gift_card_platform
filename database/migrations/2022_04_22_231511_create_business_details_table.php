@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Setting;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Business\BusinessDetail;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('business_details', function (Blueprint $table) {
             $table->id();
 
             //Users
@@ -24,11 +24,11 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('company_name')->nullable();
-            $table->string('company_logo')->nullable();
-            $table->string('company_email')->nullable();
-            $table->string('company_phone')->nullable();
-            $table->string('company_address')->nullable();
+            $table->string('business_name')->nullable();
+            $table->string('business_logo')->nullable();
+            $table->string('business_email')->nullable();
+            $table->string('business_phone')->nullable();
+            $table->string('business_address')->nullable();
 
             //Currencies
             $table->unsignedBigInteger('currency_id')->nullable();
@@ -41,12 +41,12 @@ return new class extends Migration
         });
 
         for ($user = 1; $user < 100; $user++) {
-            Setting::create([
+            BusinessDetail::create([
                 'user_id' => $user,
-                'company_name' => 'Gift Card',
-                'company_email' => 'company@email.com',
-                'company_phone' => '+00000000000',
-                'company_address' => 'This is the Address',
+                'business_name' => 'Gift Card',
+                'business_email' => 'business@email.com',
+                'business_phone' => '+00000000000',
+                'business_address' => 'This is the Address',
                 'currency_id' => 1,
             ]);
         }
@@ -59,6 +59,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('business_details');
     }
 };

@@ -36,15 +36,6 @@
                     <span class="nav-link-text ms-1">Business</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/AddBusiness') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('AdminAddBusiness') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Add Business</span>
-                </a>
-            </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                     Clients

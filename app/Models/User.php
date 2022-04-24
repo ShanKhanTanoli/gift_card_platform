@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Models;
+
+use App\Models\Business\BusinessDetail;
 use App\Models\Site;
+use App\Models\Setting;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -50,4 +53,14 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function settings()
+    {
+        return $this->hasOne(Setting::class);
+    }
+
+    public function details()
+    {
+        return $this->hasOne(BusinessDetail::class);
+    }
 }

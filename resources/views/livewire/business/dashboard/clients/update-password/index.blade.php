@@ -1,10 +1,9 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            @include('errors.alerts')
-        </div>
-    </div>
-    <div class="row">
+    @include('errors.alerts')
+    <!--Begin::Tab-Menu-->
+    @include('livewire.business.dashboard.clients.partials.tab-menu')
+    <!--Begin::Tab-Menu-->
+    <div class="row mt-3">
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -20,9 +19,10 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group input-group-outline my-3">
-                                        <input type="password" wire:model.defer='password' value="{{ old('password') }}"
+                                        <input type="password" wire:model.defer='password'
+                                            value="{{ old('password') }}"
                                             class="form-control  @error('password') is-invalid @enderror"
-                                            placeholder="Enter Password">
+                                            placeholder="Enter New Password">
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -32,9 +32,10 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-outline my-3">
-                                        <input type="password" wire:model.defer='password_confirmation' value="{{ old('password_confirmation') }}"
+                                        <input type="password" wire:model.defer='password_confirmation'
+                                            value="{{ old('password_confirmation') }}"
                                             class="form-control  @error('password_confirmation') is-invalid @enderror"
-                                            placeholder="Confirm Password">
+                                            placeholder="Confirm New Password">
                                         @error('password_confirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -46,11 +47,10 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <button type="button" class="btn btn-primary" wire:attr='disabled'
-                                        wire:click='UpdatePassword'>
+                                        wire:click='Update'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
-                                        <span class="sr-only">Loading...</span>
-                                        Update Password
+                                        Save Changes
                                     </button>
                                 </div>
                             </div>

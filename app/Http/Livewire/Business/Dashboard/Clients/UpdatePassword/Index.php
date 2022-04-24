@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Clients\Edit;
+namespace App\Http\Livewire\Business\Dashboard\Clients\UpdatePassword;
 
 use Exception;
 use App\Models\User;
@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $user, $name, $user_name, $number, $email;
+    public $user;
+
+    public $password, $password_confirmation;
 
     public function mount($slug)
     {
@@ -18,10 +20,6 @@ class Index extends Component
             //Begin::If this Business owns a Client
             if ($client = Business::FindClient(Auth::user()->id, $user->id)) {
                 $this->user = $client;
-                $this->name = $client->name;
-                $this->user_name = $client->user_name;
-                $this->number = $client->number;
-                $this->email = $client->email;
             } else {
                 session()->flash('error', 'No such client found');
                 return redirect(route('BusinessClients'));
@@ -35,8 +33,9 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.clients.edit.index')
-            ->extends('layouts.dashboard');
+        return view('livewire.business.dashboard.clients.update-password.index')
+            ->extends('layouts.dashboard')
+            ->section('content');
     }
 
     public function Update()
@@ -44,21 +43,14 @@ class Index extends Component
         //Begin::If this Business owns a Client
         if (Business::FindClient(Auth::user()->id, $this->user->id)) {
             $validated = $this->validate([
-                'name' => 'required|string|min:3',
-                'user_name' => 'required|string|unique:users,user_name,' . $this->user->id,
-                'number' => 'required|numeric|unique:users,number,' . $this->user->id,
-                'email' => 'required|email|unique:users,email,' . $this->user->id,
+                'password' => 'required|string|min:5|confirmed',
+                'password_confirmation' => 'required|string|min:5|',
             ]);
             try {
-                $data = [
-                    'name' => $validated['name'],
-                    'user_name' => $validated['user_name'],
-                    'email' => $validated['email'],
-                    'number' => $validated['number'],
-                ];
-                $this->user->update($data);
-                session()->flash('success', 'Updated Successfully');
-                return redirect(route('BusinessEditClient', $this->user->slug));
+                $this->user->update(['password' => bcrypt($validated['password'])]);
+                session()->flash('success', 'Password Updated Successfully');
+                $this->reset(['password', 'password_confirmation']);
+                return redirect(route('BusinessEditClientPassword', $this->user->slug));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }

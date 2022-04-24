@@ -1,30 +1,9 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            @include('errors.alerts')
-        </div>
-    </div>
-    <div class="row mb-5">
-        <a href="{{ route('AdminUpdateClientPassword',$user->slug) }}" >
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-            <div class="card">
-                <div class="card-header">
-                    <div class="text-center">
-                        <h6 class="mb-0 text-center">
-                            Change Password
-                        </h6>
-                    </div>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="{{ route('AdminUpdateClientPassword',$user->slug) }}" class="btn bg-gradient-dark">
-                        Update
-                    </a>
-                </div>
-            </div>
-        </div>
-        </a>
-    </div>
-    <div class="row">
+    @include('errors.alerts')
+    <!--Begin::Tab-Menu-->
+    @include('livewire.admin.dashboard.clients.partials.tab-menu')
+    <!--Begin::Tab-Menu-->
+    <div class="row mt-3">
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">

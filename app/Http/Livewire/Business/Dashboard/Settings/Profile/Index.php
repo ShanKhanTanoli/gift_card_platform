@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Profile;
+namespace App\Http\Livewire\Business\Dashboard\Settings\Profile;
 
 use Exception;
 use Livewire\Component;
@@ -20,9 +20,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.profile.index')
-            ->extends('layouts.dashboard')
-            ->section('content');
+        return view('livewire.business.dashboard.settings.profile.index')
+            ->extends('layouts.dashboard');
     }
 
     public function UpdateProfile()
@@ -33,10 +32,10 @@ class Index extends Component
             'email' => 'required|email|unique:users,email,' . Auth::user()->id,
             'number' => 'required|numeric|unique:users,number,' . Auth::user()->id,
         ]);
-
         try {
             Auth::user()->update($validated);
             session()->flash('success', 'Profile Updated Successfully');
+            return redirect(route('BusinessEditProfile'));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }

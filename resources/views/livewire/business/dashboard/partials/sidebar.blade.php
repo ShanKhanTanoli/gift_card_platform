@@ -3,7 +3,6 @@
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('BusinessDashboard') }}">
-            <i class="fas fa-tachometer-alt text-white"></i>
             <span class="ms-1 font-weight-bold text-white">
                 {{ Setting::Logo() }}
             </span>
@@ -39,47 +38,35 @@
                     </span>
                 </a>
             </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Cards
+                </h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/AddClient') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('BusinessAddClient') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Cards') ? active bg-gradient-primary : '' @endif"
+                    href="{{ route('BusinessCards') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-plus"></i>
+                        <i class="fas fa-credit-card"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        Add
+                        Cards
                     </span>
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Configure</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/EditProfile') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('BusinessEditProfile') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Settings/BusinessDetails' or Request::path() == 'Business/Settings/Profile' or Request::path() == 'Business/Settings/Password') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessEditDetails') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user-cog"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/EditPassword') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('BusinessEditPassword') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Password</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Settings') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('BusinessSettings') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-cogs"></i>
+                        <i class="fas fa-cog"></i>
                     </div>
                     <span class="nav-link-text ms-1">Settings</span>
                 </a>
             </li>
+            <hr>
             <!--Begin::Logout-->
             @livewire('auth.logout')
             <!--Begin::Logout-->

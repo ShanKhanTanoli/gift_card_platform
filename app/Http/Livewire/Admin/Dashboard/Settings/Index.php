@@ -4,14 +4,18 @@ namespace App\Http\Livewire\Admin\Dashboard\Settings;
 
 use App\Models\Setting;
 use Livewire\Component;
+use App\Helpers\Admin\Admin;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
+    public $settings;
     public $company_name, $company_email, $company_phone, $company_address, $currency_id;
 
     public function mount()
     {
-        if ($settings = Setting::first()) {
+        if ($settings = Admin::Settings(Auth::user()->id)) {
+            $this->settings = $settings;
             $this->company_name = $settings->company_name;
             $this->company_email = $settings->company_email;
             $this->company_phone = $settings->company_phone;
@@ -46,11 +50,11 @@ class Index extends Component
             'currency_id' => 'required|numeric',
         ], $msg);
 
-        if ($settings = Setting::first()) {
+        if ($settings = Admin::Settings(Auth::user()->id)) {
             $settings->update($validated);
             session()->flash('success', 'Updated Successfully');
         } else {
-            Setting::create($validated);
+            Setting::create(array_merge($validated, ['user_id' => Auth::user()->id]));
             return session()->flash('success', 'Updated Successfully');
         }
     }

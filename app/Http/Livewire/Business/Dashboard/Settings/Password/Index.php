@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Password;
+namespace App\Http\Livewire\Business\Dashboard\Settings\Password;
 
 use Exception;
 use Livewire\Component;
@@ -12,7 +12,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.password.index')
+        return view('livewire.business.dashboard.settings.password.index')
             ->extends('layouts.dashboard')
             ->section('content');
     }
@@ -27,6 +27,7 @@ class Index extends Component
             Auth::user()->update(['password' => bcrypt($validated['password'])]);
             session()->flash('success', 'Password Updated Successfully');
             $this->reset(['password', 'password_confirmation']);
+            return redirect(route('BusinessEditPassword'));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }
