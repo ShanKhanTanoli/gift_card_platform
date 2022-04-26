@@ -23,11 +23,18 @@ class Index extends Component
             ->section('content');
     }
 
+    public function View($id)
+    {
+        if ($card = Business::FindCard(Auth::user(), $id)) {
+            return redirect(route('BusinessViewCard', $card->code));
+        } else return session()->flash('error', 'No such card found');
+    }
+
+
     public function Edit($id)
     {
         if ($card = Business::FindCard(Auth::user(), $id)) {
-            dd($card);
-            return redirect(route('BusinessEditCard', $card->slug));
+            return redirect(route('BusinessEditCard', $card->code));
         } else return session()->flash('error', 'No such card found');
     }
 

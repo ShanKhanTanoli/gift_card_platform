@@ -18,30 +18,31 @@
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('dashboard/css/material-dashboard.css?v=3.0.1') }}" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     @livewireStyles
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
 
-    @if($user = Auth::user())
+    @if ($user = Auth::user())
 
-    @if($user->role_id == 1 && $user->role = "admin")
-    <!--Begin::Sidebar-->
-    @include('livewire.admin.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role_id == 1 && ($user->role = 'admin'))
+            <!--Begin::Sidebar-->
+            @include('livewire.admin.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
-    @if($user->role_id == 2 && $user->role = "business")
-    <!--Begin::Sidebar-->
-    @include('livewire.business.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role_id == 2 && ($user->role = 'business'))
+            <!--Begin::Sidebar-->
+            @include('livewire.business.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
-    @if($user->role_id == 3 && $user->role = "client")
-    <!--Begin::Sidebar-->
-    @include('livewire.client.dashboard.partials.sidebar')
-    <!--Begin::Sidebar-->
-    @endif
+        @if ($user->role_id == 3 && ($user->role = 'client'))
+            <!--Begin::Sidebar-->
+            @include('livewire.client.dashboard.partials.sidebar')
+            <!--Begin::Sidebar-->
+        @endif
 
     @endif
 

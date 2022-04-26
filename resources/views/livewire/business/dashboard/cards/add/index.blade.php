@@ -1,16 +1,12 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            @include('errors.alerts')
-        </div>
-    </div>
-    <div class="row">
+    @include('errors.alerts')
+    <div class="row mt-3">
         <div class="col-12">
             <div class="card my-4">
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Add Client
+                            Add Card
                         </h6>
                     </div>
                 </div>
@@ -19,11 +15,13 @@
                         <form>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="text" wire:model.defer='name' value="{{ old('name') }}"
-                                            class="form-control  @error('name') is-invalid @enderror"
-                                            placeholder="Enter Name">
-                                        @error('name')
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="price">Price
+                                            ({{ strtoupper(Business::Currency(Auth::user()->id)) }})</label>
+                                        <input type="text" wire:model.defer='price' value="{{ old('price') }}"
+                                            class="form-control  @error('price') is-invalid @enderror"
+                                            placeholder="Enter Price ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
+                                        @error('price')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -31,37 +29,27 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="text" wire:model.defer='user_name' value="{{ old('user_name') }}"
-                                            class="form-control  @error('user_name') is-invalid @enderror"
-                                            placeholder="Enter User Name">
-                                        @error('user_name')
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="expires_at">Expiry Date</label>
+                                        <input type="date" wire:model.defer='expires_at'
+                                            value="{{ old('expires_at') }}"
+                                            class="form-control  @error('expires_at') is-invalid @enderror"
+                                            placeholder="Enter Expiry Date">
+                                        @error('expires_at')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="text" wire:model.defer='number' value="{{ old('number') }}"
-                                            class="form-control  @error('number') is-invalid @enderror"
-                                            placeholder="Enter Number">
-                                        @error('number')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="text" wire:model.defer='email' value="{{ old('email') }}"
-                                            class="form-control  @error('email') is-invalid @enderror"
-                                            placeholder="Enter Email">
-                                        @error('email')
+                                <div class="col-md-12">
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="metadata">Description</label>
+                                        <input type="metadata" wire:model.defer='metadata'
+                                            value="{{ old('metadata') }}"
+                                            class="form-control  @error('metadata') is-invalid @enderror"
+                                            placeholder="Enter description">
+                                        @error('metadata')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -69,40 +57,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="password" wire:model.defer='password'
-                                            value="{{ old('password') }}"
-                                            class="form-control  @error('password') is-invalid @enderror"
-                                            placeholder="Enter Password">
-                                        @error('password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-outline my-3">
-                                        <input type="password" wire:model.defer='password_confirmation'
-                                            value="{{ old('password_confirmation') }}"
-                                            class="form-control  @error('password_confirmation') is-invalid @enderror"
-                                            placeholder="Confirm Password">
-                                        @error('password_confirmation')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary" wire:attr='disabled' wire:click='Add'>
+                                    <button type="button" class="btn btn-primary" wire:attr='disabled'
+                                        wire:click='Add'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
-                                            aria-hidden="true">
-                                        </span>
+                                            aria-hidden="true"></span>
                                         Save Changes
                                     </button>
                                 </div>

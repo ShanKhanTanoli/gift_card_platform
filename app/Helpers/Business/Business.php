@@ -3,8 +3,11 @@
 namespace App\Helpers\Business;
 
 use App\Models\User;
+use Illuminate\Support\Str;
+use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Models\Voucher;
+use FrittenKeeZ\Vouchers\Models\VoucherType;
 
 class Business
 {
@@ -82,6 +85,14 @@ class Business
     {
         return User::find($user)->details;
     }
+    public static function Currency($user)
+    {
+        if ($details = User::find($user)->details) {
+            if ($currency = Currency::Find($details->currency_id)) {
+                return $currency->name;
+            } else return "USD";
+        } else return "USD";
+    }
     /*End::Business Details*/
 
     /*Begin::Cards*/
@@ -103,6 +114,38 @@ class Business
     public static function FindCard($business, $card)
     {
         return self::Cards($business)->find($card);
+    }
+    /*End::Cards*/
+
+    /*Begin::CardTypes*/
+    public static function CardTypes($business)
+    {
+        return VoucherType::where('user_id', $business);
+    }
+
+    public static function CardTypesLatestPaginate($business, $quantity)
+    {
+        return self::CardTypes($business)
+            ->latest()->paginate($quantity);
+    }
+
+    public static function Add($business = null, $name = null)
+    {
+        return VoucherType::create([
+            'user_id' => $business,
+            'name' => $name,
+            'slug' => Str::random(10),
+        ]);
+    }
+
+    public static function CountCardTypes($business)
+    {
+        return self::CardTypes($business)->count();
+    }
+
+    public static function FindCardType($business, $type)
+    {
+        return self::CardTypes($business)->find($type);
     }
     /*End::Cards*/
 }

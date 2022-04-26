@@ -3,32 +3,30 @@
 namespace App\Http\Livewire\Business\Dashboard\Cards\Edit;
 
 use Exception;
-use App\Models\User;
 use Livewire\Component;
 use App\Helpers\Business\Business;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $user, $name, $user_name, $number, $email;
+    public $card, $price, $expires_at;
 
-    public function mount($slug)
+    public function mount($code)
     {
-        if ($user = User::where('slug', $slug)->first()) {
-            //Begin::If this Business owns a Client
-            if ($client = Business::FindClient(Auth::user()->id, $user->id)) {
-                $this->user = $client;
-                $this->name = $client->name;
-                $this->user_name = $client->user_name;
-                $this->number = $client->number;
-                $this->email = $client->email;
+        if ($find = Voucher::where('code', $code)->first()) {
+            //Begin::If this Business owns a Card
+            if ($card = Business::FindCard(Auth::user(), $find->id)) {
+                $this->card = $card;
+                $this->price = $card->price;
+                $this->expires_at = date('Y-m-d',strtotime($card->expires_at));
             } else {
-                session()->flash('error', 'No such client found');
+                session()->flash('error', 'No such card found');
                 return redirect(route('BusinessCards'));
             }
-            //End::If this Business owns a Client
+            //End::If this Business owns a card
         } else {
-            session()->flash('error', 'No such client found');
+            session()->flash('error', 'No such card found');
             return redirect(route('BusinessCards'));
         }
     }
@@ -41,29 +39,23 @@ class Index extends Component
 
     public function Update()
     {
-        //Begin::If this Business owns a Client
-        if (Business::FindClient(Auth::user()->id, $this->user->id)) {
+        //Begin::If this Business owns a card
+        if (Business::FindCard(Auth::user(), $this->card->id)) {
             $validated = $this->validate([
-                'name' => 'required|string|min:3',
-                'user_name' => 'required|string|unique:users,user_name,' . $this->user->id,
-                'number' => 'required|numeric|unique:users,number,' . $this->user->id,
-                'email' => 'required|email|unique:users,email,' . $this->user->id,
+                'price' => 'required|integer',
+                'metadata' => 'required|string',
+                'expires_at' => 'required|date',
             ]);
+            dd($validated);
             try {
-                $data = [
-                    'name' => $validated['name'],
-                    'user_name' => $validated['user_name'],
-                    'email' => $validated['email'],
-                    'number' => $validated['number'],
-                ];
-                $this->user->update($data);
+                $this->user->update($validated);
                 session()->flash('success', 'Updated Successfully');
-                return redirect(route('BusinessEditClient', $this->user->slug));
+                return redirect(route('BusinessEditcard', $this->user->slug));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }
         } else {
-            session()->flash('error', 'No such client found');
+            session()->flash('error', 'No such card found');
             return redirect(route('BusinessCards'));
         }
     }

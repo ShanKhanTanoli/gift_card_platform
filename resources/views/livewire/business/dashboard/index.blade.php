@@ -32,7 +32,7 @@
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Cards</p>
                         <h4 class="mb-0">
-                            {{ Business::CountClients(Auth::user()->id) }}
+                            {{ Business::CountCards(Auth::user()) }}
                         </h4>
                     </div>
                 </div>
