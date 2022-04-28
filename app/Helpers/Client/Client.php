@@ -24,6 +24,12 @@ class Client
             ->where('role', 'client');
     }
 
+    public static function LatestPaginate($quantity)
+    {
+        return self::all()->latest()
+            ->paginate($quantity);
+    }
+
     public static function count()
     {
         return self::all()->count();

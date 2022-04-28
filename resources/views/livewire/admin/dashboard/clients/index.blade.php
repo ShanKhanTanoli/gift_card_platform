@@ -1,7 +1,41 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            @include('errors.alerts')
+    @include('errors.alerts')
+    <div class="row mb-4">
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+            <a href="#">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
+                        <div
+                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="fas fa-users opacity-10"></i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">Clients</p>
+                            <h4 class="mb-0">
+                                {{ Client::count() }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+            <a href="{{ route('AdminAddClient') }}">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
+                        <div
+                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="fas fa-plus opacity-10"></i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize">Add New</p>
+                            <h4 class="mb-0">
+                                Client
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
     <div class="row">
@@ -33,12 +67,6 @@
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Number
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Prent Business
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View Business
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Edit
@@ -93,36 +121,6 @@
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $user->number }}
                                                     </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    @if ($business = Business::Find($user->parent_business_id))
-                                                        <h6 class="mb-0 text-sm">
-                                                            {{ $business->name }}
-                                                        </h6>
-                                                    @else
-                                                        <span class="badge bg-gradient-danger">
-                                                            No Business
-                                                        </span>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    @if ($business = Business::Find($user->parent_business_id))
-                                                        <a class="btn btn-sm btn-primary" href="{{ route('AdminEditBusiness',$business->slug) }}">
-                                                            View
-                                                        </a>
-                                                    @else
-                                                        <span class="badge bg-gradient-danger">
-                                                            No Business
-                                                        </span>
-                                                    @endif
                                                 </div>
                                             </div>
                                         </td>

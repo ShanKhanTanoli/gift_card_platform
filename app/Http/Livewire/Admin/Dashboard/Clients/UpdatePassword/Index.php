@@ -37,8 +37,9 @@ class Index extends Component
         ]);
         try {
             $this->user->update(['password' => bcrypt($validated['password'])]);
-            session()->flash('success', 'Password Updated Successfully');
+            session()->flash('success', 'Updated Successfully');
             $this->reset(['password', 'password_confirmation']);
+            return redirect(route('AdminUpdateClientPassword', $this->user->slug));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }

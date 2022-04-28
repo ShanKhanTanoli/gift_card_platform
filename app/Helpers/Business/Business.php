@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Models\Voucher;
-use FrittenKeeZ\Vouchers\Models\VoucherType;
+use FrittenKeeZ\Vouchers\Models\VoucherCategory;
 
 class Business
 {
@@ -39,39 +39,16 @@ class Business
             ->where('role', 'business');
     }
 
+    public static function LatestPaginate($quantity)
+    {
+        return self::all()->latest()
+            ->paginate($quantity);
+    }
+
     public static function count()
     {
         return self::all()->count();
     }
-
-
-    /*Begin::Clients*/
-    public static function clients($business)
-    {
-        return User::where('role_id', '3')
-            ->where('role', 'client')
-            ->where('parent_business_id', $business);
-    }
-
-    public static function CountClients($business)
-    {
-        return User::where('role_id', '3')
-            ->where('role', 'client')
-            ->where('parent_business_id', $business)
-            ->count();
-    }
-
-    public static function FindClient($business, $client)
-    {
-        if ($user = self::Find($business)) {
-            if ($client = self::clients($user->id)
-                ->where('id', $client)->first()
-            ) {
-                return $client;
-            } else return false;
-        } else return false;
-    }
-    /*End::Clients*/
 
     /*Begin::Settings*/
     public static function Settings($user)
@@ -117,35 +94,35 @@ class Business
     }
     /*End::Cards*/
 
-    /*Begin::CardTypes*/
-    public static function CardTypes($business)
+    /*Begin::CardCategories*/
+    public static function CardCategories($business)
     {
-        return VoucherType::where('user_id', $business);
+        return VoucherCategory::where('user_id', $business);
     }
 
-    public static function CardTypesLatestPaginate($business, $quantity)
+    public static function CardCategoriesLatestPaginate($business, $quantity)
     {
-        return self::CardTypes($business)
+        return self::CardCategories($business)
             ->latest()->paginate($quantity);
     }
 
-    public static function Add($business = null, $name = null)
+    public static function CreateCardCategory($business = null, $name = null)
     {
-        return VoucherType::create([
+        return VoucherCategory::create([
             'user_id' => $business,
             'name' => $name,
             'slug' => Str::random(10),
         ]);
     }
 
-    public static function CountCardTypes($business)
+    public static function CountCardCategories($business)
     {
-        return self::CardTypes($business)->count();
+        return self::CardCategories($business)->count();
     }
 
-    public static function FindCardType($business, $type)
+    public static function FindCardCategory($business, $category)
     {
-        return self::CardTypes($business)->find($type);
+        return self::CardCategories($business)->find($category);
     }
     /*End::Cards*/
 }

@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\CardTypes\Add;
+namespace App\Http\Livewire\Business\Dashboard\CardCategories\Add;
 
 use App\Helpers\Business\Business;
 use Exception;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
-use Illuminate\Support\Str;
 
 class Index extends Component
 {
@@ -15,7 +13,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.card-types.add.index')
+        return view('livewire.business.dashboard.card-categories.add.index')
             ->extends('layouts.dashboard');
     }
 
@@ -25,9 +23,9 @@ class Index extends Component
             'name' => 'required|string|min:3',
         ]);
         try {
-            Business::Add(Auth::user()->id, $validated['name']);
+            Business::CreateCardCategory(Auth::user()->id, $validated['name']);
             session()->flash('success', 'Added Successfully');
-            return redirect(route('BusinessCardTypes'));
+            return redirect(route('BusinessCardCategories'));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }

@@ -44,7 +44,8 @@ class Index extends Component
         ]);
         try {
             $this->user->update($validated);
-            session()->flash('success', 'Business Updated Successfully');
+            session()->flash('success', 'Updated Successfully');
+            return redirect(route('AdminEditBusiness', $this->user->slug));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }

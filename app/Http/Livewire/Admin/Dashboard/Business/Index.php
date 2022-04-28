@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        $business = Business::all()->latest()->paginate(6);
+        $business = Business::LatestPaginate(6);
         return view('livewire.admin.dashboard.business.index')
             ->with(['business' => $business])
             ->extends('layouts.dashboard')
@@ -35,7 +35,8 @@ class Index extends Component
         if ($business = User::find($id)) {
 
             $business->delete();
-            return session()->flash('success', 'Deleted Successfully');
+            session()->flash('success', 'Deleted Successfully');
+            return redirect(route('AdminBusiness'));
         }
         return session()->flash('error', 'Something went wrong');
     }

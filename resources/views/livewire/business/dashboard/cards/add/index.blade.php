@@ -30,6 +30,20 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
+                                        <label for="balance">Usable Amount
+                                            ({{ strtoupper(Business::Currency(Auth::user()->id)) }})</label>
+                                        <input type="text" wire:model.defer='balance' Usable="{{ old('balance') }}"
+                                            class="form-control  @error('balance') is-invalid @enderror"
+                                            placeholder="Enter Usable Amount ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
+                                        @error('balance')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-static my-3">
                                         <label for="expires_at">Expiry Date</label>
                                         <input type="date" wire:model.defer='expires_at'
                                             value="{{ old('expires_at') }}"
@@ -42,25 +56,45 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="metadata">Description</label>
-                                        <input type="metadata" wire:model.defer='metadata'
-                                            value="{{ old('metadata') }}"
-                                            class="form-control  @error('metadata') is-invalid @enderror"
-                                            placeholder="Enter description">
-                                        @error('metadata')
+                                        <label for="voucher_category_id">Card Category</label>
+                                        <select wire:model.defer='voucher_category_id'
+                                            class="form-control  @error('voucher_category_id') is-invalid @enderror">
+                                            <option value="">Select Category</option>
+                                            @forelse(Business::CardCategories(Auth::user()->id)->get() as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @empty
+                                                <option value="">Please Add Category</option>
+                                            @endforelse
+                                        </select>
+                                        @error('voucher_category_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                         @enderror
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row mt-2">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn btn-primary" wire:attr='disabled'
-                                        wire:click='Add'>
+                                <div class="col-md-12">
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="quantity">Cards Quantity</label>
+                                        <select wire:model.defer='quantity'
+                                            class="form-control  @error('quantity') is-invalid @enderror">
+                                            <option value="">Select Quantity</option>
+                                            @for ($i = 1; $i < 21; $i++)
+                                                <option value="{{ $i }}">{{ $i }}
+                                                </option>
+                                            @endfor
+                                        </select>
+                                        @error('quantity')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" wire:attr='disabled' wire:click='Add'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
                                         Save Changes

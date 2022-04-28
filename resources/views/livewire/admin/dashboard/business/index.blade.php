@@ -68,7 +68,7 @@
                                         Number
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Clients
+                                        Cards
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Edit
@@ -130,7 +130,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Business::CountClients($user->id) }}
+                                                        {{ Business::CountCards($user) }}
                                                     </h6>
                                                 </div>
                                             </div>

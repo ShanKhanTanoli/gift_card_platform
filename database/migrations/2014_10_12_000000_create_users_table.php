@@ -17,7 +17,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-
             $table->string('avatar')->nullable();
             $table->string('name')->nullable();
             $table->string('user_name')->unique()->nullable();
@@ -25,14 +24,9 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('number')->unique()->nullable();
             $table->string('password')->nullable();
-
             $table->string('role')->nullable();
             $table->string('role_id')->nullable();
-
             $table->string('slug')->nullable();
-
-            $table->string('parent_business_id')->nullable();
-
             $table->rememberToken()->nullable();
             $table->timestamps();
         });
@@ -71,7 +65,6 @@ return new class extends Migration
                 'role' => 'client',
                 'role_id' => '3',
                 'slug' => strtoupper(Str::random(20)),
-                'parent_business_id' => mt_rand(1,100),
             ]);
         }
     }

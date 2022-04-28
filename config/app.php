@@ -196,6 +196,7 @@ return [
         'Setting' => App\Models\Setting::class,
         'Admin' => App\Helpers\Admin\Admin::class,
         'Client' => App\Helpers\Client\Client::class,
+        'Stripe' => App\Helpers\Stripe\Stripe::class,
         'Business' => App\Helpers\Business\Business::class,
         'Currency' => App\Helpers\Currency\Currency::class,
 

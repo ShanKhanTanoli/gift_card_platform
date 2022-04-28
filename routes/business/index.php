@@ -24,11 +24,11 @@ use App\Http\Livewire\Business\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
 /*End::Cards*/
 
-/*Begin::CardTypes*/
-use App\Http\Livewire\Business\Dashboard\CardTypes\Index as CardTypes;
-use App\Http\Livewire\Business\Dashboard\CardTypes\Add\Index as AddCardType;
-use App\Http\Livewire\Business\Dashboard\CardTypes\Edit\Index as EditCardType;
-/*End::CardTypes*/
+/*Begin::CardCategories*/
+use App\Http\Livewire\Business\Dashboard\CardCategories\Index as CardCategories;
+use App\Http\Livewire\Business\Dashboard\CardCategories\Add\Index as AddCardCategory;
+use App\Http\Livewire\Business\Dashboard\CardCategories\Edit\Index as EditCardCategory;
+/*End::CardCategories*/
 
 /*Begin::Auth,Business Group*/
 
@@ -50,15 +50,15 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('EditCard/{code}', EditCard::class)->name('BusinessEditCard');
     /*End::Card*/
 
-    /*Begin::CardType*/
-    Route::get('CardTypes', CardTypes::class)->name('BusinessCardTypes');
+    /*Begin::CardCategory*/
+    Route::get('CardCategories', CardCategories::class)->name('BusinessCardCategories');
 
-    Route::get('AddCardType', AddCardType::class)
-        ->name('BusinessAddCardType');
+    Route::get('AddCardCategory', AddCardCategory::class)
+        ->name('BusinessAddCardCategory');
 
-    Route::get('EditCardType/{slug}', EditCardType::class)
-        ->name('BusinessEditCardType');
-    /*End::CardType*/
+    Route::get('EditCardCategory/{slug}', EditCardCategory::class)
+        ->name('BusinessEditCardCategory');
+    /*End::CardCategory*/
 
     /*Begin::Settings*/
     Route::get('Settings/BusinessDetails', EditBusinessDetails::class)->name('BusinessEditDetails');

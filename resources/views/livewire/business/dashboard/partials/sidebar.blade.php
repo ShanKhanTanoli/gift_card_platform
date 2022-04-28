@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse  w-auto h-100" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Dashboard') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Business/Dashboard') active bg-gradient-primary @else '' @endif"
                     href="{{ route('BusinessDashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-tachometer-alt"></i>
@@ -28,7 +28,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Clients') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Business/Clients') active bg-gradient-primary @else '' @endif"
                     href="{{ route('BusinessClients') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-users"></i>
@@ -44,7 +44,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Cards') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Business/Cards') active bg-gradient-primary @else '' @endif"
                     href="{{ route('BusinessCards') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-credit-card"></i>
@@ -55,13 +55,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/CardTypes') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('BusinessCardTypes') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/CardCategories') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessCardCategories') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-list"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        Card Types
+                        Categories
                     </span>
                 </a>
             </li>

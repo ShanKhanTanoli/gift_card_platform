@@ -54,16 +54,16 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        #
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Card Number
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Card Type
+                                        Category
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Amount
+                                        Price
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Usable Amount
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Expires At
@@ -89,15 +89,6 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $loop->iteration }}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
                                                         {{ $card->code }}
                                                     </h6>
                                                 </div>
@@ -107,7 +98,11 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        Type
+                                                        @if ($category = Business::FindCardCategory(Auth::user()->id, $card->voucher_category_id))
+                                                            {{ $category->name }}
+                                                        @else
+                                                        {{ __('DELETED') }}
+                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>
@@ -117,6 +112,16 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $card->price }}
+                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $card->balance }}
                                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                                     </h6>
                                                 </div>

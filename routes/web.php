@@ -1,10 +1,9 @@
 <?php
 
+use App\Helpers\Stripe\Stripe;
 use App\Models\User;
-use Carbon\CarbonInterval;
 use Illuminate\Support\Str;
 use App\Http\Livewire\Auth\Login;
-use App\Helpers\Business\Business;
 use App\Http\Livewire\Auth\Logout;
 use App\Http\Livewire\Auth\SignUp;
 use Illuminate\Support\Facades\Auth;
@@ -13,19 +12,20 @@ use App\Http\Livewire\Auth\VerifyEmail;
 use App\Http\Livewire\Auth\ResetPassword;
 use App\Http\Livewire\Auth\ForgotPassword;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
-use FrittenKeeZ\Vouchers\Models\VoucherType;
+use FrittenKeeZ\Vouchers\Models\VoucherCategory;
 
 //Auth::routes();
 
 Route::get('debug', function () {
 
+    dd(Stripe::Client());
     $user = User::find(Auth::user()->id);
-    VoucherType::create([
+    VoucherCategory::create([
         'user_id' => $user->id,
         'name' => '10 Dollars',
         'slug' => Str::random(10),
     ]);
-    VoucherType::create([
+    VoucherCategory::create([
         'user_id' => $user->id,
         'name' => '20 Dollars',
         'slug' => Str::random(10),
@@ -33,13 +33,15 @@ Route::get('debug', function () {
     //dd(Business::Cards(Auth::user()));
     //dd(CarbonInterval::create('P30D'));
     $vouchers = Vouchers::withOwner($user)
-        ->withExpireDateIn(CarbonInterval::create('P30D'))
+        ->withExpireDate(new DateTime(date('Y-m-d H:i:s')))
         ->withPrice(100)
-        ->withType(mt_rand(1, 2))
+        ->withCategory(mt_rand(1, 2))
         ->create(2);
     dd($vouchers);
     //dd($success = Vouchers::redeem('2639-1593-0535-3580', $user, ['name' => $user->name]));
     return "done";
+
+    //Carbon::parse($timestamp)->format('Y-m-d');
 });
 
 

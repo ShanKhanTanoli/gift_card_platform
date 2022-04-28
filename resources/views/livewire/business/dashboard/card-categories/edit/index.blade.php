@@ -6,7 +6,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Update Card Type
+                            Update Category
                         </h6>
                     </div>
                 </div>
@@ -16,11 +16,10 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="name">Type of Card
-                                            ({{ strtoupper(Business::Currency(Auth::user()->id)) }})</label>
+                                        <label for="name">Category</label>
                                         <input type="text" wire:model.defer='name' value="{{ old('name') }}"
                                             class="form-control  @error('name') is-invalid @enderror"
-                                            placeholder="Enter Type">
+                                            placeholder="Enter Category">
                                         @error('name')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -28,7 +27,7 @@
                                         @enderror
                                     </div>
                                     <small class="text-mute">
-                                        e.g 10 Dollars Card Or 20 Dollars Card
+                                        e.g Standard , Premium etc
                                     </small>
                                 </div>
                             </div>

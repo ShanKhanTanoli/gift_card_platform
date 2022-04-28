@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        $clients = Client::all()->latest()->paginate(6);
+        $clients = Client::LatestPaginate(6);
         return view('livewire.admin.dashboard.clients.index')
             ->with(['clients' => $clients])
             ->extends('layouts.dashboard')
@@ -34,7 +34,8 @@ class Index extends Component
     {
         if ($client = User::find($id)) {
             $client->delete();
-            return session()->flash('success', 'Deleted Successfully');
+            session()->flash('success', 'Deleted Successfully');
+            return redirect(route('AdminClients'));
         }
         return session()->flash('error', 'Something went wrong');
     }

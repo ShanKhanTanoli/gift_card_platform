@@ -10,9 +10,9 @@
                             <i class="fas fa-list opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">CardType</p>
+                            <p class="text-sm mb-0 text-capitalize">Card Categories</p>
                             <h4 class="mb-0">
-                                {{ Business::CountCardTypes(Auth::user()->id) }}
+                                {{ Business::CountCardCategories(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
             </a>
         </div>
         <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-            <a href="{{ route('BusinessAddCardType') }}">
+            <a href="{{ route('BusinessAddCardCategory') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -30,7 +30,7 @@
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Add New</p>
                             <h4 class="mb-0">
-                                Card Type
+                                Card Category
                             </h4>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Card Types
+                            Card Categories
                         </h6>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($types as $type)
+                                @foreach ($categories as $category)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -86,7 +86,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $type->name }}
+                                                        {{ $category->name }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -95,15 +95,15 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ date('d M Y', strtotime($type->created_at)) }}
+                                                        {{ date('d M Y', strtotime($category->created_at)) }}
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $type->id }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $type->id }}")'
+                                                wire:click='Edit("{{ $category->id }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $category->id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
@@ -111,8 +111,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='Delete("{{ $type->id }}")'>
-                                                <span wire:loading wire:target='Delete("{{ $type->id }}")'
+                                                wire:click='Delete("{{ $category->id }}")'>
+                                                <span wire:loading wire:target='Delete("{{ $category->id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    {{ $types->render() }}
+                    {{ $categories->render() }}
                 </div>
             </div>
         </div>

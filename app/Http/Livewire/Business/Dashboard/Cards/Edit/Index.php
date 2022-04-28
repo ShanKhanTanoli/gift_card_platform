@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $card, $price, $expires_at;
+    public $card, $voucher_category_id, $price, $balance, $expires_at;
 
     public function mount($code)
     {
@@ -18,8 +18,10 @@ class Index extends Component
             //Begin::If this Business owns a Card
             if ($card = Business::FindCard(Auth::user(), $find->id)) {
                 $this->card = $card;
+                $this->voucher_category_id = $card->voucher_category_id;
                 $this->price = $card->price;
-                $this->expires_at = date('Y-m-d',strtotime($card->expires_at));
+                $this->balance = $card->balance;
+                $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
             } else {
                 session()->flash('error', 'No such card found');
                 return redirect(route('BusinessCards'));
@@ -42,15 +44,15 @@ class Index extends Component
         //Begin::If this Business owns a card
         if (Business::FindCard(Auth::user(), $this->card->id)) {
             $validated = $this->validate([
+                'voucher_category_id' => 'required|numeric',
                 'price' => 'required|integer',
-                'metadata' => 'required|string',
+                'balance' => 'required|integer',
                 'expires_at' => 'required|date',
             ]);
-            dd($validated);
             try {
-                $this->user->update($validated);
+                $this->card->update($validated);
                 session()->flash('success', 'Updated Successfully');
-                return redirect(route('BusinessEditcard', $this->user->slug));
+                return redirect(route('BusinessEditCard', $this->card->code));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }

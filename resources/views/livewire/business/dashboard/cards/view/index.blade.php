@@ -9,10 +9,10 @@
                     {{-- <span class="mask bg-gradient-dark opacity-10"></span> --}}
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            @if($find = Business::Details(Auth::user()->id))
+                            @if ($find = Business::Details(Auth::user()->id))
                                 {{ $find->business_name }}
                             @else
-                            Brand Name
+                                Brand Name
                             @endif
                         </h6>
                         <div class="d-flex">
@@ -26,13 +26,12 @@
                                     {!! QrCode::size(80)->generate($card->code) !!}
                                 </div>
                             </div>
-
                         </div>
                         <div class=" d-flex">
                             <div>
                                 <p class="text-white text-sm opacity-8 mb-0">Expiry</p>
                                 <h6 class="text-white mb-0">
-                                    {{ date('m/Y', strtotime($card->expires_at)) }}
+                                    {{ date('d/m/Y', strtotime($card->expires_at)) }}
                                 </h6>
                             </div>
                         </div>
@@ -45,33 +44,40 @@
         <!--Begin::Card Information-->
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header pb-0 px-3">
+                <div class="card-header pb-0">
                     <h6 class="mb-0">Card Information</h6>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        <li class="list-group-item border-0 d-flex mb-2 bg-gray-100 border-radius-lg">
+                        <li class="list-group-item border-0 d-flex mb-1 bg-gray-100 border-radius-lg">
                             <div class="d-flex flex-column">
-                                <span class="mb-2 text-xs">
+                                <span class="mb-1 text-xs">
                                     Card Code:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->code }}
                                     </span>
                                 </span>
-                                <span class="mb-2 text-xs">
-                                    Current Amount:
+                                <span class="mb-1 text-xs">
+                                    Price:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->price }}
                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                     </span>
                                 </span>
-                                <span class="mb-2 text-xs">
+                                <span class="mb-1 text-xs">
+                                    Usable Amount:
+                                    <span class="text-dark font-weight-bold ms-sm-2">
+                                        {{ $card->balance }}
+                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                    </span>
+                                </span>
+                                <span class="mb-1 text-xs">
                                     Created At:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ date('d/m/Y', strtotime($card->created_at)) }}
                                     </span>
                                 </span>
-                                <span class="mb-2 text-xs">
+                                <span class="mb-1 text-xs">
                                     Current Expiry:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ date('d/m/Y', strtotime($card->expires_at)) }}
