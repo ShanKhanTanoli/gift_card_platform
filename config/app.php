@@ -194,6 +194,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
 
         'Setting' => App\Models\Setting::class,
+        'Card' => App\Helpers\Card\Card::class,
         'Admin' => App\Helpers\Admin\Admin::class,
         'Client' => App\Helpers\Client\Client::class,
         'Stripe' => App\Helpers\Stripe\Stripe::class,

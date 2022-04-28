@@ -52,11 +52,25 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Cards
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Admin/Cards') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('AdminCards') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Cards</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                     Configurations
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Settings/General' OR Request::path() == 'Admin/Settings/Profile' OR Request::path() == 'Admin/Settings/Currency' OR Request::path() == 'Admin/Settings/Password') active bg-gradient-primary @else '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Admin/Settings/General' or Request::path() == 'Admin/Settings/Profile' or Request::path() == 'Admin/Settings/Currency' or Request::path() == 'Admin/Settings/Stripe' or Request::path() == 'Admin/Settings/Password') active bg-gradient-primary @else '' @endif"
                     href="{{ route('AdminSettings') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-cog"></i>

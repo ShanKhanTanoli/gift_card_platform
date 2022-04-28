@@ -38,7 +38,7 @@
                 </div>
                 <hr class="dark horizontal my-0">
                 <div class="card-footer p-3 text-center">
-                    <a href="{{ route('AdminClients') }}"" class="btn bg-gradient-dark">
+                    <a href="{{ route('AdminClients') }}" class="btn bg-gradient-dark">
                         View All
                     </a>
                 </div>
@@ -52,15 +52,15 @@
                         <i class="fas fa-credit-card opacity-10"></i>
                     </div>
                     <div class="text-end pt-1">
-                        <p class="text-sm mb-0 text-capitalize">Total Cards</p>
+                        <p class="text-sm mb-0 text-capitalize">Cards</p>
                         <h4 class="mb-0">
-                            0
+                            {{ Card::count() }}
                         </h4>
                     </div>
                 </div>
                 <hr class="dark horizontal my-0">
                 <div class="card-footer p-3 text-center">
-                    <a href="#" class="btn bg-gradient-dark">
+                    <a href="{{ route('AdminCards') }}" class="btn bg-gradient-dark">
                         View All
                     </a>
                 </div>
