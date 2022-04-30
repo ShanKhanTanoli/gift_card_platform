@@ -9,21 +9,21 @@
                     {{-- <span class="mask bg-gradient-dark opacity-10"></span> --}}
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            @if ($find = Business::Details(Auth::user()->id))
-                                {{ $find->business_name }}
+                            @if($business = Business::Details(Auth::user()->id))
+                            {{ $business->business_name }}
                             @else
-                                Brand Name
+                            Brand Name
                             @endif
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">
                                 <h6 class="text-white mt-5 mb-0 pb-0">
-                                    {{ $card->code }}
+                                    XXXX-XXXX-XXXX-XXXX
                                 </h6>
                             </div>
                             <div class="col-4">
                                 <div class=" mt-2 mb-3 pb-0" style="text-align: right;">
-                                    {!! QrCode::size(80)->generate($card->code) !!}
+                                    {!! QrCode::size(80)->generate('XXXX-XXXX-XXXX-XXXX') !!}
                                 </div>
                             </div>
                         </div>
@@ -52,12 +52,6 @@
                         <li class="list-group-item border-0 d-flex mb-1 bg-gray-100 border-radius-lg">
                             <div class="d-flex flex-column">
                                 <span class="mb-1 text-xs">
-                                    Card Code:
-                                    <span class="text-dark font-weight-bold ms-sm-2">
-                                        {{ $card->code }}
-                                    </span>
-                                </span>
-                                <span class="mb-1 text-xs">
                                     Price:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->price }}
@@ -65,7 +59,7 @@
                                     </span>
                                 </span>
                                 <span class="mb-1 text-xs">
-                                    Usable Amount:
+                                    Balance:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->balance }}
                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
@@ -86,7 +80,7 @@
                             </div>
                             <div class="ms-auto text-end">
                                 <a class="btn btn-link text-dark px-3 mb-0"
-                                    href="{{ route('BusinessEditCard', $card->code) }}">
+                                    href="{{ route('BusinessEditCard', $card->unique_id) }}">
                                     <i class="fas fa-edit text-sm me-2">
                                     </i>
                                     Edit

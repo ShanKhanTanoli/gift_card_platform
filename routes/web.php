@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\Business\Business;
 use App\Helpers\Stripe\Stripe;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -13,13 +14,18 @@ use App\Http\Livewire\Auth\ResetPassword;
 use App\Http\Livewire\Auth\ForgotPassword;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\VoucherCategory;
+use FrittenKeeZ\Vouchers\Models\VoucherData;
 
 //Auth::routes();
 
 Route::get('debug', function () {
 
-    dd(Stripe::Client());
-    $user = User::find(Auth::user()->id);
+    $voucher = VoucherData::where('unique_id','8UJYK5ZUUYLQUATDYZZU')->first();
+    //dd($voucher);
+    dd(Vouchers::issue(1,$voucher->unique_id,$voucher->expires_at));
+
+    dd(Business::CountCards(2));
+    $user = User::find(2);
     VoucherCategory::create([
         'user_id' => $user->id,
         'name' => '10 Dollars',
@@ -35,8 +41,9 @@ Route::get('debug', function () {
     $vouchers = Vouchers::withOwner($user)
         ->withExpireDate(new DateTime(date('Y-m-d H:i:s')))
         ->withPrice(100)
+        ->withBalance(100)
         ->withCategory(mt_rand(1, 2))
-        ->create(2);
+        ->create(10);
     dd($vouchers);
     //dd($success = Vouchers::redeem('2639-1593-0535-3580', $user, ['name' => $user->name]));
     return "done";

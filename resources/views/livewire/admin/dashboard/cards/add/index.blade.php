@@ -30,11 +30,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="balance">Usable Amount
+                                        <label for="balance">Balance Amount
                                             ({{ strtoupper(Business::Currency(Auth::user()->id)) }})</label>
-                                        <input type="text" wire:model.defer='balance' Usable="{{ old('balance') }}"
+                                        <input type="text" wire:model.defer='balance' value="{{ old('balance') }}"
                                             class="form-control  @error('balance') is-invalid @enderror"
-                                            placeholder="Enter Usable Amount ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
+                                            placeholder="Enter Balance Amount ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
                                         @error('balance')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -58,54 +58,20 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="voucher_category_id">Card Category</label>
-                                        <select wire:model.defer='voucher_category_id'
-                                            class="form-control  @error('voucher_category_id') is-invalid @enderror">
-                                            <option value="">Select Category</option>
-                                            @forelse(Card::Categories()->get() as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @empty
-                                                <option value="">Please Add Category</option>
-                                            @endforelse
-                                        </select>
-                                        @error('voucher_category_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="voucher_category_id">Card Category</label>
-                                        <select wire:model.defer='voucher_category_id'
-                                            class="form-control  @error('voucher_category_id') is-invalid @enderror">
-                                            <option value="">Select Category</option>
-                                            @forelse(Card::Categories()->get() as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @empty
-                                                <option value="">Please Add Category</option>
-                                            @endforelse
-                                        </select>
-                                        @error('voucher_category_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="quantity">Cards Quantity</label>
-                                        <select wire:model.defer='quantity'
-                                            class="form-control  @error('quantity') is-invalid @enderror">
-                                            <option value="">Select Quantity</option>
-                                            @for ($i = 1; $i < 21; $i++)
-                                                <option value="{{ $i }}">{{ $i }}
+                                        <label for="owner_id">Card Owner</label>
+                                        <select wire:model.defer='owner_id'
+                                            class="form-control  @error('owner_id') is-invalid @enderror">
+                                            <option value="">Select Owner</option>
+                                            @forelse(Business::All()->get() as $business)
+                                                <option value="{{ $business->id }}">
+                                                    Name : {{ $business->name }}
+                                                    Email : {{ $business->email }}
                                                 </option>
-                                            @endfor
+                                            @empty
+                                                <option value="">Please Add Business</option>
+                                            @endforelse
                                         </select>
-                                        @error('quantity')
+                                        @error('owner_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

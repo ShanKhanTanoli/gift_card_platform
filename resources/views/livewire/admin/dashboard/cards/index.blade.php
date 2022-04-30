@@ -54,22 +54,25 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Card Number
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Category
+                                        #
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Usable Amount
+                                        Balance
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Expires At
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Created At
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Owner
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Sold
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View
@@ -89,20 +92,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $card->code }}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        @if ($category = Business::FindCardCategory(Auth::user()->id, $card->voucher_category_id))
-                                                            {{ $category->name }}
-                                                        @else
-                                                        {{ __('DELETED') }}
-                                                        @endif
+                                                        {{ $loop->iteration }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -146,9 +136,27 @@
                                             </div>
                                         </td>
                                         <td class="align-middle">
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ Str::substr(Card::FindOwner($card->unique_id)->name, 0, 12) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ Card::Sold($card->unique_id) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
                                             <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->id }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->id }}")'
+                                                wire:click='View("{{ $card->unique_id }}")'>
+                                                <span wire:loading wire:target='View("{{ $card->unique_id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 View
@@ -156,8 +164,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $card->id }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $card->id }}")'
+                                                wire:click='Edit("{{ $card->unique_id }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $card->unique_id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
@@ -165,8 +173,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='Delete("{{ $card->id }}")'>
-                                                <span wire:loading wire:target='Delete("{{ $card->id }}")'
+                                                wire:click='Delete("{{ $card->unique_id }}")'>
+                                                <span wire:loading wire:target='Delete("{{ $card->unique_id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete

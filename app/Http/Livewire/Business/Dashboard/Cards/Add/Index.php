@@ -5,13 +5,13 @@ namespace App\Http\Livewire\Business\Dashboard\Cards\Add;
 use DateTime;
 use Exception;
 use Livewire\Component;
-use Carbon\CarbonInterval;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 
 class Index extends Component
 {
-    public $price, $balance, $expires_at, $voucher_category_id, $quantity;
+    public $price, $balance, $expires_at;
     public function render()
     {
         return view('livewire.business.dashboard.cards.add.index')
@@ -30,29 +30,22 @@ class Index extends Component
             'expires_at.required' => 'Enter Date',
             'expires_at.date' => 'Enter Date',
 
-            'voucher_category_id.required' => 'Select Category',
-            'voucher_category_id.numeric' => 'Select Category',
-
-            'quantity.required' => 'Select Cards Quantity',
-            'quantity.numeric' => 'Select Cards Quantity',
-
         ];
         $validated = $this->validate([
             'price' => 'required|numeric',
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
-            'voucher_category_id' => 'required|numeric',
-            'quantity' => 'required|numeric',
         ], $msg);
 
         try {
-            $timestamp = new DateTime(date('Y-m-d H:i:s',strtotime($validated['expires_at'])));
+            $timestamp = new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at'])));
             Vouchers::withOwner(Auth::user())
+                ->withUniqueId(strtoupper(Str::random(20)))
                 ->withExpireDate($timestamp)
                 ->withPrice($validated['price'])
                 ->withBalance($validated['balance'])
-                ->withCategory($validated['voucher_category_id'])
-                ->create($validated['quantity']);
+                ->create();
+
             session()->flash('success', 'Added Successfully');
             return redirect(route('BusinessCards'));
         } catch (Exception $e) {

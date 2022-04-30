@@ -36,29 +36,12 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
 
     Route::get('Dashboard', BusinessDashboard::class)->name('BusinessDashboard');
 
-    /*Begin::Client*/
-    Route::get('Clients', Clients::class)->name('BusinessClients');
-    Route::get('AddClient', AddClient::class)->name('BusinessAddClient');
-    Route::get('EditClient/{slug}', EditClient::class)->name('BusinessEditClient');
-    Route::get('EditClient/{slug}/Password', EditClientPassword::class)->name('BusinessEditClientPassword');
-    /*End::Client*/
-
     /*Begin::Card*/
     Route::get('Cards', Cards::class)->name('BusinessCards');
-    Route::get('ViewCard/{code}', ViewCard::class)->name('BusinessViewCard');
+    Route::get('ViewCard/{unique_id}', ViewCard::class)->name('BusinessViewCard');
     Route::get('AddCard', AddCard::class)->name('BusinessAddCard');
-    Route::get('EditCard/{code}', EditCard::class)->name('BusinessEditCard');
+    Route::get('EditCard/{unique_id}', EditCard::class)->name('BusinessEditCard');
     /*End::Card*/
-
-    /*Begin::CardCategory*/
-    Route::get('CardCategories', CardCategories::class)->name('BusinessCardCategories');
-
-    Route::get('AddCardCategory', AddCardCategory::class)
-        ->name('BusinessAddCardCategory');
-
-    Route::get('EditCardCategory/{slug}', EditCardCategory::class)
-        ->name('BusinessEditCardCategory');
-    /*End::CardCategory*/
 
     /*Begin::Settings*/
     Route::get('Settings/BusinessDetails', EditBusinessDetails::class)->name('BusinessEditDetails');

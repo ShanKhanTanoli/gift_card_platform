@@ -30,11 +30,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="balance">Usable Amount
+                                        <label for="balance">Balance Amount
                                             ({{ strtoupper(Business::Currency(Auth::user()->id)) }})</label>
-                                        <input type="text" wire:model.defer='balance' Usable="{{ old('balance') }}"
+                                        <input type="text" wire:model.defer='balance' value="{{ old('balance') }}"
                                             class="form-control  @error('balance') is-invalid @enderror"
-                                            placeholder="Enter Usable Amount ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
+                                            placeholder="Enter Balance Amount ({{ strtoupper(Business::Currency(Auth::user()->id)) }})">
                                         @error('balance')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -42,7 +42,7 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="input-group input-group-static my-3">
                                         <label for="expires_at">Expiry Date</label>
                                         <input type="date" wire:model.defer='expires_at'
@@ -50,25 +50,6 @@
                                             class="form-control  @error('expires_at') is-invalid @enderror"
                                             placeholder="Enter Expiry Date">
                                         @error('expires_at')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="voucher_category_id">Card Category</label>
-                                        <select wire:model.defer='voucher_category_id'
-                                            class="form-control  @error('voucher_category_id') is-invalid @enderror">
-                                            <option value="">Select Category</option>
-                                            @forelse(Business::CardCategories(Auth::user()->id)->get() as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @empty
-                                                <option value="">Please Add Category</option>
-                                            @endforelse
-                                        </select>
-                                        @error('voucher_category_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

@@ -130,7 +130,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Business::CountCards($user) }}
+                                                        {{ Business::CountCards($user->id) }}
                                                     </h6>
                                                 </div>
                                             </div>

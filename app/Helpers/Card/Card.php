@@ -2,7 +2,9 @@
 
 namespace App\Helpers\Card;
 
+use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Voucher;
+use FrittenKeeZ\Vouchers\Models\VoucherData;
 use FrittenKeeZ\Vouchers\Models\VoucherCategory;
 
 class Card
@@ -11,7 +13,7 @@ class Card
     /*Begin::Cards*/
     public static function All()
     {
-        return Voucher::latest();
+        return VoucherData::latest();
     }
 
     public static function LatestPaginate($quantity)
@@ -24,33 +26,33 @@ class Card
         return self::All()->count();
     }
 
-    public static function Find($card)
+    public static function CountSold($unique_id)
     {
-        return self::All()->find($card);
+        return Voucher::where('unique_id', $unique_id)->count();
     }
+
+    public static function Find($unique_id)
+    {
+        return self::All()->where('unique_id', $unique_id)
+            ->first();
+    }
+
+    public static function Expiry($unique_id)
+    {
+        return Voucher::where('unique_id', $unique_id)
+            ->first();
+    }
+    
+    public static function FindOwner($unique_id)
+    {
+        if ($voucher = VoucherData::where('unique_id', $unique_id)
+            ->first()
+        ) {
+            if ($owner = User::find($voucher->owner_id)) {
+                return $owner;
+            } else return "Add Owner";
+        } else return "Add Owner";
+    }
+
     /*End::Cards*/
-
-    /*Begin::CardCategory*/
-    public static function FindCategory($category)
-    {
-        return VoucherCategory::find($category);
-    }
-
-    public static function Categories()
-    {
-        return VoucherCategory::latest();
-    }
-
-    public static function LatestCategoriesPaginate($quantity)
-    {
-        return VoucherCategory::latest()
-            ->paginate($quantity);
-    }
-
-    public static function CountCategories()
-    {
-        return VoucherCategory::count();
-    }
-
-    /*End::CardCategory*/
 }

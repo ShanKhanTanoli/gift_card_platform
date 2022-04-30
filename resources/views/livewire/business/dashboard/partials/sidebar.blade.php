@@ -24,22 +24,6 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
-                    Clients
-                </h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Clients') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('BusinessClients') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">
-                        Clients
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                     Cards
                 </h6>
             </li>
@@ -51,17 +35,6 @@
                     </div>
                     <span class="nav-link-text ms-1">
                         Cards
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/CardCategories') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('BusinessCardCategories') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-list"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">
-                        Categories
                     </span>
                 </a>
             </li>

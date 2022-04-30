@@ -3,11 +3,9 @@
 namespace App\Helpers\Business;
 
 use App\Models\User;
-use Illuminate\Support\Str;
 use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
-use FrittenKeeZ\Vouchers\Models\Voucher;
-use FrittenKeeZ\Vouchers\Models\VoucherCategory;
+use FrittenKeeZ\Vouchers\Models\VoucherData;
 
 class Business
 {
@@ -75,12 +73,13 @@ class Business
     /*Begin::Cards*/
     public static function Cards($business)
     {
-        return Voucher::withOwner($business);
+        return VoucherData::where('owner_id', $business);
     }
 
     public static function CardsLatestPaginate($business, $quantity)
     {
-        return self::Cards($business)->latest()->paginate($quantity);
+        return self::Cards($business)->latest()
+            ->paginate($quantity);
     }
 
     public static function CountCards($business)
@@ -88,41 +87,11 @@ class Business
         return self::Cards($business)->count();
     }
 
-    public static function FindCard($business, $card)
+    public static function FindCard($business, $unique_id)
     {
-        return self::Cards($business)->find($card);
-    }
-    /*End::Cards*/
-
-    /*Begin::CardCategories*/
-    public static function CardCategories($business)
-    {
-        return VoucherCategory::where('user_id', $business);
-    }
-
-    public static function CardCategoriesLatestPaginate($business, $quantity)
-    {
-        return self::CardCategories($business)
-            ->latest()->paginate($quantity);
-    }
-
-    public static function CreateCardCategory($business = null, $name = null)
-    {
-        return VoucherCategory::create([
-            'user_id' => $business,
-            'name' => $name,
-            'slug' => Str::random(10),
-        ]);
-    }
-
-    public static function CountCardCategories($business)
-    {
-        return self::CardCategories($business)->count();
-    }
-
-    public static function FindCardCategory($business, $category)
-    {
-        return self::CardCategories($business)->find($category);
+        return self::Cards($business)
+            ->where('unique_id', $unique_id)
+            ->first();
     }
     /*End::Cards*/
 }
