@@ -7,14 +7,9 @@
                 <div class="overflow-hidden position-relative border-radius-xl">
                     <img src="{{ asset('dashboard/img/illustrations/bg-3.jpg') }}"
                         class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
-                    {{-- <span class="mask bg-gradient-dark opacity-10"></span> --}}
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            @if ($business = Business::Details(Auth::user()->id))
-                                {{ $business->business_name }}
-                            @else
-                                Brand Name
-                            @endif
+                            {{ Business::DisplayStoreName(Auth::user()->id) }}
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">

@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('business_details', function (Blueprint $table) {
             $table->id();
 
-            //Users
+            //User id as Foreign Key
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')
                 ->on('users')

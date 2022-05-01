@@ -45,7 +45,7 @@
                         <i class="fas fa-search"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        CheckCard 
+                        CheckCard
                     </span>
                 </a>
             </li>
@@ -69,7 +69,7 @@
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Configure</h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Settings/BusinessDetails' or Request::path() == 'Business/Settings/Profile' or Request::path() == 'Business/Settings/Password') active bg-gradient-primary @else '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Business/Settings/BusinessDetails' or Request::path() == 'Business/Settings/Store' or Request::path() == 'Business/Settings/Profile' or Request::path() == 'Business/Settings/Password') active bg-gradient-primary @else '' @endif"
                     href="{{ route('BusinessEditDetails') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-cog"></i>

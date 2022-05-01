@@ -2,14 +2,16 @@
 
 namespace App\Helpers\Business;
 
+use App\Helpers\Business\Traits\BusinessCards;
+use App\Helpers\Business\Traits\BusinessStore;
 use App\Models\User;
 use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
-use FrittenKeeZ\Vouchers\Models\Voucher;
-use FrittenKeeZ\Vouchers\Models\VoucherData;
 
 class Business
 {
+    use BusinessCards, BusinessStore;
+
     public static function Is()
     {
         if ($user = Auth::user()) {
@@ -70,53 +72,4 @@ class Business
         } else return "usd";
     }
     /*End::Business Details*/
-
-    /*Begin::Cards*/
-    public static function Cards($business)
-    {
-        return Voucher::where('owner_id', $business);
-    }
-
-    public static function CardsLatestUnsoldPaginate($business, $quantity)
-    {
-        return self::Cards($business)
-            ->where('sold', null)
-            ->latest()
-            ->paginate($quantity);
-    }
-
-    public static function CardsLatestSoldPaginate($business, $quantity)
-    {
-        return self::Cards($business)
-            ->where('sold', true)
-            ->latest()
-            ->paginate($quantity);
-    }
-
-    public static function CountCards($business)
-    {
-        return self::Cards($business)->count();
-    }
-
-    public static function CountUnsoldCards($business)
-    {
-        return self::Cards($business)
-            ->where('sold', null)
-            ->count();
-    }
-
-    public static function CountSoldCards($business)
-    {
-        return self::Cards($business)
-            ->where('sold', true)
-            ->count();
-    }
-
-    public static function FindCard($business, $code)
-    {
-        return self::Cards($business)
-            ->where('code', $code)
-            ->first();
-    }
-    /*End::Cards*/
 }

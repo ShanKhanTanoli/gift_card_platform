@@ -16,9 +16,7 @@ use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 Route::get('debug', function () {
 
-    dd(Client::CardsCount(Auth::user()->id, 6));
-
-    $voucher = Voucher::where('code', '8550-5990-8918-1021')->first();
+    $voucher = Voucher::where('code', '8589-3486-7457-0262')->first();
 
     if (!$voucher->isSold() && !$voucher->isExpired()) {
         ClientVoucher::create([

@@ -22,6 +22,7 @@ use App\Http\Livewire\Business\Dashboard\Payments\Edit\Index as EditPayment;
 /*Begin::Settings*/
 use App\Http\Livewire\Business\Dashboard\Settings\BusinessDetails\Index as EditBusinessDetails;
 use App\Http\Livewire\Business\Dashboard\Settings\Profile\Index as EditProfile;
+use App\Http\Livewire\Business\Dashboard\Settings\Store\Index as EditStore;
 use App\Http\Livewire\Business\Dashboard\Settings\Password\Index as EditPassword;
 /*End::Settings*/
 
@@ -60,6 +61,7 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     /*Begin::Settings*/
     Route::get('Settings/BusinessDetails', EditBusinessDetails::class)->name('BusinessEditDetails');
     Route::get('Settings/Profile', EditProfile::class)->name('BusinessEditProfile');
+    Route::get('Settings/Store', EditStore::class)->name('BusinessEditStore');
     Route::get('Settings/Password', EditPassword::class)->name('BusinessEditPassword');
     /*End::Settings*/
 });
