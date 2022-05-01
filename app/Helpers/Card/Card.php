@@ -27,9 +27,18 @@ class Card
         return self::All()->count();
     }
 
-    public static function CountSold($code)
+    public static function CountSold()
     {
-        return Voucher::where('code', $code)->count();
+        return self::All()
+            ->where('sold', true)
+            ->count();
+    }
+
+    public static function CountUnSold()
+    {
+        return self::All()
+            ->where('sold', null)
+            ->count();
     }
 
     public static function Find($code)
@@ -51,9 +60,8 @@ class Card
 
     public static function FindOwner($code)
     {
-        if ($voucher = VoucherData::where('code', $code)
-            ->first()
-        ) {
+        $voucher = Voucher::where('code', $code)->first();
+        if ($voucher) {
             if ($owner = User::find($voucher->owner_id)) {
                 return $owner;
             } else return "Add Owner";
@@ -78,5 +86,4 @@ class Card
         return self::Recharge($voucher_id)->count();
     }
     /*End::Card Recharge History*/
-
 }

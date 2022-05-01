@@ -8,14 +8,13 @@ use App\Helpers\Card\Card;
 
 class Index extends Component
 {
-    public $card, $owner_id, $voucher_category_id, $price, $balance, $expires_at;
+    public $card, $owner_id, $price, $balance, $expires_at;
 
-    public function mount($unique_id)
+    public function mount($code)
     {
-        if ($card = Card::Find($unique_id)) {
+        if ($card = Card::Find($code)) {
             $this->card = $card;
             $this->owner_id = $card->owner_id;
-            $this->voucher_category_id = $card->voucher_category_id;
             $this->price = $card->price;
             $this->balance = $card->balance;
             $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
@@ -34,7 +33,7 @@ class Index extends Component
     public function Update()
     {
         //Begin::If Card Exists
-        if (Card::Find($this->card->unique_id)) {
+        if (Card::Find($this->card->code)) {
             $msg = [
                 'owner_id.required' => 'Enter Price',
                 'owner_id.numeric' => 'Enter Price',
@@ -54,7 +53,7 @@ class Index extends Component
             try {
                 $this->card->update($validated);
                 session()->flash('success', 'Updated Successfully');
-                return redirect(route('AdminEditCard', $this->card->unique_id));
+                return redirect(route('AdminEditCard', $this->card->code));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }

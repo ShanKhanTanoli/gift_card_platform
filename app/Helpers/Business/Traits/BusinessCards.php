@@ -13,6 +13,13 @@ trait BusinessCards
         return Voucher::where('owner_id', $business);
     }
 
+    public static function CardsLatestPaginate($business, $quantity)
+    {
+        return self::Cards($business)
+            ->latest()
+            ->paginate($quantity);
+    }
+
     public static function CardsLatestUnsoldPaginate($business, $quantity)
     {
         return self::Cards($business)

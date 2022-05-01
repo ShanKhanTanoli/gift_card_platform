@@ -6,7 +6,6 @@ use Livewire\Component;
 use App\Helpers\Card\Card;
 use FrittenKeeZ\Vouchers\Models\Voucher;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
@@ -23,23 +22,23 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($unique_id)
+    public function View($code)
     {
-        return redirect(route('AdminViewCard', $unique_id));
+        return redirect(route('AdminViewCard', $code));
     }
 
 
-    public function Edit($unique_id)
+    public function Edit($code)
     {
-        if ($card = Card::Find($unique_id)) {
-            return redirect(route('AdminEditCard', $card->unique_id));
+        if ($card = Card::Find($code)) {
+            return redirect(route('AdminEditCard', $card->code));
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Delete($unique_id)
+    public function Delete($code)
     {
-        if ($card = Card::Find($unique_id)) {
-            Voucher::where('unique_id', $card->unique_id)->delete();
+        if ($card = Card::Find($code)) {
+            Voucher::where('code', $card->code)->delete();
             $card->delete();
             session()->flash('success', 'Deleted Successfully');
             return redirect(route('AdminCards'));

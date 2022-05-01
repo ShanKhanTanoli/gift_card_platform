@@ -17,14 +17,14 @@ class Index extends Component
         if ($card = Business::FindCard(Auth::user()->id, $code)) {
 
             //Begin::If this Card is Sold
-            if(!$card->isSold()){
+            if (!$card->isSold()) {
                 $this->card = $card;
                 $this->price = $card->price;
                 $this->balance = $card->balance;
-                $this->expires_at = date('Y-m-d',strtotime($card->expires_at));
+                $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
             } else {
                 session()->flash('error', 'This card is already sold');
-                return redirect(route('BusinessViewCard',$card->code));
+                return redirect(route('BusinessViewCard', $card->code));
             }
             //End::If this Card is Sold
 

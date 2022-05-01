@@ -54,9 +54,9 @@ Route::middleware(['auth', 'admin'])->prefix('Admin')->group(function () {
 
     /*Begin::Cards*/
     Route::get('Cards', ViewAllCards::class)->name('AdminCards');
-    Route::get('ViewCard/{unique_id}', ViewCard::class)->name('AdminViewCard');
+    Route::get('ViewCard/{code}', ViewCard::class)->name('AdminViewCard');
     Route::get('AddCard', AddCard::class)->name('AdminAddCard');
-    Route::get('EditCard/{unique_id}', EditCard::class)->name('AdminEditCard');
+    Route::get('EditCard/{code}', EditCard::class)->name('AdminEditCard');
     /*End::Cards*/
 
     /*Begin::Clients*/
