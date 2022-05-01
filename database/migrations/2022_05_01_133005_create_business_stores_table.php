@@ -25,10 +25,10 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->string('store_name')
+            $table->text('store_name')
                 ->unique()->nullable();
 
-            $table->string('store_description')
+            $table->longText('store_description')
                 ->nullable();
 
             $table->string('slug')
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->boolean('display_cards')
                 ->nullable();
 
-                $table->boolean('display_store_name')
+            $table->boolean('display_store_name')
                 ->nullable();
 
             $table->timestamps();

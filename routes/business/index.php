@@ -13,6 +13,10 @@ use App\Http\Livewire\Business\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
 /*End::Cards*/
 
+/*Begin::Store*/
+use App\Http\Livewire\Business\Dashboard\Store\Index as Store;
+/*End::Store*/
+
 /*Begin::Payments*/
 use App\Http\Livewire\Business\Dashboard\Payments\Index as Payments;
 use App\Http\Livewire\Business\Dashboard\Payments\Add\Index as AddPayment;
@@ -51,6 +55,10 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('EditCard/{code}', EditCard::class)
         ->name('BusinessEditCard');
     /*End::Cards*/
+
+    /*Begin::Store*/
+    Route::get('Store', Store::class)->name('BusinessStore');
+    /*End::Store*/
 
     /*Begin::Payments*/
     Route::get('Payments', Payments::class)->name('BusinessPayments');

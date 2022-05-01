@@ -51,6 +51,22 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Display Cards
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Store') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessStore') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Store
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                     Payments
                 </h6>
             </li>

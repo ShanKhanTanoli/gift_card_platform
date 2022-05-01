@@ -20,5 +20,11 @@ trait BusinessStore
             }
         }
     }
+
+    public static function FindStoreByName($store_name)
+    {
+        return ModelsBusinessStore::where('store_name', $store_name)
+            ->first();
+    }
     /*End::Store*/
 }

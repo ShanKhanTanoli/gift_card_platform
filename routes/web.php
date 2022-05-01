@@ -16,8 +16,7 @@ use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 Route::get('debug', function () {
 
-    $voucher = Voucher::where('code', '8589-3486-7457-0262')->first();
-
+    $voucher = Voucher::where('code', '8932-4726-9041-1444')->first();
     if (!$voucher->isSold() && !$voucher->isExpired()) {
         ClientVoucher::create([
             'stripe_id' => 'string',
@@ -54,6 +53,10 @@ include('business/index.php');
 /*Begin::Client Routes*/
 include('client/index.php');
 /*End::Client Routes*/
+
+/*Begin::Public Routes*/
+include('public/index.php');
+/*End::Public Routes*/
 
 
 /*Begin::Auth Routes*/

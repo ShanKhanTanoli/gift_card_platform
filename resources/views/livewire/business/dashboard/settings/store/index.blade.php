@@ -40,7 +40,9 @@
                                         <div class="col-md-12">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="store_description">Store Description</label>
-                                                    <textarea wire:model.defer='store_description' placeholder="Enter Store Description" class="form-control  @error('store_description') is-invalid @enderror" rows="5">
+                                                <textarea wire:model.defer='store_description' placeholder="Enter Store Description"
+                                                    class="form-control  @error('store_description') is-invalid @enderror"
+                                                    rows="5">
                                                         {{ old('store_description') }}
                                                     </textarea>
                                                 @error('store_description')

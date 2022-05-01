@@ -47,18 +47,27 @@
                                 <span class="navbar-toggler-bar bar3"></span>
                             </span>
                         </button>
-                        @if (Request::path() != 'login')
+                        
                             <div class="collapse navbar-collapse" id="navigation">
                                 <ul class="navbar-nav mx-auto">
+                                    @if (Request::path() != 'login')
                                     <li class="nav-item">
-                                        <a class="nav-link me-2" href="{{ route('AdminDashboard') }}">
+                                        <a class="nav-link me-2" href="{{ route('login') }}">
                                             <i class="fas fa-key opacity-6 text-dark me-1"></i>
                                             Login
                                         </a>
                                     </li>
+                                    @endif
+                                    @if (Auth::user())
+                                    <li class="nav-item">
+                                        <a class="nav-link me-2" href="{{ route('login') }}">
+                                            <i class="fas fa-tachometer-alt opacity-6 text-dark me-1"></i>
+                                            Dashboard
+                                        </a>
+                                    </li>
+                                    @endif
                                 </ul>
                             </div>
-                        @endif
                     </div>
                 </nav>
                 <!-- End Navbar -->
