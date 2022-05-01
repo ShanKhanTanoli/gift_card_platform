@@ -148,7 +148,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Card::Sold($card->unique_id) }}
+                                                        {{ Card::CountSold($card->unique_id) }}
                                                     </h6>
                                                 </div>
                                             </div>

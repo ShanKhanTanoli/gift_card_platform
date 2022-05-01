@@ -42,7 +42,21 @@
                                         @enderror
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="expires_at">Expiry Date</label>
+                                        <input type="date" wire:model.defer='expires_at'
+                                            value="{{ old('expires_at') }}"
+                                            class="form-control  @error('expires_at') is-invalid @enderror"
+                                            placeholder="Enter Expiry Date">
+                                        @error('expires_at')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
                                         <label for="owner_id">Card Owner</label>
                                         <select wire:model.defer='owner_id'

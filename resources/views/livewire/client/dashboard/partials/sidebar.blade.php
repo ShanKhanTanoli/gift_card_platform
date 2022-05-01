@@ -1,11 +1,8 @@
-<aside
-    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
-    id="sidenav-main">
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 fixed-start  bg-gradient-dark" id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
             aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href="{{ route('ClientDashboard') }}">
-            <i class="fas fa-tachometer-alt text-white"></i>
             <span class="ms-1 font-weight-bold text-white">
                 {{ Setting::Logo() }}
             </span>
@@ -26,26 +23,53 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Cards
+                </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Client/EditProfile') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'Client/Cards') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('ClientCards') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Cards
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Payments
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Client/Payments') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('ClientPayments') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-money-bill"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Payments
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Configure</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Client/Settings/Profile' or Request::path() == 'Client/Settings/Password') active bg-gradient-primary @else '' @endif"
                     href="{{ route('ClientEditProfile') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-user-cog"></i>
+                        <i class="fas fa-cog"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Profile</span>
+                    <span class="nav-link-text ms-1">Settings</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Client/EditPassword') ? active bg-gradient-primary : '' @endif"
-                    href="{{ route('ClientEditPassword') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Password</span>
-                </a>
-            </li>
+            <hr>
+            <!--Begin::Logout-->
+            @livewire('auth.logout')
+            <!--Begin::Logout-->
         </ul>
     </div>
 </aside>

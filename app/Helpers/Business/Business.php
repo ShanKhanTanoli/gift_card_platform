@@ -5,6 +5,7 @@ namespace App\Helpers\Business;
 use App\Models\User;
 use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Models\VoucherData;
 
 class Business
@@ -65,20 +66,30 @@ class Business
         if ($details = User::find($user)->details) {
             if ($currency = Currency::Find($details->currency_id)) {
                 return $currency->name;
-            } else return "USD";
-        } else return "USD";
+            } else return "usd";
+        } else return "usd";
     }
     /*End::Business Details*/
 
     /*Begin::Cards*/
     public static function Cards($business)
     {
-        return VoucherData::where('owner_id', $business);
+        return Voucher::where('owner_id', $business);
     }
 
-    public static function CardsLatestPaginate($business, $quantity)
+    public static function CardsLatestUnsoldPaginate($business, $quantity)
     {
-        return self::Cards($business)->latest()
+        return self::Cards($business)
+            ->where('sold', null)
+            ->latest()
+            ->paginate($quantity);
+    }
+
+    public static function CardsLatestSoldPaginate($business, $quantity)
+    {
+        return self::Cards($business)
+            ->where('sold', true)
+            ->latest()
             ->paginate($quantity);
     }
 
@@ -87,10 +98,24 @@ class Business
         return self::Cards($business)->count();
     }
 
-    public static function FindCard($business, $unique_id)
+    public static function CountUnsoldCards($business)
     {
         return self::Cards($business)
-            ->where('unique_id', $unique_id)
+            ->where('sold', null)
+            ->count();
+    }
+
+    public static function CountSoldCards($business)
+    {
+        return self::Cards($business)
+            ->where('sold', true)
+            ->count();
+    }
+
+    public static function FindCard($business, $code)
+    {
+        return self::Cards($business)
+            ->where('code', $code)
             ->first();
     }
     /*End::Cards*/

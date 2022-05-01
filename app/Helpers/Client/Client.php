@@ -2,11 +2,16 @@
 
 namespace App\Helpers\Client;
 
+use App\Helpers\Client\Traits\ClientCardRecharge;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\Client\Traits\ClientCards;
+use App\Helpers\Client\Traits\ClientPayments;
 
 class Client
 {
+    use ClientCards, ClientPayments, ClientCardRecharge;
+
     public static function Is()
     {
         if ($user = Auth::user()) {

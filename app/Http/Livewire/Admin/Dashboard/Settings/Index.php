@@ -14,18 +14,20 @@ class Index extends Component
 
     public function mount()
     {
-        if ($settings = Admin::Settings(Auth::user()->id)) {
+        if ($settings = Admin::Settings()) {
             $this->settings = $settings;
             $this->company_name = $settings->company_name;
             $this->company_email = $settings->company_email;
             $this->company_phone = $settings->company_phone;
             $this->company_address = $settings->company_address;
             $this->currency_id = $settings->currency_id;
+            $this->comission_percentage = $settings->comission_percentage;
         } else {
             $this->company_name = "Home";
             $this->company_email = "Company Email";
             $this->company_phone = "00000000000";
             $this->company_address = "Company Address";
+            $this->comission_percentage = "1";
         }
     }
 
@@ -47,14 +49,16 @@ class Index extends Component
             'company_email' => 'required|email',
             'company_phone' => 'required|numeric',
             'company_address' => 'required|string',
+            'comission_percentage' => 'required|numeric',
             'currency_id' => 'required|numeric',
         ], $msg);
 
-        if ($settings = Admin::Settings(Auth::user()->id)) {
+        if ($settings = Admin::Settings()) {
             $settings->update($validated);
             session()->flash('success', 'Updated Successfully');
+            return redirect(route('AdminSettings'));
         } else {
-            Setting::create(array_merge($validated, ['user_id' => Auth::user()->id]));
+            Setting::create($validated);
             return session()->flash('success', 'Updated Successfully');
         }
     }

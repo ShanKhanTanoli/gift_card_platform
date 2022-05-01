@@ -1,8 +1,8 @@
 <div class="container-fluid">
     @include('errors.alerts')
     <div class="row mb-4">
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
-            <a href="#">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('BusinessCards') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -10,16 +10,34 @@
                             <i class="fas fa-credit-card opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Cards</p>
-                            <h4 class="mb-0">
-                                {{ Business::CountCards(Auth::user()->id) }}
+                            <p class="text-sm mb-0 text-capitalize @if (Request::path() == 'Business/Cards') text-primary @endif">UnSold Cards</p>
+                            <h4 class="mb-0 @if (Request::path() == 'Business/Cards') text-primary @endif">
+                                {{ Business::CountUnSoldCards(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-xl-6 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('BusinessSoldCards') }}">
+                <div class="card">
+                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
+                        <div
+                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                            <i class="fas fa-credit-card opacity-10"></i>
+                        </div>
+                        <div class="text-end pt-1">
+                            <p class="text-sm mb-0 text-capitalize @if (Request::path() == 'Business/SoldCards') text-primary @endif">Sold Cards</p>
+                            <h4 class="mb-0 @if (Request::path() == 'Business/SoldCards') text-primary @endif">
+                                {{ Business::CountSoldCards(Auth::user()->id) }}
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
             <a href="{{ route('BusinessAddCard') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
@@ -57,6 +75,9 @@
                                         #
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Code
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -69,7 +90,7 @@
                                         Created At
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Sold
+                                        Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View
@@ -90,6 +111,15 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $loop->iteration }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $card->code }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -136,15 +166,23 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Card::CountSold($card->unique_id) }}
+                                                        @if ($card->isExpired())
+                                                            <span class="badge bg-gradient-danger">
+                                                                Expired
+                                                            </span>
+                                                        @else
+                                                            <span class="badge bg-gradient-success">
+                                                                Active
+                                                            </span>
+                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->unique_id }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->unique_id }}")'
+                                                wire:click='View("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='View("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 View
@@ -152,8 +190,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $card->unique_id }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $card->unique_id }}")'
+                                                wire:click='Edit("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
@@ -161,8 +199,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='Delete("{{ $card->unique_id }}")'>
-                                                <span wire:loading wire:target='Delete("{{ $card->unique_id }}")'
+                                                wire:click='Delete("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='Delete("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete

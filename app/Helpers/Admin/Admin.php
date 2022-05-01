@@ -2,6 +2,7 @@
 
 namespace App\Helpers\Admin;
 
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,9 +20,9 @@ class Admin
     }
 
     /*Begin::Settings*/
-    public static function Settings($user)
+    public static function Settings()
     {
-        return User::find($user)->settings;
+        return Setting::first();
     }
     /*End::Settings*/
 }

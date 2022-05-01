@@ -11,14 +11,23 @@ class Index extends Component
 {
     public $card, $price, $balance, $expires_at;
 
-    public function mount($unique_id)
+    public function mount($code)
     {
         //Begin::If this Business owns a Card
-        if ($card = Business::FindCard(Auth::user()->id, $unique_id)) {
-            $this->card = $card;
-            $this->price = $card->price;
-            $this->balance = $card->balance;
-            $this->expires_at = date('Y-m-d',strtotime($card->expires_at));
+        if ($card = Business::FindCard(Auth::user()->id, $code)) {
+
+            //Begin::If this Card is Sold
+            if(!$card->isSold()){
+                $this->card = $card;
+                $this->price = $card->price;
+                $this->balance = $card->balance;
+                $this->expires_at = date('Y-m-d',strtotime($card->expires_at));
+            } else {
+                session()->flash('error', 'This card is already sold');
+                return redirect(route('BusinessViewCard',$card->code));
+            }
+            //End::If this Card is Sold
+
         } else {
             session()->flash('error', 'No such card found');
             return redirect(route('BusinessCards'));
@@ -35,7 +44,7 @@ class Index extends Component
     public function Update()
     {
         //Begin::If this Business owns a card
-        if (Business::FindCard(Auth::user()->id, $this->card->unique_id)) {
+        if (Business::FindCard(Auth::user()->id, $this->card->code)) {
             $validated = $this->validate([
                 'price' => 'required|integer',
                 'balance' => 'required|integer',
@@ -44,7 +53,7 @@ class Index extends Component
             try {
                 $this->card->update($validated);
                 session()->flash('success', 'Updated Successfully');
-                return redirect(route('BusinessEditCard', $this->card->unique_id));
+                return redirect(route('BusinessEditCard', $this->card->code));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }

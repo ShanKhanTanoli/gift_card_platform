@@ -17,28 +17,27 @@ class Index extends Component
 
     public function render()
     {
-        $cards = Business::CardsLatestPaginate(Auth::user()->id, 6);
+        $cards = Business::CardsLatestUnsoldPaginate(Auth::user()->id, 6);
         return view('livewire.business.dashboard.cards.index')
             ->with(['cards' => $cards])
             ->extends('layouts.dashboard')
             ->section('content');
     }
 
-    public function View($unique_id)
+    public function View($code)
     {
-        return redirect(route('BusinessViewCard', $unique_id));
+        return redirect(route('BusinessViewCard', $code));
     }
 
 
-    public function Edit($unique_id)
+    public function Edit($code)
     {
-        return redirect(route('BusinessEditCard', $unique_id));
+        return redirect(route('BusinessEditCard', $code));
     }
 
-    public function Delete($unique_id)
+    public function Delete($code)
     {
-        if ($card = Business::FindCard(Auth::user()->id, $unique_id)) {
-            Voucher::where('unique_id', $card->unique_id)->delete();
+        if ($card = Business::FindCard(Auth::user()->id, $code)) {
             $card->delete();
             session()->flash('success', 'Deleted Successfully');
             return redirect(route('BusinessCards'));

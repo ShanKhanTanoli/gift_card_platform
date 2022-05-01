@@ -11,12 +11,12 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'company_name',
         'company_logo',
         'company_email',
         'company_phone',
         'company_address',
+        'comission_percentage',
         'currency_id'
     ];
 

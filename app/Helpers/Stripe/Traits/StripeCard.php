@@ -3,6 +3,8 @@
 namespace App\Helpers\Stripe\Traits;
 
 use Exception;
+use App\Helpers\Business\Business;
+use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 trait StripeCard
 {
@@ -10,7 +12,7 @@ trait StripeCard
     {
         try {
             if ($stripe = self::Client()) {
-                return $stripe->tokens->create([
+                $token = $stripe->tokens->create([
                     'card' => [
                         'name' => $holder_name,
                         'number' => $number,
@@ -19,6 +21,7 @@ trait StripeCard
                         'cvc' => $cvc,
                     ],
                 ]);
+                dd($token);
             } else return session()->flash('error', 'Something went wrong.Refresh the page and try again later.');
         } catch (\Stripe\Exception\CardException $e) {
             return session()->flash('error', $e->getMessage());
@@ -34,6 +37,51 @@ trait StripeCard
             return session()->flash('error', 'Something went wrong.Refresh the page and try again later.');
         } catch (Exception $e) {
             return $e->getMessage();
+        }
+    }
+
+    public static function RechargeVoucher($card_data, $amount, $currency, $voucher, $user_id)
+    {
+        try {
+            if ($stripe = self::Client()) {
+
+                $token = $stripe->tokens->create([
+                    'card' => $card_data,
+                ]);
+
+                $charge = $stripe->charges->create([
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'source' => $token->id,
+                ]);
+
+                VoucherRecharge::create([
+                    'stripe_id' => $charge->id,
+                    'voucher_id' => $voucher->id,
+                    'user_id' => $user_id,
+                    'amount' => $charge->amount,
+                ]);
+
+                $voucher->update([
+                    'balance' => $voucher->balance + $charge->amount,
+                ]);
+
+                return session()->flash('success', 'Successfully recharged');
+            } else return session()->flash('error', 'Something went wrong.Refresh the page and try again later.');
+        } catch (\Stripe\Exception\CardException $e) {
+            return session()->flash('error', $e->getMessage());
+        } catch (\Stripe\Exception\RateLimitException $e) {
+            return session()->flash('error', $e->getMessage());
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
+            return session()->flash('error', $e->getMessage());
+        } catch (\Stripe\Exception\AuthenticationException $e) {
+            return session()->flash('error', $e->getMessage());
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
+            return session()->flash('error', 'You are not connected to the Internet.');
+        } catch (\Stripe\Exception\ApiErrorException $e) {
+            return session()->flash('error', $e->getMessage());
+        } catch (Exception $e) {
+            return session()->flash('error', $e->getMessage());
         }
     }
 

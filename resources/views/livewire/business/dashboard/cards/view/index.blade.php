@@ -1,4 +1,5 @@
 <div class="container-fluid py-4">
+    @include('errors.alerts')
     <div class="row">
         <!--Begin::Card-->
         <div class="col-xl-4 mb-xl-0 mb-4">
@@ -9,21 +10,21 @@
                     {{-- <span class="mask bg-gradient-dark opacity-10"></span> --}}
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            @if($business = Business::Details(Auth::user()->id))
-                            {{ $business->business_name }}
+                            @if ($business = Business::Details(Auth::user()->id))
+                                {{ $business->business_name }}
                             @else
-                            Brand Name
+                                Brand Name
                             @endif
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">
                                 <h6 class="text-white mt-5 mb-0 pb-0">
-                                    XXXX-XXXX-XXXX-XXXX
+                                    {{ $card->code }}
                                 </h6>
                             </div>
                             <div class="col-4">
                                 <div class=" mt-2 mb-3 pb-0" style="text-align: right;">
-                                    {!! QrCode::size(80)->generate('XXXX-XXXX-XXXX-XXXX') !!}
+                                    {!! QrCode::size(80)->generate($card->code) !!}
                                 </div>
                             </div>
                         </div>
@@ -51,27 +52,27 @@
                     <ul class="list-group">
                         <li class="list-group-item border-0 d-flex mb-1 bg-gray-100 border-radius-lg">
                             <div class="d-flex flex-column">
-                                <span class="mb-1 text-xs">
+                                <span class="mb-2 text-xs">
                                     Price:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->price }}
                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                     </span>
                                 </span>
-                                <span class="mb-1 text-xs">
+                                <span class="mb-2 text-xs">
                                     Balance:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->balance }}
                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                     </span>
                                 </span>
-                                <span class="mb-1 text-xs">
+                                <span class="mb-2 text-xs">
                                     Created At:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ date('d/m/Y', strtotime($card->created_at)) }}
                                     </span>
                                 </span>
-                                <span class="mb-1 text-xs">
+                                <span class="mb-2 text-xs">
                                     Current Expiry:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ date('d/m/Y', strtotime($card->expires_at)) }}
@@ -79,16 +80,35 @@
                                 </span>
                             </div>
                             <div class="ms-auto text-end">
-                                <a class="btn btn-link text-dark px-3 mb-0"
-                                    href="{{ route('BusinessEditCard', $card->unique_id) }}">
-                                    <i class="fas fa-edit text-sm me-2">
-                                    </i>
-                                    Edit
-                                </a>
-                                <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow" <i
-                                    class="fas fa-print text-sm me-2">
-                                    </i>
-                                    Print Card
+
+                                @if (!$card->isExpired())
+                                    <a class="btn btn-link text-dark px-3 mb-0" href="#" data-bs-toggle="modal"
+                                        data-bs-target="#RechargeModal">
+                                        <i class="fas fa-money-bill text-sm me-2">
+                                        </i>
+                                        Recharge
+                                    </a>
+                                @else
+                                    <span class="badge bg-gradient-danger">
+                                        CARD EXPIRED
+                                    </span>
+                                @endif
+
+                                @if (!$card->isSold())
+                                    <a class="btn btn-link text-dark px-3 mb-0"
+                                        href="{{ route('BusinessEditCard', $card->code) }}">
+                                        <i class="fas fa-edit text-sm me-2">
+                                        </i>
+                                        Edit
+                                    </a>
+                                @else
+                                    <span class="badge bg-gradient-primary">
+                                        CARD SOLD
+                                    </span>
+                                @endif
+                                <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow">
+                                    <i class="fas fa-print text-sm me-2"></i>
+                                    Print
                                 </button>
                             </div>
                         </li>
@@ -97,51 +117,106 @@
             </div>
         </div>
         <!--End::Card Information-->
+    </div>
+    <div class="row mt-4">
 
-        <!--Begin::Card Usage-->
-        <div class="col-md-12 mt-4">
+        <!--Begin::Card Recharge History-->
+        <div class="col-lg-6 col-12">
             <div class="card h-100 mb-4">
                 <div class="card-header pb-0 px-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <h6 class="mb-0">Card Activity</h6>
-                        </div>
-                        <div class="col-md-6 d-flex justify-content-start justify-content-md-end align-items-center">
-                            <i class="fas fa-clock me-2 text-lg"></i>
-                            <small>23 - 30 March 2020</small>
+                            <h6 class="mb-0">Recharge History</h6>
                         </div>
                     </div>
                 </div>
                 <div class="card-body pt-4 p-3">
-                    <h6 class="text-uppercase text-body text-xs font-weight-bolder mb-3">Newest</h6>
                     <ul class="list-group">
-                        <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-column">
-                                    <h6 class="mb-1 text-dark text-sm">Netflix</h6>
-                                    <span class="text-xs">27 March 2020, at 12:30 PM</span>
+                        @forelse($recharge as $payment)
+                            <li
+                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="text-xs">
+                                            {{ date('d M Y', strtotime($payment->created_at)) }}
+                                        </h6>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-                                - $ 2,500
-                            </div>
-                        </li>
-                        <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                            <div class="d-flex align-items-center">
-                                <div class="d-flex flex-column">
-                                    <h6 class="mb-1 text-dark text-sm">Apple</h6>
-                                    <span class="text-xs">27 March 2020, at 04:30 AM</span>
+                                <div
+                                    class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                                    {{ $payment->amount }}
+                                    {{ strtoupper(Business::Currency($card->owner_id)) }}
                                 </div>
-                            </div>
-                            <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                                + $ 2,000
-                            </div>
-                        </li>
+                            </li>
+                        @empty
+                            <li
+                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                <div class="d-flex align-items-center">
+                                    <h6 class="text-center">
+                                        No recharging history found
+                                    </h6>
+                                </div>
+                            </li>
+                        @endforelse
                     </ul>
+                    {{ $recharge->render() }}
                 </div>
             </div>
         </div>
-        <!--End::Card Usage-->
+        <!--End::Card Recharge History-->
+
+        <!--Begin::Card Redeem History-->
+        <div class="col-lg-6 col-12">
+            <div class="card h-100 mb-4">
+                <div class="card-header pb-0 px-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="mb-0">Redeem History</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body pt-4 p-3">
+                    <ul class="list-group">
+                        @forelse($recharge as $payment)
+                            <li
+                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="text-xs">
+                                            {{ date('d M Y', strtotime($payment->created_at)) }}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div
+                                    class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                                    {{ $payment->amount }}
+                                    {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                </div>
+                            </li>
+                        @empty
+                            <li
+                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                                <div class="d-flex align-items-center">
+                                    <h6 class="text-center">
+                                        No redeeming history found
+                                    </h6>
+                                </div>
+                            </li>
+                        @endforelse
+                    </ul>
+                    {{ $recharge->render() }}
+                </div>
+            </div>
+        </div>
+        <!--End::Card Redeem History-->
+
+        @if (!$card->isExpired())
+            <!--Begin::Recharge Modal-->
+            @include(
+                'livewire.business.dashboard.cards.view.partials.recharge-modal'
+            )
+            <!--End::Recharge Modal-->
+        @endif
     </div>
     <script>
         $(document).ready(function() {

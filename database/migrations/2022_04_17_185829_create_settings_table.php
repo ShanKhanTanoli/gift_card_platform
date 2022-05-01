@@ -17,18 +17,13 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
 
-            //Users
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')
-                ->on('users')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
             $table->string('company_name')->nullable();
             $table->string('company_logo')->nullable();
             $table->string('company_email')->nullable();
             $table->string('company_phone')->nullable();
-            $table->string('company_address')->nullable();
+            $table->mediumText('company_address')->nullable();
+
+            $table->string('comission_percentage')->nullable();
 
             //Currencies
             $table->unsignedBigInteger('currency_id')->nullable();
@@ -39,17 +34,14 @@ return new class extends Migration
 
             $table->timestamps();
         });
-
-        for ($user = 1; $user < 100; $user++) {
-            Setting::create([
-                'user_id' => $user,
-                'company_name' => 'Gift Card',
-                'company_email' => 'company@email.com',
-                'company_phone' => '+00000000000',
-                'company_address' => 'This is the Address',
-                'currency_id' => 1,
-            ]);
-        }
+        Setting::create([
+            'company_name' => 'Gift Card',
+            'company_email' => 'company@email.com',
+            'company_phone' => '+00000000000',
+            'company_address' => 'This is the Address',
+            'comission_percentage' => 1,
+            'currency_id' => 1,
+        ]);
     }
 
     /**

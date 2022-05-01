@@ -51,7 +51,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="company_phone">Company Phone</label>
                                                 <input type="text" wire:model.defer='company_phone'
@@ -65,7 +65,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="currency_id">Currency</label>
                                                 <select wire:model.defer='currency_id'
@@ -86,8 +86,20 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="input-group input-group-static my-3">
+                                                <label for="comission_percentage">Comission Percentage (%)</label>
+                                                <input type="text" wire:model.defer='comission_percentage'
+                                                    value="{{ old('comission_percentage') }}"
+                                                    class="form-control  @error('comission_percentage') is-invalid @enderror"
+                                                    placeholder="Enter Comission Percentage (%)">
+                                                @error('comission_percentage')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
                                         <div class="col-md-12">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="company_address">Company Address</label>

@@ -42,11 +42,14 @@ class Index extends Component
                 'price.numeric' => 'Enter Price',
                 'balance.required' => 'Enter Balance Amount',
                 'balance.numeric' => 'Enter Balance Amount',
+                'expires_at.required' => 'Enter Date',
+                'expires_at.date' => 'Enter Date',
             ];
             $validated = $this->validate([
                 'owner_id' => 'required|numeric',
                 'price' => 'required|numeric',
                 'balance' => 'required|numeric',
+                'expires_at' => 'required|date',
             ], $msg);
             try {
                 $this->card->update($validated);
