@@ -24,14 +24,6 @@ return new class extends Migration
             $table->mediumText('company_address')->nullable();
 
             $table->string('comission_percentage')->nullable();
-
-            //Currencies
-            $table->unsignedBigInteger('currency_id')->nullable();
-            $table->foreign('currency_id')->references('id')
-                ->on('currencies')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
             $table->timestamps();
         });
         Setting::create([
@@ -39,8 +31,7 @@ return new class extends Migration
             'company_email' => 'company@email.com',
             'company_phone' => '+00000000000',
             'company_address' => 'This is the Address',
-            'comission_percentage' => 1,
-            'currency_id' => 1,
+            'comission_percentage' => 10,
         ]);
     }
 

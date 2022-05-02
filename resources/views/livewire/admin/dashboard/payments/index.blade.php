@@ -28,16 +28,22 @@
                                         Payer
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Paid
+                                        View Payer
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Paid Amount
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Comission
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Final Amount
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Card Expiry
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Payment Date
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Status
+                                        Date
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View Card
@@ -82,11 +88,33 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if ($client = Client::Find($payment->user_id))
-                                                            {{ $client->name }}
+                                                        @if ($user = User::find($payment->user_id))
+                                                            {{ $user->name }}
                                                         @else
-                                                            {{ $payment->user_id }}
+                                                            {{ __('DELETED') }}
                                                         @endif
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
+                                            @if ($user = User::find($payment->user_id))
+                                                <a class="btn btn-sm btn-info"
+                                                    href="{{ route('AdminEditClient', $user->slug) }}">
+                                                    View
+                                                </a>
+                                            @else
+                                                <h6 class="mb-0 text-sm">
+                                                    {{ __('DELETED') }}
+                                                </h6>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $payment->price }}
+                                                        {{ strtoupper($payment->currency) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -95,8 +123,17 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $payment->price }}
-                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                                        {{ $payment->comission_percentage }} %
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $payment->final_amount }}
+                                                        {{ strtoupper($payment->currency) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -119,27 +156,6 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ date('d M Y', strtotime($payment->created_at)) }}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            @if ($card->isExpired())
-                                                                <span class="badge bg-gradient-danger">
-                                                                    Expired
-                                                                </span>
-                                                            @else
-                                                                <span class="badge bg-gradient-success">
-                                                                    Active
-                                                                </span>
-                                                            @endif
-                                                        @else
-                                                            {{ __('Not Found') }}
-                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>

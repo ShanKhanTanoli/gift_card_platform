@@ -8,7 +8,7 @@ use App\Helpers\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
-class SignUp extends Component
+class ClientRegister extends Component
 {
     public $name;
     public $email;
@@ -36,8 +36,8 @@ class SignUp extends Component
             'name' => $this->name,
             'user_name' => Str::random(10),
             'email' => $this->email,
-            'role' => 'business',
-            'role_id' => 2,
+            'role' => 'client',
+            'role_id' => 3,
             'password' => Hash::make($this->password),
             'slug' => Str::random(20),
         ]);
@@ -49,7 +49,7 @@ class SignUp extends Component
 
     public function render()
     {
-        return view('livewire.auth.register')
+        return view('livewire.auth.client-register')
             ->extends('layouts.auth');
     }
 }

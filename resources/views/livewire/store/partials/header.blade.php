@@ -1,51 +1,47 @@
-<div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-        <div class="col-12">
-            <!-- Navbar -->
-            <nav
-                class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-                <div class="container-fluid ps-2 pe-0">
-                    <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
-                        @if ($store = Business::Store($business)) href="{{ route('StorePage', $store->store_name) }}" @else href="{{ route('login') }}" @endif>
-                        @if ($store = Business::Store($business))
-                            {{ $store->store_name }}
-                        @else
-                            {{ Setting::Logo() }}
-                        @endif
-                    </a>
-                    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon mt-2">
-                            <span class="navbar-toggler-bar bar1"></span>
-                            <span class="navbar-toggler-bar bar2"></span>
-                            <span class="navbar-toggler-bar bar3"></span>
-                        </span>
-                    </button>
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+      <div class="container d-flex align-items-center justify-content-between">
 
-                    <div class="collapse navbar-collapse" id="navigation">
-                        <ul class="navbar-nav mx-auto">
-                            @if (Request::path() != 'login')
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="{{ route('login') }}">
-                                        <i class="fas fa-key opacity-6 text-dark me-1"></i>
-                                        Login
-                                    </a>
-                                </li>
-                            @endif
-                            @if (Auth::user())
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="{{ route('login') }}">
-                                        <i class="fas fa-tachometer-alt opacity-6 text-dark me-1"></i>
-                                        Dashboard
-                                    </a>
-                                </li>
-                            @endif
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-            <!-- End Navbar -->
-        </div>
-    </div>
-</div>
+          <div class="logo">
+              <h1>
+                  <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
+                      href="{{ route('StorePage', $store->store_name) }}">
+                      @if ($store = Business::Store($business))
+                          {{ $store->store_name }}
+                      @else
+                          {{ Setting::Logo() }}
+                      @endif
+                  </a>
+              </h1>
+              <!-- Uncomment below if you prefer to use an image logo -->
+              <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+          </div>
+          <nav id="navbar" class="navbar">
+              <ul>
+                  @if (Request::path() == 'Store/' . $store->store_name)
+                      <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+                      <li><a class="nav-link scrollto" href="#about">About</a></li>
+                      @if ($store->display_cards)
+                          <li><a class="nav-link scrollto" href="#cards">Cards</a></li>
+                      @endif
+                  @endif
+                  @if (Auth::user())
+                      <li>
+                          <a class="nav-link scrollto" href="{{ route('login') }}">
+                              Dashboard
+                          </a>
+                      </li>
+                  @else
+                      <li>
+                          <a class="nav-link scrollto" href="{{ route('login') }}">
+                              Login
+                          </a>
+                      </li>
+                  @endif
+              </ul>
+              <i class="bi bi-list mobile-nav-toggle"></i>
+          </nav>
+          <!-- .navbar -->
+      </div>
+  </header>
+  <!-- End Header -->

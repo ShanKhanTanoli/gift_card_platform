@@ -3,7 +3,8 @@
 namespace App\Helpers\Stripe\Traits;
 
 use Exception;
-use App\Helpers\Business\Business;
+use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 trait StripeCard
@@ -21,7 +22,7 @@ trait StripeCard
                         'cvc' => $cvc,
                     ],
                 ]);
-                dd($token);
+                return $token;
             } else return session()->flash('error', 'Something went wrong.Refresh the page and try again later.');
         } catch (\Stripe\Exception\CardException $e) {
             return session()->flash('error', $e->getMessage());
@@ -85,7 +86,7 @@ trait StripeCard
         }
     }
 
-    public static function ChargeCard($card, $amount, $currency, $application_fee_amount, $stripe_account, $user, $plan)
+    public static function ChargeClientCard($card, $amount, $currency, $application_fee_amount, $comission_percentage, $stripe_account,$voucher_id)
     {
         try {
             if ($stripe = self::Client()) {
@@ -93,30 +94,39 @@ trait StripeCard
                     'card' => $card,
                 ]);
                 $charge = $stripe->charges->create([
-                    'amount' => $amount,
+                    'amount' => $amount * 100,
                     'currency' => $currency,
                     'source' => $token->id,
-                    'application_fee_amount' => $application_fee_amount,
+                    'application_fee_amount' => $application_fee_amount * 100,
                 ], ['stripe_account' => $stripe_account]);
 
-                return $charge;
-                //return Client::CreateSubscription($user, $charge->id, Str::random(10), $plan);
+                ClientVoucher::create([
+                    'stripe_id' => $charge->id,
+                    'voucher_id' => $voucher_id,
+                    'user_id' => Auth::user()->id,
+                    'price' => $amount,
+                    'currency' => $currency,
+                    'comission_percentage' => $comission_percentage,
+                    'final_amount' => $amount-$application_fee_amount,
+                ]);
+
+                return true;
 
             } else return session()->flash('error', 'Something went wrong.Refresh the page and try again later.');
         } catch (\Stripe\Exception\CardException $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         } catch (\Stripe\Exception\RateLimitException $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         } catch (\Stripe\Exception\InvalidRequestException $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         } catch (\Stripe\Exception\AuthenticationException $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         } catch (\Stripe\Exception\ApiConnectionException $e) {
             return session()->flash('error', 'You are not connected to the Internet.');
         } catch (\Stripe\Exception\ApiErrorException $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         } catch (Exception $e) {
-            return session()->flash('error', $e->getMessage());
+            return $e->getMessage();
         }
     }
 }

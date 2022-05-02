@@ -68,7 +68,7 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $payment->price }}
-                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                                        {{ strtoupper($payment->currency) }}
                                                     </h6>
                                                 </div>
                                             </div>

@@ -3,6 +3,7 @@
 namespace App\Helpers\Card;
 
 use App\Models\User;
+use FrittenKeeZ\Vouchers\Models\Redeemer;
 use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Models\VoucherData;
 use FrittenKeeZ\Vouchers\Models\VoucherCategory;
@@ -86,4 +87,21 @@ class Card
         return self::Recharge($voucher_id)->count();
     }
     /*End::Card Recharge History*/
+
+    /*Begin::Card Redeem History*/
+    public static function Redeem($voucher_id)
+    {
+        return Redeemer::where('voucher_id', $voucher_id);
+    }
+
+    public static function LatestRedeemPaginate($voucher_id, $quantity)
+    {
+        return self::Redeem($voucher_id)->latest()->paginate($quantity);
+    }
+
+    public static function RedeemCount($voucher_id)
+    {
+        return self::Redeem($voucher_id)->count();
+    }
+    /*End::Card Redeem History*/
 }

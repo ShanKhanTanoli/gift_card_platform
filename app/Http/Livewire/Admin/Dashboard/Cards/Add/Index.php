@@ -12,7 +12,7 @@ use FrittenKeeZ\Vouchers\Facades\Vouchers;
 
 class Index extends Component
 {
-    public $price, $balance, $expires_at, $voucher_category_id, $quantity, $owner_id;
+    public $price, $balance, $expires_at, $quantity, $owner_id;
     public function render()
     {
         return view('livewire.admin.dashboard.cards.add.index')
@@ -30,13 +30,17 @@ class Index extends Component
             'balance.numeric' => 'Enter Balance Amount',
             'expires_at.required' => 'Enter Date',
             'expires_at.date' => 'Enter Date',
+            'quantity.required' => 'Enter Quantity',
+            'quantity.numeric' => 'Enter Quantity',
         ];
         $validated = $this->validate([
             'owner_id' => 'required|numeric',
             'price' => 'required|numeric',
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
+            'quantity' => 'required|numeric',
         ], $msg);
+        
         try {
             $timestamp = new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at'])));
             $owner = User::find($validated['owner_id']);
@@ -44,8 +48,7 @@ class Index extends Component
                 ->withExpireDate($timestamp)
                 ->withPrice($validated['price'])
                 ->withBalance($validated['balance'])
-                ->withUniqueId(strtoupper(Str::random(20)))
-                ->create();
+                ->create($validated['quantity']);
             session()->flash('success', 'Added Successfully');
             return redirect(route('AdminCards'));
         } catch (Exception $e) {

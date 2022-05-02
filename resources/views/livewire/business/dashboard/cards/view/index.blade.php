@@ -9,7 +9,7 @@
                         class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            {{ Business::DisplayStoreName(Auth::user()->id) }}
+                            {{ Business::DisplayStoreName($card->owner_id) }}
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">
@@ -51,14 +51,14 @@
                                     Price:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->price }}
-                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
                                     </span>
                                 </span>
                                 <span class="mb-2 text-xs">
                                     Balance:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->balance }}
-                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
                                     </span>
                                 </span>
                                 <span class="mb-2 text-xs">
@@ -83,6 +83,18 @@
                                         </i>
                                         Recharge
                                     </a>
+                                    @if ($card->balance != 0)
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#RedeemModal">
+                                            <i class="fas fa-money-bill text-sm me-2">
+                                            </i>
+                                            Redeem
+                                        </a>
+                                    @else
+                                        <span class="badge bg-gradient-danger">
+                                            ZER0 BALANCE
+                                        </span>
+                                    @endif
                                 @else
                                     <span class="badge bg-gradient-danger">
                                         CARD EXPIRED
@@ -154,7 +166,14 @@
                             </li>
                         @endforelse
                     </ul>
-                    {{ $recharge->render() }}
+                </div>
+                <div class="card-footer text-center">
+                    <button type="button" class="btn btn-primary btn-sm" wire:attr='disabled'
+                        wire:click='LoadMoreRechargingHistory'>
+                        <span wire:loading wire:target='LoadMoreRechargingHistory'
+                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Load More
+                    </button>
                 </div>
             </div>
         </div>
@@ -172,19 +191,26 @@
                 </div>
                 <div class="card-body pt-4 p-3">
                     <ul class="list-group">
-                        @forelse($recharge as $payment)
+                        @forelse($redeeming as $redeem)
                             <li
                                 class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                                 <div class="d-flex align-items-center">
                                     <div class="d-flex flex-column">
                                         <h6 class="text-xs">
-                                            {{ date('d M Y', strtotime($payment->created_at)) }}
+                                            {{ date('d M Y', strtotime($redeem->created_at)) }}
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="d-flex flex-column">
+                                        <h6 class="text-xs">
+                                            {{ Str::substr($redeem->description, 0, 20) }}
                                         </h6>
                                     </div>
                                 </div>
                                 <div
                                     class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                                    {{ $payment->amount }}
+                                    {{ $redeem->amount }}
                                     {{ strtoupper(Business::Currency($card->owner_id)) }}
                                 </div>
                             </li>
@@ -199,7 +225,14 @@
                             </li>
                         @endforelse
                     </ul>
-                    {{ $recharge->render() }}
+                </div>
+                <div class="card-footer text-center">
+                    <button type="button" class="btn btn-primary btn-sm" wire:attr='disabled'
+                        wire:click='LoadMoreRedeemingHistory'>
+                        <span wire:loading wire:target='LoadMoreRedeemingHistory'
+                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Load More
+                    </button>
                 </div>
             </div>
         </div>
@@ -211,6 +244,14 @@
                 'livewire.business.dashboard.cards.view.partials.recharge-modal'
             )
             <!--End::Recharge Modal-->
+
+            @if ($card->balance != 0)
+                <!--Begin::Redeem Modal-->
+                @include(
+                    'livewire.business.dashboard.cards.view.partials.redeem-modal'
+                )
+                <!--End::Redeem Modal-->
+            @endif
         @endif
     </div>
     <script>

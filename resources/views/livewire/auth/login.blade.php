@@ -47,13 +47,17 @@
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <p class="mb-2 text-sm mx-auto">
-                                    <a href="{{ route('register') }}" class="text-dark font-weight-bold">
-                                        Don't have an Account ? Register here
+                                    <a href="{{ route('BusinessRegister') }}" class="text-dark font-weight-bold">
+                                        Register as a Business
                                     </a>
                                 </p>
                                 <p class="mb-2 text-sm mx-auto">
-                                    <a href="{{ route('forgot-password') }}"
-                                        class="text-dark font-weight-bold">
+                                    <a href="{{ route('ClientRegister') }}" class="text-dark font-weight-bold">
+                                        Register as a Client
+                                    </a>
+                                </p>
+                                <p class="mb-2 text-sm mx-auto">
+                                    <a href="{{ route('forgot-password') }}" class="text-dark font-weight-bold">
                                         Forgot your password ? Reset here
                                     </a>
                                 </p>

@@ -79,6 +79,23 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="quantity">Quantity (1-30)</label>
+                                        <select wire:model.defer='quantity'
+                                            class="form-control  @error('quantity') is-invalid @enderror">
+                                            <option value="">Select Quantity</option>
+                                            @for ($i = 1; $i < 31; $i++)
+                                                <option value="{{ $i }}">{{ $i }} Cards</option>
+                                            @endfor
+                                        </select>
+                                        @error('quantity')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
                                     <button type="button" class="btn btn-primary" wire:attr='disabled' wire:click='Add'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>

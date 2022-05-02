@@ -51,7 +51,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="company_phone">Company Phone</label>
                                                 <input type="text" wire:model.defer='company_phone'
@@ -65,28 +65,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="input-group input-group-static my-3">
-                                                <label for="currency_id">Currency</label>
-                                                <select wire:model.defer='currency_id'
-                                                    class="form-control  @error('currency_id') is-invalid @enderror">
-                                                    <option value="">Select Currency</option>
-                                                    @forelse (Currency::all() as $currency)
-                                                        <option value="{{ $currency->id }}">
-                                                            {{ strtoupper($currency->name) }}
-                                                        </option>
-                                                    @empty
-                                                        <option value="">No currency found</option>
-                                                    @endforelse
-                                                </select>
-                                                @error('currency_id')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <div class="input-group input-group-static my-3">
                                                 <label for="comission_percentage">Comission Percentage (%)</label>
                                                 <input type="text" wire:model.defer='comission_percentage'

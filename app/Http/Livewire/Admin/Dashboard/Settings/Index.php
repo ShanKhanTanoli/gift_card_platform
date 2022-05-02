@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class Index extends Component
 {
     public $settings;
-    public $company_name, $company_email, $company_phone, $company_address, $currency_id;
+    public $company_name, $company_email, $company_phone, $company_address;
 
     public function mount()
     {
@@ -20,7 +20,6 @@ class Index extends Component
             $this->company_email = $settings->company_email;
             $this->company_phone = $settings->company_phone;
             $this->company_address = $settings->company_address;
-            $this->currency_id = $settings->currency_id;
             $this->comission_percentage = $settings->comission_percentage;
         } else {
             $this->company_name = "Home";
@@ -50,7 +49,6 @@ class Index extends Component
             'company_phone' => 'required|numeric',
             'company_address' => 'required|string',
             'comission_percentage' => 'required|numeric',
-            'currency_id' => 'required|numeric',
         ], $msg);
 
         if ($settings = Admin::Settings()) {

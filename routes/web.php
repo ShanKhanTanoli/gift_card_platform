@@ -1,29 +1,41 @@
 <?php
 
-use App\Helpers\Client\Client;
-use App\Http\Livewire\Auth\Login;
-use App\Http\Livewire\Auth\Logout;
-use App\Http\Livewire\Auth\SignUp;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Auth\VerifyEmail;
 use FrittenKeeZ\Vouchers\Models\Voucher;
-use App\Http\Livewire\Auth\ResetPassword;
-use App\Http\Livewire\Auth\ForgotPassword;
 use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 //Auth::routes();
 
 Route::get('debug', function () {
 
-    $voucher = Voucher::where('code', '8932-4726-9041-1444')->first();
+        //Verified Business Account
+        $verified_business = 'acct_1KVjQIRYVF7b7SlI';
+
+        //Verified Individual Account
+        $verified_individual = 'acct_1KVjJwDGx269Aqtf';
+    
+        //Restricts Soon Account
+        $account = 'acct_1KVH0XRXmAQzp1r9';
+    
+        //Restricted Account
+        $restricted = 'acct_1KVH0LRiGUGr13em';
+
+    // $amount = 10;
+    // $percentage = 1;
+
+    // dd($amount*$percentage/100);
+
+    $voucher = Voucher::where('code', '8610-8362-1545-2697')->first();
     if (!$voucher->isSold() && !$voucher->isExpired()) {
         ClientVoucher::create([
             'stripe_id' => 'string',
             'voucher_id' => $voucher->id,
             'user_id' => Auth::user()->id,
             'price' => $voucher->price,
-            'comission_percentage' => 1,
+            'currency' => 'usd',
+            'comission_percentage' => 10,
+            'final_amount' => $voucher->price * 10 / 100,
         ]);
         $voucher->update([
             'sold' => true,
@@ -58,24 +70,6 @@ include('client/index.php');
 include('public/index.php');
 /*End::Public Routes*/
 
-
 /*Begin::Auth Routes*/
-Route::get('register', SignUp::class)
-    ->name('register');
-
-Route::get('/login', Login::class)
-    ->name('login');
-
-Route::get('logout', Logout::class)
-    ->name('logout');
-
-Route::get('/login/forgot-password', ForgotPassword::class)
-    ->name('forgot-password');
-
-Route::get('/reset-password/{id}', ResetPassword::class)
-    ->name('reset-password')->middleware('signed');
-
-Route::get('VerifyEmail', VerifyEmail::class)
-    ->name('verification.notice')
-    ->middleware('auth');
+include('auth/index.php');
 /*End::Auth Routes*/

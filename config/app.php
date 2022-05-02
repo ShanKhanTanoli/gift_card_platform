@@ -193,6 +193,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
 
+        'User' => App\Models\User::class,
         'Setting' => App\Models\Setting::class,
         'Card' => App\Helpers\Card\Card::class,
         'Admin' => App\Helpers\Admin\Admin::class,

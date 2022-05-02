@@ -4,14 +4,22 @@ namespace App\Http\Livewire\Business\Dashboard\Cards\View;
 
 use Livewire\Component;
 use App\Helpers\Card\Card;
+use Livewire\WithPagination;
 use App\Helpers\Business\Business;
-use FrittenKeeZ\Vouchers\Models\Voucher;
-use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
+use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 class Index extends Component
 {
-    public $card, $balance;
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    public $card, $balance, $description;
+
+    public $redeem_quantity = 3;
+    public $recharge_quantity = 3;
 
     public function mount($code)
     {
@@ -27,10 +35,19 @@ class Index extends Component
 
     public function render()
     {
-        $recharge = Card::LatestRechargePaginate($this->card->id, 6);
+        $recharge = Card::Recharge($this->card->id)
+            ->latest()
+            ->take($this->recharge_quantity)
+            ->get();
+        $redeeming = Card::Redeem($this->card->id)
+            ->latest()
+            ->take($this->redeem_quantity)
+            ->get();
         return view('livewire.business.dashboard.cards.view.index')
-            ->with(['recharge' => $recharge])
-            ->extends('layouts.dashboard');
+            ->with([
+                'recharge' => $recharge,
+                'redeeming' => $redeeming
+            ])->extends('layouts.dashboard');
     }
 
     public function Recharge()
@@ -57,5 +74,69 @@ class Index extends Component
             return redirect(route('BusinessViewCard', $this->card->code));
         }
         //End::If this card is not expired
+    }
+
+    public function Redeem()
+    {
+        $validated = $this->validate([
+            'balance' => 'required|numeric',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            //Begin::If this Business owns a Card
+            if ($card = Business::FindCard(Auth::user()->id, $this->card->code)) {
+
+                //Begin::If Card has Zero Balance
+                if ($this->card->balance != 0) {
+
+                    //Begin::If Card has Enough Balance
+                    if ($this->card->balance >= $validated['balance']) {
+
+                        Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
+                        $this->card->update([
+                            'balance' => $this->card->balance - $validated['balance'],
+                        ]);
+                        session()->flash('success', 'Card has been redeemed successfully');
+                        return redirect(route('BusinessViewCard', $this->card->code));
+
+                    } else {
+                        session()->flash('error', "Card has not enough balance");
+                        return redirect(route('BusinessViewCard', $this->card->code));
+                    }
+                    //End::If Card has Enough Balance
+
+                } else {
+                    session()->flash('error', "Card has zero balance");
+                    return redirect(route('BusinessViewCard', $this->card->code));
+                }
+                //End::If Card has Zero Balance
+
+            } else {
+                session()->flash('error', 'No such card found');
+                return redirect(route('BusinessCards'));
+            }
+            //End::If this Business owns a Card
+        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect(route('BusinessViewCard', $this->card->code));
+        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect(route('BusinessViewCard', $this->card->code));
+        }
+        //End::If this Business owns a card
+
+        //End::If this card is not expired
+    }
+
+    public function LoadMoreRechargingHistory()
+    {
+        return $this->recharge_quantity += 3;
+    }
+
+    public function LoadMoreRedeemingHistory()
+    {
+        return $this->redeem_quantity += 3;
     }
 }

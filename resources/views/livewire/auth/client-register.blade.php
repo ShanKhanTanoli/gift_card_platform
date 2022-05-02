@@ -11,7 +11,7 @@
                     <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto ">
                         <div class="card card-plain">
                             <div class="card-header text-center">
-                                <h4 class="font-weight-bolder">Register</h4>
+                                <h4 class="font-weight-bolder">Register as Client</h4>
                             </div>
                             <div class="card-body">
                                 <form role="form">
@@ -46,9 +46,11 @@
                                         @enderror
                                     </div>
                                     <div class="input-group input-group-outline mb-3">
-                                        <input id="password_confirmation" type="password" wire:model.defer="password_confirmation"
-                                            class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation"
-                                            autocomplete="password_confirmation" placeholder="Confirm Password">
+                                        <input id="password_confirmation" type="password"
+                                            wire:model.defer="password_confirmation"
+                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                            name="password_confirmation" autocomplete="password_confirmation"
+                                            placeholder="Confirm Password">
                                         @error('password_confirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -67,8 +69,7 @@
                             </div>
                             <div class="card-footer text-center pt-0 px-lg-2 px-1">
                                 <p class="mb-2 text-sm mx-auto">
-                                    <a href="{{ route('login') }}"
-                                        class="text-dark text-gradient font-weight-bold">
+                                    <a href="{{ route('login') }}" class="text-dark text-gradient font-weight-bold">
                                         Already have an Account ? Login here
                                     </a>
                                 </p>
