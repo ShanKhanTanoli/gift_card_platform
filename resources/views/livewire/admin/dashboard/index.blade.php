@@ -76,7 +76,7 @@
                     <div class="text-end pt-1">
                         <p class="text-sm mb-0 text-capitalize">Payments</p>
                         <h4 class="mb-0">
-                            {{ Card::count() }}
+                            {{ Payments::count() }}
                         </h4>
                     </div>
                 </div>

@@ -75,7 +75,9 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-money-bill"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Payments</span>
+                    <span class="nav-link-text ms-1">
+                        Payments
+                    </span>
                 </a>
             </li>
             <li class="nav-item mt-3">
