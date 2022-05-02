@@ -65,12 +65,12 @@
                                             @for ($i = 1; $i < 31; $i++)
                                                 <option value="{{ $i }}">{{ $i }} Cards</option>
                                             @endfor
-                                            @error('quantity')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
                                         </select>
+                                        @error('quantity')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
                                 </div>
                                 <div class="col-md-12">

@@ -51,7 +51,7 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
-                    Display Cards
+                    Store
                 </h6>
             </li>
             <li class="nav-item">
@@ -67,17 +67,17 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
-                    Payments
+                    Connect Account
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/Payments') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('BusinessPayments') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/StripeConnect') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessStripeConnect') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-money-bill"></i>
+                        <i class="fab fa-stripe"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        Payments
+                        Stripe Connect
                     </span>
                 </a>
             </li>

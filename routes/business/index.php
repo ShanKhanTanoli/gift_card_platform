@@ -18,10 +18,14 @@ use App\Http\Livewire\Business\Dashboard\Store\Index as Store;
 /*End::Store*/
 
 /*Begin::Payments*/
-use App\Http\Livewire\Business\Dashboard\Payments\Index as Payments;
-use App\Http\Livewire\Business\Dashboard\Payments\Add\Index as AddPayment;
-use App\Http\Livewire\Business\Dashboard\Payments\Edit\Index as EditPayment;
+// use App\Http\Livewire\Business\Dashboard\Payments\Index as Payments;
+// use App\Http\Livewire\Business\Dashboard\Payments\Add\Index as AddPayment;
+// use App\Http\Livewire\Business\Dashboard\Payments\Edit\Index as EditPayment;
 /*End::Payments*/
+
+/*Begin::StripeConnect*/
+use App\Http\Livewire\Business\Dashboard\StripeConnect\Index as StripeConnect;
+/*End::StripeConnect*/
 
 /*Begin::Settings*/
 use App\Http\Livewire\Business\Dashboard\Settings\BusinessDetails\Index as EditBusinessDetails;
@@ -61,10 +65,14 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     /*End::Store*/
 
     /*Begin::Payments*/
-    Route::get('Payments', Payments::class)->name('BusinessPayments');
-    Route::get('AddPayment', AddPayment::class)->name('BusinessAddPayment');
-    Route::get('EditPayment/{id}', EditPayment::class)->name('BusinessEditPayment');
+    // Route::get('Payments', Payments::class)->name('BusinessPayments');
+    // Route::get('AddPayment', AddPayment::class)->name('BusinessAddPayment');
+    // Route::get('EditPayment/{id}', EditPayment::class)->name('BusinessEditPayment');
     /*End::Payments*/
+
+    /*Begin::StripeConnect*/
+    Route::get('StripeConnect', StripeConnect::class)->name('BusinessStripeConnect');
+    /*End::StripeConnect*/
 
     /*Begin::Settings*/
     Route::get('Settings/BusinessDetails', EditBusinessDetails::class)->name('BusinessEditDetails');
