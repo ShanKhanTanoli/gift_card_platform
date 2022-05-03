@@ -17,12 +17,12 @@ class Index extends Component
 
     public function mount()
     {
-        // if ($store = Business::Store(Auth::user()->id)) {
-        //     $this->store = $store;
-        //     $this->business = $store->user_id;
-        // }else{
+        if ($store = Business::Store(Auth::user()->id)) {
+            $this->store = $store;
+            $this->business = $store->user_id;
+        }else{
 
-        // }
+        }
     }
 
     public function render()

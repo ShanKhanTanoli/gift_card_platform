@@ -74,7 +74,7 @@
                                                     class="form-check-input  @error('display_store_name') is-invalid @enderror"
                                                     type="checkbox" id="fcustomCheck1" checked="">
                                                 <label class="custom-control-label" for="customCheck1">
-                                                    Display <strong>{{ $store->store_name }}</strong> on cards
+                                                    Display <strong>{{ $store_name }}</strong> on cards
                                                 </label>
                                             </div>
                                             @error('display_store_name')

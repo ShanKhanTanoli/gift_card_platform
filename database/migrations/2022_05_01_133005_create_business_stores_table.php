@@ -26,7 +26,8 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->text('store_name')
-                ->unique()->nullable();
+                ->unique()
+                ->nullable();
 
             $table->longText('store_description')
                 ->nullable();
@@ -37,7 +38,7 @@ return new class extends Migration
             $table->boolean('display_cards')
                 ->nullable();
 
-            $table->string('display_store_name')
+            $table->boolean('display_store_name')
                 ->nullable();
 
             $table->timestamps();

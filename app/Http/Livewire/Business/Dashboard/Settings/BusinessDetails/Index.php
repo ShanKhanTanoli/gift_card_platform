@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Business\Dashboard\Settings\BusinessDetails;
 
 use App\Helpers\Business\Business;
+use App\Models\Business\BusinessDetail;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -20,8 +21,8 @@ class Index extends Component
             $this->business_address = $details->business_address;
             $this->currency_id = $details->currency_id;
         } else {
-            $this->business_name = "Home";
-            $this->business_email = "Company Email";
+            $this->business_name = "Business Name";
+            $this->business_email = "company@email.com";
             $this->business_phone = "00000000000";
             $this->business_address = "Company Address";
         }
@@ -53,7 +54,7 @@ class Index extends Component
             session()->flash('success', 'Updated Successfully');
             return redirect(route('BusinessEditDetails'));
         } else {
-            Setting::create(array_merge($validated, ['user_id' => Auth::user()->id]));
+            BusinessDetail::create(array_merge($validated, ['user_id' => Auth::user()->id]));
             return session()->flash('success', 'Updated Successfully');
         }
     }
