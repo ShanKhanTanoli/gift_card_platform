@@ -7,8 +7,7 @@
     @include('livewire.store.partials.hero-section')
     <!--End::Hero-section-->
 
-        <!--Begin::About Section-->
-        @include('livewire.store.partials.about-section')
-        <!--End::About Section-->
-
+    <!--Begin::About Section-->
+    @include('livewire.store.partials.about-section')
+    <!--End::About Section-->
 </div>

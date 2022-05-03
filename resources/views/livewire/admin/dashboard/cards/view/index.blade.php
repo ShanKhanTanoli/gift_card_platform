@@ -103,7 +103,7 @@
 
                                 @if (!$card->isSold())
                                     <a class="btn btn-link text-dark px-3 mb-0"
-                                        href="{{ route('BusinessEditCard', $card->code) }}">
+                                        href="{{ route('AdminEditCard', $card->code) }}">
                                         <i class="fas fa-edit text-sm me-2">
                                         </i>
                                         Edit

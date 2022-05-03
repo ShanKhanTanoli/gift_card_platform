@@ -37,7 +37,7 @@ return new class extends Migration
             $table->boolean('display_cards')
                 ->nullable();
 
-            $table->boolean('display_store_name')
+            $table->string('display_store_name')
                 ->nullable();
 
             $table->timestamps();
