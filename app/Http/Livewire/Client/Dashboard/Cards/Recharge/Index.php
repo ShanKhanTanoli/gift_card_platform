@@ -50,7 +50,7 @@ class Index extends Component
         ];
 
         $balance = $validated['balance'];
-        $currency = Business::Currency($this->card->owner_id);
+        $currency = Business::Currency($this->card->user_id);
         try {
             Stripe::RechargeVoucher($card_data, $balance, $currency, $this->card, Auth::user()->id);
             return redirect(route('ClientRechargeCard',$this->card->code));

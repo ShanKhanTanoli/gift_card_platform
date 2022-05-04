@@ -28,9 +28,9 @@ class Index extends Component
 
             $this->card = $card;
 
-            $this->store = Business::Store($card->owner_id);
+            $this->store = Business::Store($card->user_id);
 
-            $this->business = $card->owner_id;
+            $this->business = $card->user_id;
         } else abort(404);
     }
 

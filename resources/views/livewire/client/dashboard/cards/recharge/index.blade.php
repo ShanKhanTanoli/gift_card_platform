@@ -10,7 +10,7 @@
                     {{-- <span class="mask bg-gradient-dark opacity-10"></span> --}}
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            @if ($business = Business::Details($card->owner_id))
+                            @if ($business = Business::Details($card->user_id))
                                 {{ $business->business_name }}
                             @else
                                 Brand Name
@@ -107,7 +107,7 @@
                     <div class="container">
                         <form>
                             <div class="row">
-                                
+
                                 <div class="col-md-12">
                                     <div class="input-group input-group-static my-3">
                                         <label for="holder_name">Card Holder Name</label>
@@ -183,7 +183,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary" wire:attr='disabled' wire:click='Recharge'>
+                                    <button type="button" class="btn btn-primary" wire:attr='disabled'
+                                        wire:click='Recharge'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
                                         Save Changes

@@ -9,11 +9,11 @@
                 <div class="info">
                     <div class="address">
                         <h4>Price:</h4>
-                        <p>{{ $card->price }} {{ strtoupper(Business::Currency($card->owner_id)) }}</p>
+                        <p>{{ $card->price }} {{ strtoupper(Business::Currency($card->user_id)) }}</p>
                     </div>
                     <div class="email">
                         <h4>Balance:</h4>
-                        <p>{{ $card->balance }} {{ strtoupper(Business::Currency($card->owner_id)) }}</p>
+                        <p>{{ $card->balance }} {{ strtoupper(Business::Currency($card->user_id)) }}</p>
                     </div>
                 </div>
             </div>
