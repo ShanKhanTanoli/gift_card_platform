@@ -42,7 +42,7 @@ class Index extends Component
         ], $msg);
         try {
             $timestamp = new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at'])));
-            Vouchers::withOwner(Auth::user())
+            Vouchers::withOwner(Auth::user()->id)
                 ->withExpireDate($timestamp)
                 ->withPrice($validated['price'])
                 ->withBalance($validated['balance'])

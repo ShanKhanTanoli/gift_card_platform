@@ -5,8 +5,6 @@ namespace App\Helpers\Card;
 use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
 use FrittenKeeZ\Vouchers\Models\Voucher;
-use FrittenKeeZ\Vouchers\Models\VoucherData;
-use FrittenKeeZ\Vouchers\Models\VoucherCategory;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 class Card
@@ -63,7 +61,7 @@ class Card
     {
         $voucher = Voucher::where('code', $code)->first();
         if ($voucher) {
-            if ($owner = User::find($voucher->owner_id)) {
+            if ($owner = User::find($voucher->user_id)) {
                 return $owner;
             } else return "Add Owner";
         } else return "Add Owner";

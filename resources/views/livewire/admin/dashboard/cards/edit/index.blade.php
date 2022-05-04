@@ -58,9 +58,9 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="owner_id">Card Owner</label>
-                                        <select wire:model.defer='owner_id'
-                                            class="form-control  @error('owner_id') is-invalid @enderror">
+                                        <label for="user_id">Card Owner</label>
+                                        <select wire:model.defer='user_id'
+                                            class="form-control  @error('user_id') is-invalid @enderror">
                                             <option value="">Select Owner</option>
                                             @forelse(Business::All()->get() as $business)
                                                 <option value="{{ $business->id }}">
@@ -71,7 +71,7 @@
                                                 <option value="">Please Add Business</option>
                                             @endforelse
                                         </select>
-                                        @error('owner_id')
+                                        @error('user_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

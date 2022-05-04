@@ -8,13 +8,13 @@ use App\Helpers\Card\Card;
 
 class Index extends Component
 {
-    public $card, $owner_id, $price, $balance, $expires_at;
+    public $card, $user_id, $price, $balance, $expires_at;
 
     public function mount($code)
     {
         if ($card = Card::Find($code)) {
             $this->card = $card;
-            $this->owner_id = $card->owner_id;
+            $this->user_id = $card->user_id;
             $this->price = $card->price;
             $this->balance = $card->balance;
             $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
@@ -35,8 +35,8 @@ class Index extends Component
         //Begin::If Card Exists
         if (Card::Find($this->card->code)) {
             $msg = [
-                'owner_id.required' => 'Enter Price',
-                'owner_id.numeric' => 'Enter Price',
+                'user_id.required' => 'Enter Price',
+                'user_id.numeric' => 'Enter Price',
                 'price.required' => 'Enter Price',
                 'price.numeric' => 'Enter Price',
                 'balance.required' => 'Enter Balance Amount',
@@ -45,7 +45,7 @@ class Index extends Component
                 'expires_at.date' => 'Enter Date',
             ];
             $validated = $this->validate([
-                'owner_id' => 'required|numeric',
+                'user_id' => 'required|numeric',
                 'price' => 'required|numeric',
                 'balance' => 'required|numeric',
                 'expires_at' => 'required|date',

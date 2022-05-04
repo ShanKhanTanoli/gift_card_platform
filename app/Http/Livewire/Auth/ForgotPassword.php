@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Auth;
 
+use App\Helpers\Redirect;
 use Livewire\Component;
 use App\Models\User;
 
@@ -21,7 +22,7 @@ class ForgotPassword extends Component
     public function mount()
     {
         if (auth()->user()) {
-            redirect('/dashboard');
+            redirect(Redirect::ToDashboard());
         }
     }
 

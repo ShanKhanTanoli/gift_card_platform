@@ -10,7 +10,7 @@ trait BusinessCards
     /*Begin::Cards*/
     public static function Cards($business)
     {
-        return Voucher::where('owner_id', $business);
+        return Voucher::where('user_id', $business);
     }
 
     public static function CardsLatestPaginate($business, $quantity)

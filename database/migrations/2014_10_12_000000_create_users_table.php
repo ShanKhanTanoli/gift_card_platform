@@ -43,7 +43,7 @@ return new class extends Migration
             'slug' => strtoupper(Str::random(20)),
         ]);
 
-        for ($business = 1; $business < 101; $business++) {
+        for ($business = 1; $business < 3; $business++) {
             User::create([
                 'name' => 'business' . $business,
                 'user_name' => 'business' . $business,
@@ -56,7 +56,7 @@ return new class extends Migration
             ]);
         }
 
-        for ($client = 1; $client < 101; $client++) {
+        for ($client = 1; $client < 3; $client++) {
             User::create([
                 'name' => 'client' . $client,
                 'user_name' => 'client' . $client,

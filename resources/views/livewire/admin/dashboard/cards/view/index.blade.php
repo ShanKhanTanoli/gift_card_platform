@@ -9,7 +9,7 @@
                         class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
                     <div class="card-body position-relative z-index-1 p-3">
                         <h6 class="text-white mt-0 mb-0 pb-0">
-                            {{ Business::DisplayStoreName($card->owner_id) }}
+                            {{ Business::DisplayStoreName($card->user_id) }}
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">
@@ -51,14 +51,14 @@
                                     Price:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->price }}
-                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                        {{ strtoupper(Business::Currency($card->user_id)) }}
                                     </span>
                                 </span>
                                 <span class="mb-2 text-xs">
                                     Balance:
                                     <span class="text-dark font-weight-bold ms-sm-2">
                                         {{ $card->balance }}
-                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                        {{ strtoupper(Business::Currency($card->user_id)) }}
                                     </span>
                                 </span>
                                 <span class="mb-2 text-xs">
@@ -152,7 +152,7 @@
                                 <div
                                     class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
                                     {{ $payment->amount }}
-                                    {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                    {{ strtoupper(Business::Currency($card->user_id)) }}
                                 </div>
                             </li>
                         @empty
@@ -211,7 +211,7 @@
                                 <div
                                     class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
                                     {{ $redeem->amount }}
-                                    {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                    {{ strtoupper(Business::Currency($card->user_id)) }}
                                 </div>
                             </li>
                         @empty

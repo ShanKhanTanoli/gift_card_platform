@@ -12,7 +12,7 @@ use FrittenKeeZ\Vouchers\Facades\Vouchers;
 
 class Index extends Component
 {
-    public $price, $balance, $expires_at, $quantity, $owner_id;
+    public $price, $balance, $expires_at, $quantity, $user_id;
     public function render()
     {
         return view('livewire.admin.dashboard.cards.add.index')
@@ -22,8 +22,8 @@ class Index extends Component
     public function Add()
     {
         $msg = [
-            'owner_id.required' => 'Enter Price',
-            'owner_id.numeric' => 'Enter Price',
+            'user_id.required' => 'Enter Price',
+            'user_id.numeric' => 'Enter Price',
             'price.required' => 'Enter Price',
             'price.numeric' => 'Enter Price',
             'balance.required' => 'Enter Balance Amount',
@@ -34,17 +34,17 @@ class Index extends Component
             'quantity.numeric' => 'Enter Quantity',
         ];
         $validated = $this->validate([
-            'owner_id' => 'required|numeric',
+            'user_id' => 'required|numeric',
             'price' => 'required|numeric',
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
             'quantity' => 'required|numeric',
         ], $msg);
-        
+
         try {
             $timestamp = new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at'])));
-            $owner = User::find($validated['owner_id']);
-            Vouchers::withOwner($owner)
+            $user = User::find($validated['user_id']);
+            Vouchers::withOwner($user->id)
                 ->withExpireDate($timestamp)
                 ->withPrice($validated['price'])
                 ->withBalance($validated['balance'])

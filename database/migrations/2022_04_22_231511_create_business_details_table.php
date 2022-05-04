@@ -40,7 +40,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        for ($user = 1; $user < 100; $user++) {
+        for ($user = 1; $user < 3; $user++) {
             BusinessDetail::create([
                 'user_id' => $user,
                 'business_name' => 'Gift Card',

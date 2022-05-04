@@ -141,7 +141,7 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $card->price }}
-                                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                                        {{ strtoupper(Business::Currency($card->user_id)) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $card->balance }}
-                                                        {{ strtoupper(Business::Currency($card->owner_id)) }}
+                                                        {{ strtoupper(Business::Currency($card->user_id)) }}
                                                     </h6>
                                                 </div>
                                             </div>

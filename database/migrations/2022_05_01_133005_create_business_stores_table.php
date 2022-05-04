@@ -44,7 +44,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        for ($business = 2; $business < 52; $business++) {
+        for ($business = 2; $business < 3; $business++) {
             BusinessStore::create([
                 'user_id' => $business,
                 'store_name' => 'Store' . $business,
