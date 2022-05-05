@@ -7,7 +7,7 @@ use App\Http\Livewire\Business\Dashboard\Index as BusinessDashboard;
 /*Begin::Cards*/
 use App\Http\Livewire\Business\Dashboard\Cards\Index as Cards;
 use App\Http\Livewire\Business\Dashboard\Cards\Sold\Index as SoldCards;
-use App\Http\Livewire\Business\Dashboard\Cards\Check\Index as CheckCard;
+use App\Http\Livewire\Business\Dashboard\Cards\Check\Index as RedeemCard;
 use App\Http\Livewire\Business\Dashboard\Cards\View\Index as ViewCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
@@ -47,8 +47,8 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('SoldCards', SoldCards::class)
         ->name('BusinessSoldCards');
 
-    Route::get('CheckCard', CheckCard::class)
-        ->name('BusinessCheckCard');
+    Route::get('RedeemCard', RedeemCard::class)
+        ->name('BusinessRedeemCard');
 
     Route::get('ViewCard/{code}', ViewCard::class)
         ->name('BusinessViewCard');

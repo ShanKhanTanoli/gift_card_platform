@@ -241,10 +241,10 @@
         </div>
     </div>
 
-    @if($delete)
-    <!--Begin::DeleteModel-->
-    @include('livewire.admin.dashboard.partials.delete-modal')
-    <!--End::DeleteModel-->
+    @if ($delete)
+        <!--Begin::DeleteModel-->
+        @include('livewire.admin.dashboard.partials.delete-modal')
+        <!--End::DeleteModel-->
     @endif
 
     <!--Begin::Script-->

@@ -61,5 +61,10 @@ trait BusinessCards
             ->where('code', $code)
             ->first();
     }
+    public static function FindCardById($business, $id)
+    {
+        return self::Cards($business)
+            ->find($id);
+    }
     /*End::Cards*/
 }

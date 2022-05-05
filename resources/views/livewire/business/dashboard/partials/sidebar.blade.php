@@ -39,13 +39,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/CheckCard') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('BusinessCheckCard') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/RedeemCard') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessRedeemCard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-search"></i>
+                        <i class="fas fa-credit-card"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        CheckCard
+                        Redeem Card
                     </span>
                 </a>
             </li>

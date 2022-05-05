@@ -26,7 +26,7 @@ class Index extends Component
             return redirect(route('AdminViewCard', $card->code));
         } else {
             session()->flash('error', 'No such card found');
-            return redirect(route('AdminCheckCard'));
+            return redirect(route('AdminRedeemCard'));
         }
         //End::If this Card Exists
     }

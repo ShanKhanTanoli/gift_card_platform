@@ -27,7 +27,7 @@ class Index extends Component
             return redirect(route('BusinessViewCard', $card->code));
         } else {
             session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCheckCard'));
+            return redirect(route('BusinessRedeemCard'));
         }
         //End::If this Business owns a card
     }

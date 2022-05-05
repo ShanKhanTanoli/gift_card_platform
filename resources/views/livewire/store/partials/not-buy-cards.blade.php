@@ -22,6 +22,7 @@
                 <div class="alert alert-danger">
                     <strong>You can not buy cards.</strong>
                 </div>
+                @include('errors.alerts')
             </div>
         </div>
     </div>

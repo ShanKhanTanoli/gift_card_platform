@@ -12,7 +12,7 @@ use App\Http\Livewire\Admin\Dashboard\Business\UpdatePassword\Index as UpdateBus
 
 /*Begin::Cards*/
 use App\Http\Livewire\Admin\Dashboard\Cards\Index as ViewAllCards;
-use App\Http\Livewire\Admin\Dashboard\Cards\Check\Index as CheckCard;
+use App\Http\Livewire\Admin\Dashboard\Cards\Check\Index as RedeemCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\View\Index as ViewCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\Edit\Index as EditCard;
@@ -41,7 +41,7 @@ use App\Http\Livewire\Admin\Dashboard\Settings\Password\Index as EditPassword;
 
 /*Begin::Auth,Admin Group*/
 
-Route::middleware(['auth', 'admin'])->prefix('Admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('mapanel')->group(function () {
 
     Route::get('Dashboard', AdminDashboard::class)->name('AdminDashboard');
 
@@ -55,7 +55,7 @@ Route::middleware(['auth', 'admin'])->prefix('Admin')->group(function () {
 
     /*Begin::Cards*/
     Route::get('Cards', ViewAllCards::class)->name('AdminCards');
-    Route::get('CheckCard', CheckCard::class)->name('AdminCheckCard');
+    Route::get('RedeemCard', RedeemCard::class)->name('AdminRedeemCard');
     Route::get('ViewCard/{code}', ViewCard::class)->name('AdminViewCard');
     Route::get('AddCard', AddCard::class)->name('AdminAddCard');
     Route::get('EditCard/{code}', EditCard::class)->name('AdminEditCard');

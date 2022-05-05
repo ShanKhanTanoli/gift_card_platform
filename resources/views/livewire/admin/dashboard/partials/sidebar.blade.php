@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse  w-auto h-100" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Dashboard') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Dashboard') ? active bg-gradient-primary : '' @endif"
                     href="{{ route('AdminDashboard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-tachometer-alt"></i>
@@ -28,7 +28,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Business') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Business') ? active bg-gradient-primary : '' @endif"
                     href="{{ route('AdminBusiness') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-business-time"></i>
@@ -42,7 +42,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Clients') ? active bg-gradient-primary : '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Clients') ? active bg-gradient-primary : '' @endif"
                     href="{{ route('AdminClients') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-users"></i>
@@ -56,7 +56,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Cards') active bg-gradient-primary @else '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Cards') active bg-gradient-primary @else '' @endif"
                     href="{{ route('AdminCards') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-credit-card"></i>
@@ -65,13 +65,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/CheckCard') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('AdminCheckCard') }}">
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/RedeemCard') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('AdminRedeemCard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-search"></i>
+                        <i class="fas fa-credit-card"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        CheckCard
+                        Redeem Card
                     </span>
                 </a>
             </li>
@@ -81,7 +81,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Payments') active bg-gradient-primary @else '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Payments') active bg-gradient-primary @else '' @endif"
                     href="{{ route('AdminPayments') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-money-bill"></i>
@@ -97,7 +97,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Admin/Settings/General' or Request::path() == 'Admin/Settings/Profile' or Request::path() == 'Admin/Settings/Currency' or Request::path() == 'Admin/Settings/Stripe' or Request::path() == 'Admin/Settings/Password') active bg-gradient-primary @else '' @endif"
+                <a class="nav-link text-white @if (Request::path() == 'mapanel/Settings/General' or Request::path() == 'mapanel/Settings/Profile' or Request::path() == 'mapanel/Settings/Currency' or Request::path() == 'mapanel/Settings/Stripe' or Request::path() == 'mapanel/Settings/Password') active bg-gradient-primary @else '' @endif"
                     href="{{ route('AdminSettings') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-cog"></i>

@@ -25,7 +25,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->text('store_name')
+            $table->string('store_name')
                 ->unique()
                 ->nullable();
 
