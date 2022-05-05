@@ -5,6 +5,11 @@
                 <div class="row">
                     <div class="col-xl-4 col-lg-5 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto ">
                         @include('errors.alerts')
+                        @if (session('resent'))
+                            <div class="alert alert-success" role="alert">
+                                {{ __('A fresh verification link has been sent to your email address.') }}
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <div class="row">
@@ -15,20 +20,15 @@
                                     {{ __('Verify Your Email Address') }}
                                 </h4>
                             </div>
-                            <div class="card-body">
-                                @if (session('resent'))
-                                    <div class="alert alert-success" role="alert">
-                                        {{ __('A fresh verification link has been sent to your email address.') }}
-                                    </div>
-                                @endif
-
+                            <div class="card-body text-center">
                                 {{ __('Before proceeding, please check your email for a verification link.') }}
                                 {{ __('If you did not receive the email') }},
-                                <form class="d-inline" method="POST" action="">
-                                    @csrf
-                                    <button type="submit"
-                                        class="btn btn-link p-0 m-0 align-baseline">{{ __('click here to request another') }}</button>.
-                                </form>
+                                <button type="button" wire:click='SendVerificationLink()'
+                                    class="btn btn-lg bg-gradient-dark mt-2">
+                                    <span wire:loading class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    {{ __('click here to request another') }}
+                                </button>
                             </div>
                         </div>
                     </div>

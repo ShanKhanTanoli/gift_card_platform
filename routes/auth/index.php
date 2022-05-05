@@ -2,6 +2,7 @@
 
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\Auth\Logout;
+use App\Http\Livewire\Auth\Verify;
 use App\Http\Livewire\Auth\VerifyEmail;
 use App\Http\Livewire\Auth\ResetPassword;
 use App\Http\Livewire\Auth\ClientRegister;
@@ -31,4 +32,9 @@ Route::get('/reset-password/{id}', ResetPassword::class)
 Route::get('VerifyEmail', VerifyEmail::class)
     ->name('verification.notice')
     ->middleware('auth');
+
+Route::get('Verify', Verify::class)
+    ->name('verification.verify')
+    ->middleware('auth');
+
 /*End::Auth Routes*/

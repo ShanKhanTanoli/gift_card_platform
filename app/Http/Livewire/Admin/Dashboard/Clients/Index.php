@@ -9,13 +9,15 @@ use App\Helpers\Client\Client;
 
 class Index extends Component
 {
+    public $delete;
+
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
-        $clients = Client::LatestPaginate(6);
+        $clients = Client::LatestPaginate(10);
         return view('livewire.admin.dashboard.clients.index')
             ->with(['clients' => $clients])
             ->extends('layouts.dashboard')
@@ -28,6 +30,14 @@ class Index extends Component
             return redirect(route('AdminEditClient', $client->slug));
         }
         return session()->flash('error', 'Something went wrong');
+    }
+
+    public function DeleteConfirmation($id)
+    {
+        if ($business = User::find($id)) {
+            $this->delete = $business;
+            $this->emit(['delete']);
+        } else return session()->flash('error', 'Something went wrong');
     }
 
     public function Delete($id)

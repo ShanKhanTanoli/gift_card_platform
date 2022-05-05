@@ -9,13 +9,15 @@ use Livewire\WithPagination;
 
 class Index extends Component
 {
+    public $delete;
+
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
-        $business = Business::LatestPaginate(6);
+        $business = Business::LatestPaginate(10);
         return view('livewire.admin.dashboard.business.index')
             ->with(['business' => $business])
             ->extends('layouts.dashboard')
@@ -30,10 +32,17 @@ class Index extends Component
         return session()->flash('error', 'Something went wrong');
     }
 
+    public function DeleteConfirmation($id)
+    {
+        if ($business = User::find($id)) {
+            $this->delete = $business;
+            $this->emit(['delete']);
+        } else return session()->flash('error', 'Something went wrong');
+    }
+
     public function Delete($id)
     {
         if ($business = User::find($id)) {
-
             $business->delete();
             session()->flash('success', 'Deleted Successfully');
             return redirect(route('AdminBusiness'));

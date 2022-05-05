@@ -135,8 +135,9 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='Delete("{{ $user->id }}")'>
-                                                <span wire:loading wire:target='Delete("{{ $user->id }}")'
+                                                wire:click='DeleteConfirmation("{{ $user->id }}")'>
+                                                <span wire:loading
+                                                    wire:target='DeleteConfirmation("{{ $user->id }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete
@@ -154,4 +155,18 @@
             </div>
         </div>
     </div>
+    @if ($delete)
+        <!--Begin::DeleteModel-->
+        @include('livewire.admin.dashboard.partials.delete-modal')
+        <!--End::DeleteModel-->
+    @endif
+    <!--Begin::Script-->
+    @section('scripts')
+        <script>
+            Livewire.on('delete', function() {
+                $('#delete-notification').modal('show');
+            })
+        </script>
+    @endsection
+    <!--End::Script-->
 </div>

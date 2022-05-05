@@ -11,11 +11,13 @@ class Index extends Component
 {
     use WithPagination;
 
+    public $delete;
+
     protected $paginationTheme = 'bootstrap';
 
     public function render()
     {
-        $cards = Card::LatestPaginate(6);
+        $cards = Card::LatestPaginate(10);
         return view('livewire.admin.dashboard.cards.index')
             ->with(['cards' => $cards])
             ->extends('layouts.dashboard')
@@ -35,10 +37,17 @@ class Index extends Component
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Delete($code)
+    public function DeleteConfirmation($code)
     {
         if ($card = Card::Find($code)) {
-            Voucher::where('code', $card->code)->delete();
+            $this->delete = $card;
+            $this->emit(['delete']);
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Delete($id)
+    {
+        if ($card = Card::FindById($id)) {
             $card->delete();
             session()->flash('success', 'Deleted Successfully');
             return redirect(route('AdminCards'));

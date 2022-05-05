@@ -16,7 +16,7 @@ class Index extends Component
 
     public function render()
     {
-        $payments = Client::LatestPaymentsPaginate(Auth::user()->id, 6);
+        $payments = Client::LatestPaymentsPaginate(Auth::user()->id, 10);
         return view('livewire.client.dashboard.payments.index')
             ->with(['payments' => $payments])
             ->extends('layouts.dashboard')
