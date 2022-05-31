@@ -9,17 +9,19 @@ use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 Route::get('debug', function () {
 
-        //Verified Business Account
-        $verified_business = 'acct_1KVjQIRYVF7b7SlI';
+    dd('debug');
 
-        //Verified Individual Account
-        $verified_individual = 'acct_1KVjJwDGx269Aqtf';
-    
-        //Restricts Soon Account
-        $account = 'acct_1KVH0XRXmAQzp1r9';
-    
-        //Restricted Account
-        $restricted = 'acct_1KVH0LRiGUGr13em';
+    //Verified Business Account
+    $verified_business = 'acct_1KVjQIRYVF7b7SlI';
+
+    //Verified Individual Account
+    $verified_individual = 'acct_1KVjJwDGx269Aqtf';
+
+    //Restricts Soon Account
+    $account = 'acct_1KVH0XRXmAQzp1r9';
+
+    //Restricted Account
+    $restricted = 'acct_1KVH0LRiGUGr13em';
 
     // $amount = 10;
     // $percentage = 1;
