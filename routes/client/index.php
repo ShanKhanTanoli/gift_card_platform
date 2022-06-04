@@ -6,6 +6,8 @@ use App\Http\Livewire\Client\Dashboard\Index as ClientDashboard;
 
 /*Begin::Cards*/
 use App\Http\Livewire\Client\Dashboard\Cards\Index as Cards;
+use App\Http\Livewire\Client\Dashboard\Tickets\Index as Tickets;
+use App\Http\Livewire\Client\Dashboard\Vouchers\Index as Vouchers;
 use App\Http\Livewire\Client\Dashboard\Cards\View\Index as ViewCard;
 use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Index as RechargeCard;
 /*End::Cards*/
@@ -28,6 +30,12 @@ Route::middleware(['auth', 'client'])->prefix('Client')->group(function () {
     /*Begin::Cards*/
     Route::get('Cards', Cards::class)
         ->name('ClientCards');
+
+    Route::get('Tickets', Tickets::class)
+        ->name('ClientTickets');
+
+    Route::get('Vouchers', Vouchers::class)
+        ->name('ClientVouchers');
 
     Route::get('RechargeCard/{slug}', RechargeCard::class)
         ->name('ClientRechargeCard');

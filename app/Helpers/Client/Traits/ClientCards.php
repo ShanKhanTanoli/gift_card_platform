@@ -12,7 +12,8 @@ trait ClientCards
         $vouchers = ClientVoucher::where('user_id', $client)
             ->pluck('voucher_id')
             ->toArray();
-        return Voucher::whereIn('id', $vouchers);
+        return Voucher::whereIn('id', $vouchers)
+            ->where('type', 'card');
     }
 
     public static function LatestCardsPaginate($client, $quantity)
@@ -25,10 +26,17 @@ trait ClientCards
         return self::Cards($client)->count();
     }
 
-    public static function FindCard($client, $code)
+    public static function FindCardByCode($client, $code)
     {
         return self::Cards($client)
             ->where('code', $code)
+            ->first();
+    }
+
+    public static function FindCardBySlug($client, $slug)
+    {
+        return self::Cards($client)
+            ->where('slug', $slug)
             ->first();
     }
 }

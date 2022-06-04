@@ -7,10 +7,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Helpers\Client\Traits\ClientCards;
 use App\Helpers\Client\Traits\ClientPayments;
+use App\Helpers\Client\Traits\ClientTickets;
+use App\Helpers\Client\Traits\ClientVouchers;
 
 class Client
 {
-    use ClientCards, ClientPayments, ClientCardRecharge;
+    use ClientCards, ClientTickets, ClientVouchers, ClientPayments, ClientCardRecharge;
 
     public static function Is()
     {
