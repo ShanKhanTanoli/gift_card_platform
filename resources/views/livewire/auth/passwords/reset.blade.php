@@ -14,7 +14,7 @@
                                 <h4 class="font-weight-bolder">Reset Password</h4>
                             </div>
                             <div class="card-body">
-                                <form role="form">
+                                <form role="form" wire:submit.prevent="resetPassword">
                                     <div class="input-group input-group-outline mb-3">
                                         <input id="email" type="email" wire:model.defer="email"
                                             class="form-control @error('email') is-invalid @enderror" name="email"
@@ -49,7 +49,7 @@
                                         @enderror
                                     </div>
                                     <div class="text-center">
-                                        <button wire:click='resetPassword()' type="button"
+                                        <button type="submit"
                                             class="btn btn-lg bg-gradient-dark btn-lg w-100 mt-4 mb-0">
                                             <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                                 aria-hidden="true"></span>

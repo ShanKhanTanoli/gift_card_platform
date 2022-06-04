@@ -9,6 +9,7 @@ use App\Http\Livewire\Business\Dashboard\Cards\Index as Cards;
 use App\Http\Livewire\Business\Dashboard\Cards\Sold\Index as SoldCards;
 use App\Http\Livewire\Business\Dashboard\Cards\Check\Index as RedeemCard;
 use App\Http\Livewire\Business\Dashboard\Cards\View\Index as ViewCard;
+use App\Http\Livewire\Business\Dashboard\Cards\Issue\Index as IssueCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
 /*End::Cards*/
@@ -50,13 +51,16 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('RedeemCard', RedeemCard::class)
         ->name('BusinessRedeemCard');
 
-    Route::get('ViewCard/{code}', ViewCard::class)
+    Route::get('ViewCard/{slug}', ViewCard::class)
         ->name('BusinessViewCard');
+
+    Route::get('IssueCard/{slug}', IssueCard::class)
+        ->name('BusinessIssueCard');
 
     Route::get('AddCard', AddCard::class)
         ->name('BusinessAddCard');
 
-    Route::get('EditCard/{code}', EditCard::class)
+    Route::get('EditCard/{slug}', EditCard::class)
         ->name('BusinessEditCard');
     /*End::Cards*/
 

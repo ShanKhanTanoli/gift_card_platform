@@ -24,15 +24,15 @@ class Index extends Component
         $application_fee,
         $comission_percentage;
 
-    public function mount($code)
+    public function mount($slug)
     {
-        if ($card = Card::Find($code)) {
-
-            $this->card = $card;
-
-            $this->store = Business::Store($card->user_id);
-
-            $this->business = $card->user_id;
+        if ($card = Card::FindBySlug($slug)) {
+            //If Card can be purchased
+            if (Card::CanBePurchased($card->slug)) {
+                $this->card = $card;
+                $this->store = Business::Store($card->user_id);
+                $this->business = $card->user_id;
+            } else return redirect()->back();
         } else abort(404);
     }
 

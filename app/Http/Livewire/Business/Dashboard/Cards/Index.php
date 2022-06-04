@@ -19,27 +19,32 @@ class Index extends Component
 
     public function render()
     {
-        $cards = Business::CardsLatestUnsoldPaginate(Auth::user()->id, 10);
+        $cards = Business::CardsLatestPaginate(Auth::user()->id, 10);
         return view('livewire.business.dashboard.cards.index')
             ->with(['cards' => $cards])
             ->extends('layouts.dashboard')
             ->section('content');
     }
 
-    public function View($code)
+    public function Issue($slug)
     {
-        return redirect(route('BusinessViewCard', $code));
+        return redirect(route('BusinessIssueCard', $slug));
+    }
+
+    public function View($slug)
+    {
+        return redirect(route('BusinessViewCard', $slug));
     }
 
 
-    public function Edit($code)
+    public function Edit($slug)
     {
-        return redirect(route('BusinessEditCard', $code));
+        return redirect(route('BusinessEditCard', $slug));
     }
 
-    public function DeleteConfirmation($code)
+    public function DeleteConfirmation($slug)
     {
-        if ($card = Business::FindCard(Auth::user()->id, $code)) {
+        if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
             $this->delete = $card;
             $this->emit(['delete']);
         } else return session()->flash('error', 'No such card found');

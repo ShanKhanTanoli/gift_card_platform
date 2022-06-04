@@ -4,7 +4,7 @@ namespace App\Helpers\Card;
 
 use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
-use FrittenKeeZ\Vouchers\Models\Voucher;
+use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 class Card
@@ -13,7 +13,7 @@ class Card
     /*Begin::Cards*/
     public static function All()
     {
-        return Voucher::latest();
+        return CardModel::latest();
     }
 
     public static function LatestPaginate($quantity)
@@ -26,24 +26,27 @@ class Card
         return self::All()->count();
     }
 
-    public static function CountSold()
+    public static function FindBySlug($slug)
     {
-        return self::All()
-            ->where('sold', true)
-            ->count();
-    }
-
-    public static function CountUnSold()
-    {
-        return self::All()
-            ->where('sold', null)
-            ->count();
-    }
-
-    public static function Find($code)
-    {
-        return self::All()->where('code', $code)
+        return self::All()->where('slug', $slug)
             ->first();
+    }
+
+    public static function CanBePurchased($slug): bool
+    {
+        //If Card Found
+        if ($card = self::FindBySlug($slug)) {
+            //If Card is not banned
+            if (!$card->trashed()) {
+                //If Card is not expired
+                if (!$card->isExpired()) {
+                    //If Card is not expired
+                    if ($card->isPublished()) {
+                        return true;
+                    } else return false;
+                } else return false;
+            } else return false;
+        } else return false;
     }
 
     public static function FindById($id)
@@ -51,15 +54,15 @@ class Card
         return self::All()->find($id);
     }
 
-    public static function Expiry($code)
+    public static function Expiry($slug)
     {
-        return Voucher::where('code', $code)
+        return CardModel::where('slug', $slug)
             ->first();
     }
 
-    public static function FindOwner($code)
+    public static function FindOwner($slug)
     {
-        $voucher = Voucher::where('code', $code)->first();
+        $voucher = CardModel::where('slug', $slug)->first();
         if ($voucher) {
             if ($owner = User::find($voucher->user_id)) {
                 return $owner;

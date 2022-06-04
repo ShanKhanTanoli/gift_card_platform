@@ -29,10 +29,10 @@ Route::middleware(['auth', 'client'])->prefix('Client')->group(function () {
     Route::get('Cards', Cards::class)
         ->name('ClientCards');
 
-    Route::get('RechargeCard/{code}', RechargeCard::class)
+    Route::get('RechargeCard/{slug}', RechargeCard::class)
         ->name('ClientRechargeCard');
 
-    Route::get('ViewCard/{code}', ViewCard::class)
+    Route::get('ViewCard/{slug}', ViewCard::class)
         ->name('ClientViewCard');
     /*End::Cards*/
 

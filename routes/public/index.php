@@ -10,6 +10,6 @@ Route::get('Store/{store_name}', Store::class)
 /*End::View Store*/
 
 /*Begin::Buy Card*/
-Route::get('Buy/{code}/Card', BuyCard::class)
+Route::get('Buy/{slug}/Card', BuyCard::class)
     ->name('BuyCard');
 /*End::Buy Card*/

@@ -16,10 +16,13 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        #
+                                        Name
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Card
+                                        Type
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Code
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Balance
@@ -39,13 +42,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cards as $card)
+                                @foreach ($cards as $voucher)
                                     <tr>
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $loop->iteration }}
+                                                        @if ($card = Card::FindById($voucher->card_id))
+                                                            {{ Str::substr($card->name, 0, 15) }}
+                                                        @else
+                                                            NOT FOUND
+                                                        @endif
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    @if ($card = Card::FindById($voucher->card_id))
+                                                        <span class="badge bg-info">
+                                                            {{ Str::substr($card->type, 0, 15) }}
+                                                        </span>
+                                                    @else
+                                                        <span class="badge bg-danger">
+                                                            NOT FOUND
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $voucher->slug }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -54,16 +85,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $card->code }}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        {{ $card->balance }}
+                                                        {{ $voucher->balance }}
                                                         {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                                     </h6>
                                                 </div>
@@ -73,25 +95,37 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ date('d M Y', strtotime($card->expires_at)) }}
+                                                        {{ date('d M Y', strtotime($voucher->expires_at)) }}
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
-                                            <button class="btn btn-sm btn-info"
-                                                wire:click='Recharge("{{ $card->code }}")'>
-                                                <span wire:loading wire:target='Recharge("{{ $card->code }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Recharge
-                                            </button>
+                                            @if ($voucher->type == 'card')
+                                                <button class="btn btn-sm btn-info"
+                                                    wire:click='Recharge("{{ $voucher->slug }}")'>
+                                                    <span wire:loading wire:target='Recharge("{{ $voucher->slug }}")'
+                                                        class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    Recharge
+                                                </button>
+                                            @else
+                                                <button class="btn btn-sm btn-danger disabled">
+                                                    CAN NOT
+                                                </button>
+                                            @endif
                                         </td>
                                         <td class="align-middle">
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        @if ($card->isExpired())
+                                                    <!--Begin::If Banned-->
+                                                    @if ($voucher->trashed())
+                                                        <span class="badge bg-gradient-danger">
+                                                            BANNED
+                                                        </span>
+                                                    @else
+                                                        <!--Begin::If Expired-->
+                                                        @if ($voucher->isExpired())
                                                             <span class="badge bg-gradient-danger">
                                                                 Expired
                                                             </span>
@@ -100,14 +134,16 @@
                                                                 Active
                                                             </span>
                                                         @endif
-                                                    </h6>
+                                                        <!--End::If Expired-->
+                                                    @endif
+                                                    <!--End::If Banned-->
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->code }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->code }}")'
+                                                wire:click='View("{{ $voucher->slug }}")'>
+                                                <span wire:loading wire:target='View("{{ $voucher->slug }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 View

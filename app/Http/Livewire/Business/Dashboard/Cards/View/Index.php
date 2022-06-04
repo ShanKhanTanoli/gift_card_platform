@@ -21,10 +21,10 @@ class Index extends Component
     public $redeem_quantity = 3;
     public $recharge_quantity = 3;
 
-    public function mount($code)
+    public function mount($slug)
     {
         //Begin::If this Business owns a Card
-        if ($card = Business::FindCard(Auth::user()->id, $code)) {
+        if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
         } else {
             session()->flash('error', 'No such card found');
@@ -68,10 +68,10 @@ class Index extends Component
                 'amount' => $validated['balance'],
             ]);
             session()->flash('success', 'Card has been recharged successfully');
-            return redirect(route('BusinessViewCard', $this->card->code));
+            return redirect(route('BusinessViewCard', $this->card->slug));
         } else {
             session()->flash('error', 'Expired card can not be recharged');
-            return redirect(route('BusinessViewCard', $this->card->code));
+            return redirect(route('BusinessViewCard', $this->card->slug));
         }
         //End::If this card is not expired
     }
@@ -86,7 +86,7 @@ class Index extends Component
         try {
 
             //Begin::If this Business owns a Card
-            if ($card = Business::FindCard(Auth::user()->id, $this->card->code)) {
+            if ($card = Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
 
                 //Begin::If Card has Zero Balance
                 if ($this->card->balance != 0) {
@@ -94,22 +94,21 @@ class Index extends Component
                     //Begin::If Card has Enough Balance
                     if ($this->card->balance >= $validated['balance']) {
 
-                        Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
+                        Vouchers::redeem($this->card->slug, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
                         $this->card->update([
                             'balance' => $this->card->balance - $validated['balance'],
                         ]);
                         session()->flash('success', 'Card has been redeemed successfully');
-                        return redirect(route('BusinessViewCard', $this->card->code));
-
+                        return redirect(route('BusinessViewCard', $this->card->slug));
                     } else {
                         session()->flash('error', "Card has not enough balance");
-                        return redirect(route('BusinessViewCard', $this->card->code));
+                        return redirect(route('BusinessViewCard', $this->card->slug));
                     }
                     //End::If Card has Enough Balance
 
                 } else {
                     session()->flash('error', "Card has zero balance");
-                    return redirect(route('BusinessViewCard', $this->card->code));
+                    return redirect(route('BusinessViewCard', $this->card->slug));
                 }
                 //End::If Card has Zero Balance
 
@@ -120,10 +119,10 @@ class Index extends Component
             //End::If this Business owns a Card
         } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('BusinessViewCard', $this->card->code));
+            return redirect(route('BusinessViewCard', $this->card->slug));
         } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('BusinessViewCard', $this->card->code));
+            return redirect(route('BusinessViewCard', $this->card->slug));
         }
         //End::If this Business owns a card
 

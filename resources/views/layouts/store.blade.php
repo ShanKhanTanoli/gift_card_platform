@@ -32,6 +32,9 @@
 
     <!-- Template Main CSS File -->
     <link href="{{ asset('landingpage/assets/css/style.css') }}" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
     @livewireStyles
 </head>
 
@@ -48,6 +51,8 @@
     <!-- Vendor JS Files -->
     <script src="{{ asset('landingpage/assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
     <script src="{{ asset('landingpage/assets/vendor/aos/aos.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="{{ asset('landingpage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('landingpage/assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
     <script src="{{ asset('landingpage/assets/vendor/swiper/swiper-bundle.min.js') }}"></script>
@@ -57,6 +62,7 @@
     <script src="{{ asset('landingpage/assets/js/main.js') }}"></script>
 
     @livewireScripts
+
 </body>
 
 </html>
