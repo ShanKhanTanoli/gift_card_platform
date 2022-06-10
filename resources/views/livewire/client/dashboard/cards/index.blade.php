@@ -34,7 +34,7 @@
                                 class="text-sm mb-0 text-capitalize @if (Request::path() == 'Client/Tickets') text-primary @endif">
                                 Tickets</p>
                             <h4 class="mb-0 @if (Request::path() == 'Client/Tickets') text-primary @endif">
-                                {{ Client::CardsCount(Auth::user()->id) }}
+                                {{ Client::TicketsCount(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                                 class="text-sm mb-0 text-capitalize @if (Request::path() == 'Client/Vouchers') text-primary @endif">
                                 Vouchers</p>
                             <h4 class="mb-0 @if (Request::path() == 'Client/Vouchers') text-primary @endif">
-                                {{ Client::CardsCount(Auth::user()->id) }}
+                                {{ Client::VouchersCount(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $voucher->slug }}
+                                                        {{ $voucher->code }}
                                                     </h6>
                                                 </div>
                                             </div>

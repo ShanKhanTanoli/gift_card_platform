@@ -1,5 +1,7 @@
 <div class="container-fluid">
+    <!--Begin::Errors-->
     @include('errors.alerts')
+    <!--End::Errors-->
     <div class="row mb-3">
         <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
             <a href="{{ route('ClientCards') }}">
@@ -34,7 +36,7 @@
                                 class="text-sm mb-0 text-capitalize @if (Request::path() == 'Client/Tickets') text-primary @endif">
                                 Tickets</p>
                             <h4 class="mb-0 @if (Request::path() == 'Client/Tickets') text-primary @endif">
-                                {{ Client::CardsCount(Auth::user()->id) }}
+                                {{ Client::TicketsCount(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -54,7 +56,7 @@
                                 class="text-sm mb-0 text-capitalize @if (Request::path() == 'Client/Vouchers') text-primary @endif">
                                 Vouchers</p>
                             <h4 class="mb-0 @if (Request::path() == 'Client/Vouchers') text-primary @endif">
-                                {{ Client::CardsCount(Auth::user()->id) }}
+                                {{ Client::VouchersCount(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -68,7 +70,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Cards
+                            Vouchers
                         </h6>
                     </div>
                 </div>
@@ -93,9 +95,6 @@
                                         Expiry
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Recharge
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -105,7 +104,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($cards as $voucher)
-                                    @if ($voucher->type == 'card')
+                                    @if ($voucher->type == 'voucher')
                                         <tr>
                                             <td>
                                                 <div class="d-flex px-2 py-1">
@@ -139,7 +138,7 @@
                                                 <div class="d-flex px-2 py-1">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm">
-                                                            {{ $voucher->slug }}
+                                                            {{ $voucher->code }}
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -162,22 +161,6 @@
                                                         </h6>
                                                     </div>
                                                 </div>
-                                            </td>
-                                            <td class="align-middle">
-                                                @if ($voucher->type == 'card')
-                                                    <button class="btn btn-sm btn-info"
-                                                        wire:click='Recharge("{{ $voucher->slug }}")'>
-                                                        <span wire:loading
-                                                            wire:target='Recharge("{{ $voucher->slug }}")'
-                                                            class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                        Recharge
-                                                    </button>
-                                                @else
-                                                    <button class="btn btn-sm btn-danger disabled">
-                                                        CAN NOT
-                                                    </button>
-                                                @endif
                                             </td>
                                             <td class="align-middle">
                                                 <div class="d-flex px-2 py-1">

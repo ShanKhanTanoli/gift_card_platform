@@ -1,14 +1,15 @@
 <div class="container-fluid py-4">
-    <!--Begin::Card Status-->
+    <!--Begin::Vouchers Status-->
     @include(
-        'livewire.client.dashboard.cards.partials.card-status'
+        'livewire.client.dashboard.vouchers.partials.voucher-status'
     )
-    <!--End::Card Status-->
+    <!--End::Vouchers Status-->
+
     <!--Begin::Errors-->
     @include('errors.alerts')
     <!--End::Errors-->
     <div class="row">
-        <!--Begin::Card-->
+        <!--Begin::Voucher-->
         <div class="col-xl-4 mb-xl-0 mb-4">
             <div class="card bg-transparent shadow-xl" id="PrintDev">
                 <div class="overflow-hidden position-relative border-radius-xl">
@@ -56,13 +57,13 @@
                 </div>
             </div>
         </div>
-        <!--End::Card-->
+        <!--End::Voucher-->
 
-        <!--Begin::Card Information-->
+        <!--Begin::Voucher Information-->
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header pb-0">
-                    <h6 class="mb-0">Card Information</h6>
+                    <h6 class="mb-0">Voucher Information</h6>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -75,11 +76,10 @@
                                     </span>
                                 </span>
                                 <span class="mb-2 text-xs">
-                                    Card:
+                                    Voucher:
                                     @if ($find = Card::FindById($card->card_id))
                                         <span class="badge bg-info ms-sm-2">
                                             {{ Str::substr($find->name, 0, 15) }}
-
                                         </span>
                                     @else
                                         <span class="badge bg-danger ms-sm-2">
@@ -120,86 +120,31 @@
                                     </span>
                                 </span>
                             </div>
-                            <!--Begin::Card is Banned-->
+                            <!--Begin::Voucher is Banned-->
                             @if (!$card->trashed())
-                                <!--Begin::Card is Expired-->
+                                <!--Begin::Voucher is Expired-->
                                 @if (!$card->isExpired())
                                     <div class="ms-auto text-end">
-                                        <a class="btn btn-link text-dark px-3 mb-0"
-                                            href="{{ route('ClientRechargeCard', $card->slug) }}">
-                                            <i class="fas fa-money-bill text-sm me-2">
-                                            </i>
-                                            Recharge
-                                        </a>
                                         <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow" <i
                                             class="fas fa-print text-sm me-2">
                                             </i>
-                                            Print Card
+                                            Print Voucher
                                         </button>
                                     </div>
                                 @endif
-                                <!--End::Card is Expired-->
+                                <!--End::Voucher is Expired-->
                             @endif
-                            <!--End::Card is Banned-->
+                            <!--End::Voucher is Banned-->
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <!--End::Card Information-->
-
+        <!--End::Voucher Information-->
     </div>
-    <div class="row mt-4">
-
-        <!--Begin::Card Recharge History-->
-        <div class="col-lg-12 col-12">
-            <div class="card h-100 mb-4">
-                <div class="card-header pb-0 px-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="mb-0">Your Recharge History</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body pt-4 p-3">
-                    <ul class="list-group">
-                        @forelse($recharge as $payment)
-                            <li
-                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-column">
-                                        <h6 class="text-xs">
-                                            {{ date('d M Y', strtotime($payment->created_at)) }}
-                                        </h6>
-                                    </div>
-                                </div>
-                                <div
-                                    class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                                    {{ $payment->amount }}
-                                    {{ strtoupper(Business::Currency($card->user_id)) }}
-                                </div>
-                            </li>
-                        @empty
-                            <li
-                                class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                                <div class="d-flex align-items-center">
-                                    <h6 class="text-center">
-                                        No recharge found
-                                    </h6>
-                                </div>
-                            </li>
-                        @endforelse
-                    </ul>
-                    {{ $recharge->render() }}
-                </div>
-            </div>
-        </div>
-        <!--End::Card Recharge History-->
-
-    </div>
-    <!--Begin::Card is Banned-->
+    <!--Begin::Voucher is Banned-->
     @if (!$card->trashed())
-        <!--Begin::Card is Expired-->
+        <!--Begin::Voucher is Expired-->
         @if (!$card->isExpired())
             <script>
                 $(document).ready(function() {
@@ -216,7 +161,7 @@
                 });
             </script>
         @endif
-        <!--End::Card is Expired-->
+        <!--End::Voucher is Expired-->
     @endif
-    <!--End::Card is Banned-->
+    <!--End::Voucher is Banned-->
 </div>

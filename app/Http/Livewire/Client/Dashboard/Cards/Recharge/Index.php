@@ -13,10 +13,10 @@ class Index extends Component
 {
     public $card, $holder_name, $card_number, $card_cvc, $card_expiry, $balance;
 
-    public function mount($code)
+    public function mount($slug)
     {
         //Begin::If this Client owns a Card
-        if ($card = Client::FindCard(Auth::user()->id, $code)) {
+        if ($card = Client::FindCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
         } else {
             session()->flash('error', 'No such card found');
@@ -53,7 +53,7 @@ class Index extends Component
         $currency = Business::Currency($this->card->user_id);
         try {
             Stripe::RechargeVoucher($card_data, $balance, $currency, $this->card, Auth::user()->id);
-            return redirect(route('ClientRechargeCard',$this->card->code));
+            return redirect(route('ClientRechargeCard',$this->card->slug));
         } catch (Exception $e) {
             return session()->flash('error', $e->getMessage());
         }

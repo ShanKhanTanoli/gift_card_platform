@@ -6,11 +6,19 @@ use App\Http\Livewire\Client\Dashboard\Index as ClientDashboard;
 
 /*Begin::Cards*/
 use App\Http\Livewire\Client\Dashboard\Cards\Index as Cards;
-use App\Http\Livewire\Client\Dashboard\Tickets\Index as Tickets;
-use App\Http\Livewire\Client\Dashboard\Vouchers\Index as Vouchers;
 use App\Http\Livewire\Client\Dashboard\Cards\View\Index as ViewCard;
 use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Index as RechargeCard;
 /*End::Cards*/
+
+/*Begin::Tickets*/
+use App\Http\Livewire\Client\Dashboard\Tickets\Index as Tickets;
+use App\Http\Livewire\Client\Dashboard\Tickets\View\Index as ViewTicket;
+/*End::Tickets*/
+
+/*Begin::Vouchers*/
+use App\Http\Livewire\Client\Dashboard\Vouchers\Index as Vouchers;
+use App\Http\Livewire\Client\Dashboard\Vouchers\View\Index as ViewVoucher;
+/*End::Vouchers*/
 
 /*Begin::Settings*/
 use App\Http\Livewire\Client\Dashboard\Settings\Profile\Index as EditProfile;
@@ -31,18 +39,31 @@ Route::middleware(['auth', 'client'])->prefix('Client')->group(function () {
     Route::get('Cards', Cards::class)
         ->name('ClientCards');
 
-    Route::get('Tickets', Tickets::class)
-        ->name('ClientTickets');
-
-    Route::get('Vouchers', Vouchers::class)
-        ->name('ClientVouchers');
-
     Route::get('RechargeCard/{slug}', RechargeCard::class)
         ->name('ClientRechargeCard');
 
     Route::get('ViewCard/{slug}', ViewCard::class)
         ->name('ClientViewCard');
+        
     /*End::Cards*/
+
+        /*Begin::Tickets*/
+        Route::get('Tickets', Tickets::class)
+        ->name('ClientTickets');
+
+    Route::get('ViewTicket/{slug}', ViewTicket::class)
+        ->name('ClientViewTicket');
+        
+    /*End::Tickets*/
+
+            /*Begin::Vouchers*/
+            Route::get('Vouchers', Vouchers::class)
+            ->name('ClientVouchers');
+    
+        Route::get('ViewVoucher/{slug}', ViewVoucher::class)
+            ->name('ClientViewVoucher');
+            
+        /*End::Vouchers*/
 
     /*Begin::Payments*/
     Route::get('Payments', Payments::class)->name('ClientPayments');

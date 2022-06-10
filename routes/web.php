@@ -3,13 +3,23 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use FrittenKeeZ\Vouchers\Models\Voucher;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 //Auth::routes();
 
 Route::get('debug', function () {
 
-    dd('debug');
+    $voucher = Vouchers::withType('ticket')
+        ->withCharacters("abcdefghijklmnop")
+        ->withoutSeparator()
+        ->withCard(2)
+        ->withPrice(0)
+        ->withBalance(10)
+        ->withOwner(2)
+        ->create();
+
+    dd($voucher);
 
     //Verified Business Account
     $verified_business = 'acct_1KVjQIRYVF7b7SlI';

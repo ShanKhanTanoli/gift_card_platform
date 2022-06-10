@@ -31,9 +31,6 @@
                                         Payment Date
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Status
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View Card
                                     </th>
                                 </tr>
@@ -54,11 +51,19 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            {{ $card->code }}
+                                                        <!--Begin::If Voucher Found-->
+                                                        @if ($voucher = Voucher::FindById($payment->voucher_id))
+                                                            <!--Begin::If Card Found-->
+                                                            @if ($card = Card::FindById($voucher->card_id))
+                                                                {{ Str::substr($card->name, 0, 20) }}
+                                                            @else
+                                                                {{ __('Not Found') }}
+                                                            @endif
+                                                            <!--End::If Card Found-->
                                                         @else
                                                             {{ __('Not Found') }}
                                                         @endif
+                                                        <!--End::If Voucher Found-->
                                                     </h6>
                                                 </div>
                                             </div>
@@ -77,11 +82,19 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            {{ date('d M Y', strtotime($card->expires_at)) }}
-                                                        @else
-                                                            {{ __('Not Found') }}
-                                                        @endif
+                                                          <!--Begin::If Voucher Found-->
+                                                          @if ($voucher = Voucher::FindById($payment->voucher_id))
+                                                          <!--Begin::If Card Found-->
+                                                          @if ($card = Card::FindById($voucher->card_id))
+                                                          {{ date('d M Y', strtotime($card->expires_at)) }}
+                                                          @else
+                                                              {{ __('Not Found') }}
+                                                          @endif
+                                                          <!--End::If Card Found-->
+                                                      @else
+                                                          {{ __('Not Found') }}
+                                                      @endif
+                                                      <!--End::If Voucher Found-->
                                                     </h6>
                                                 </div>
                                             </div>
@@ -91,27 +104,6 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ date('d M Y', strtotime($payment->created_at)) }}
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            @if ($card->isExpired())
-                                                                <span class="badge bg-gradient-danger">
-                                                                    Expired
-                                                                </span>
-                                                            @else
-                                                                <span class="badge bg-gradient-success">
-                                                                    Active
-                                                                </span>
-                                                            @endif
-                                                        @else
-                                                            {{ __('Not Found') }}
-                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>

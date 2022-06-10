@@ -40,6 +40,38 @@
             </li>
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Tickets
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Client/Tickets') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('ClientTickets') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Tickets
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Vouchers
+                </h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Client/Vouchers') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('ClientVouchers') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Vouchers
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
                     Payments
                 </h6>
             </li>

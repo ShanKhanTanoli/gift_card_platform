@@ -63,7 +63,7 @@ class Index extends Component
                             ->withCard($card->id)
                             ->withPrice($card->price)
                             ->withBalance($card->balance)
-                            ->withOwner(Auth::user()->id)
+                            ->withOwner($card->user_id)
                             ->withExpireDate($expiry)
                             ->create();
                     } //End::If Card is a Ticket
@@ -75,7 +75,7 @@ class Index extends Component
                             ->withCard($card->id)
                             ->withPrice($card->price)
                             ->withBalance($card->balance)
-                            ->withOwner(Auth::user()->id)
+                            ->withOwner($card->user_id)
                             ->withExpireDate($expiry)
                             ->create();
                     } //End::If Card is a Voucher
@@ -86,7 +86,7 @@ class Index extends Component
                             ->withCard($card->id)
                             ->withPrice($card->price)
                             ->withBalance($card->balance)
-                            ->withOwner(Auth::user()->id)
+                            ->withOwner($card->user_id)
                             ->withExpireDate($expiry)
                             ->create();
                     } //End::If Card is a Card
@@ -103,8 +103,21 @@ class Index extends Component
                             'comission_percentage' => 0,
                             'final_amount' => 0,
                         ]);
+
+                        //Flash a success message
                         session()->flash('success', 'Paid Successfully');
-                        return redirect(route('ClientCards'));
+                        //Begin::If Card is a Card
+                        if ($card->type == "card") {
+                            return redirect(route('ClientCards'));
+                        }
+                        //Begin::If Card is a Ticket
+                        if ($card->type == "ticket") {
+                            return redirect(route('ClientTickets'));
+                        }
+                        //Begin::If Card is a Voucher
+                        if ($card->type == "voucher") {
+                            return redirect(route('ClientVouchers'));
+                        }
                     } else return session()->flash('error', 'Something went wrong');
                 } catch (Exception $e) {
                     return session()->flash('error', $e->getMessage());

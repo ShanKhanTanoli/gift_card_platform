@@ -22,13 +22,13 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($code)
+    public function View($slug)
     {
-        return redirect(route('ClientViewCard', $code));
+        return redirect(route('ClientViewCard', $slug));
     }
 
-    public function Recharge($code)
+    public function Recharge($slug)
     {
-        return redirect(route('ClientRechargeCard', $code));
+        return redirect(route('ClientRechargeCard', $slug));
     }
 }

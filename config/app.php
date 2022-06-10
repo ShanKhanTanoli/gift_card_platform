@@ -199,6 +199,7 @@ return [
         'Admin' => App\Helpers\Admin\Admin::class,
         'Client' => App\Helpers\Client\Client::class,
         'Stripe' => App\Helpers\Stripe\Stripe::class,
+        'Voucher' => App\Helpers\Voucher\Voucher::class,
         'Business' => App\Helpers\Business\Business::class,
         'Currency' => App\Helpers\Currency\Currency::class,
         'Payments' => App\Helpers\Payments\Payments::class,

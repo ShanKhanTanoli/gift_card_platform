@@ -16,10 +16,10 @@ class Index extends Component
     
     public $card;
 
-    public function mount($code)
+    public function mount($slug)
     {
         //Begin::If this Client owns a Card
-        if ($card = Client::FindCard(Auth::user()->id, $code)) {
+        if ($card = Client::FindCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
         } else {
             session()->flash('error', 'No such card found');
