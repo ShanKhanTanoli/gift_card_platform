@@ -27,8 +27,8 @@ class Index extends Component
         return redirect(route('ClientViewCard', $slug));
     }
 
-    public function Recharge($slug)
+    public function More($slug)
     {
-        return redirect(route('ClientRechargeCard', $slug));
+        return redirect(route('ClientCardMore', $slug));
     }
 }

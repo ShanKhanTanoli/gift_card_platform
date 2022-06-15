@@ -93,7 +93,7 @@
                                         Expiry
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Recharge
+                                        More
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Status
@@ -166,11 +166,11 @@
                                         <td class="align-middle">
                                             @if ($voucher->type == 'card')
                                                 <button class="btn btn-sm btn-info"
-                                                    wire:click='Recharge("{{ $voucher->slug }}")'>
-                                                    <span wire:loading wire:target='Recharge("{{ $voucher->slug }}")'
+                                                    wire:click='More("{{ $voucher->slug }}")'>
+                                                    <span wire:loading wire:target='More("{{ $voucher->slug }}")'
                                                         class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
-                                                    Recharge
+                                                    More
                                                 </button>
                                             @else
                                                 <button class="btn btn-sm btn-danger disabled">
