@@ -19,19 +19,19 @@
                                         #
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Card
+                                        Type
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Paid
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Payment Type
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Card Expiry
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Payment Date
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View Card
                                     </th>
                                 </tr>
                             </thead>
@@ -55,7 +55,7 @@
                                                         @if ($voucher = Voucher::FindById($payment->voucher_id))
                                                             <!--Begin::If Card Found-->
                                                             @if ($card = Card::FindById($voucher->card_id))
-                                                                {{ Str::substr($card->name, 0, 20) }}
+                                                                {{ Str::substr(Str::upper($card->type), 0, 20) }}
                                                             @else
                                                                 {{ __('Not Found') }}
                                                             @endif
@@ -82,19 +82,28 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                          <!--Begin::If Voucher Found-->
-                                                          @if ($voucher = Voucher::FindById($payment->voucher_id))
-                                                          <!--Begin::If Card Found-->
-                                                          @if ($card = Card::FindById($voucher->card_id))
-                                                          {{ date('d M Y', strtotime($card->expires_at)) }}
-                                                          @else
-                                                              {{ __('Not Found') }}
-                                                          @endif
-                                                          <!--End::If Card Found-->
-                                                      @else
-                                                          {{ __('Not Found') }}
-                                                      @endif
-                                                      <!--End::If Voucher Found-->
+                                                        {{ Str::upper($payment->payment_type) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        <!--Begin::If Voucher Found-->
+                                                        @if ($voucher = Voucher::FindById($payment->voucher_id))
+                                                            <!--Begin::If Card Found-->
+                                                            @if ($card = Card::FindById($voucher->card_id))
+                                                                {{ date('d M Y', strtotime($card->expires_at)) }}
+                                                            @else
+                                                                {{ __('Not Found') }}
+                                                            @endif
+                                                            <!--End::If Card Found-->
+                                                        @else
+                                                            {{ __('Not Found') }}
+                                                        @endif
+                                                        <!--End::If Voucher Found-->
                                                     </h6>
                                                 </div>
                                             </div>
@@ -107,16 +116,6 @@
                                                     </h6>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-sm btn-info"
-                                                wire:click='ViewCard("{{ $payment->voucher_id }}")'>
-                                                <span wire:loading
-                                                    wire:target='ViewCard("{{ $payment->voucher_id }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                View
-                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach

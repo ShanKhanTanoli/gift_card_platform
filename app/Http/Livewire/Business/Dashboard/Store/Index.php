@@ -20,16 +20,13 @@ class Index extends Component
         if ($store = Business::Store(Auth::user()->id)) {
             $this->store = $store;
             $this->business = $store->user_id;
-        }else{
-
+        } else {
         }
     }
 
     public function render()
     {
-        $cards = Business::CardsLatestUnsoldPaginate(Auth::user()->id, 6);
         return view('livewire.business.dashboard.store.index')
-            ->with(['cards' => $cards])
             ->extends('layouts.dashboard')
             ->section('content');
     }

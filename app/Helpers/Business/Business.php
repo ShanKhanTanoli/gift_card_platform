@@ -4,13 +4,15 @@ namespace App\Helpers\Business;
 
 use App\Helpers\Business\Traits\BusinessCards;
 use App\Helpers\Business\Traits\BusinessStore;
+use App\Helpers\Business\Traits\BusinessTicket;
+use App\Helpers\Business\Traits\BusinessVoucher;
 use App\Models\User;
 use App\Helpers\Currency\Currency;
 use Illuminate\Support\Facades\Auth;
 
 class Business
 {
-    use BusinessCards, BusinessStore;
+    use BusinessCards, BusinessTicket, BusinessVoucher, BusinessStore;
 
     public static function Is()
     {

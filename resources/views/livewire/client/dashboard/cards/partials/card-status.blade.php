@@ -21,8 +21,15 @@
                         This Card is not Active.
                     </strong>
                 </div>
+            @else
+            <!--Begin::Card is Active-->
+            <div class="alert alert-success">
+                <strong class="text-white">
+                    This Card is Active.
+                </strong>
+            </div>
             @endif
-            <!--End::Card is not Active-->
+            <!--End::Card is Active-->
         @endif
         <!--End::Card is Expired-->
     @endif

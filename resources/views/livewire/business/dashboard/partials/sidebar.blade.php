@@ -39,6 +39,28 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Tickets') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessTickets') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Tickets
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Vouchers') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessVouchers') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">
+                        Vouchers
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white @if (Request::path() == 'Business/RedeemCard') active bg-gradient-primary @else '' @endif"
                     href="{{ route('BusinessRedeemCard') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">

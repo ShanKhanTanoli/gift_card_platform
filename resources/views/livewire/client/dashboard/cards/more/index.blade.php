@@ -1,5 +1,10 @@
 <div class="container-fluid my-3 py-3">
     <div class="row mb-5">
+        <!--Begin::Card Status-->
+        @include('livewire.client.dashboard.cards.partials.card-status')
+        <!--Begin::Card Status-->
+    </div>
+    <div class="row mb-5">
         <!--Begin::Sidebar-->
         @include('livewire.client.dashboard.cards.partials.tab-menu')
         <!--Begin::Sidebar-->
@@ -19,15 +24,21 @@
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="container">
-                                <form>
+                                <form wire:submit.prevent='Update'>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group input-group-static my-3">
-                                                <label for="name">Name</label>
-                                                <input type="text" wire:model.defer='name' value="{{ old('name') }}"
-                                                    class="form-control  @error('name') is-invalid @enderror"
-                                                    placeholder="Enter Name">
-                                                @error('name')
+                                        <div class="col-md-12">
+                                            <div class="form-check form-switch">
+                                                <input wire:model.defer='activate' class="form-check-input"
+                                                    type="checkbox" id="activate" checked="">
+                                                <label class="form-check-label @error('activate') is-invalid @enderror"
+                                                    for="activate">
+                                                    @if ($card->isActive())
+                                                        Deactivate Card
+                                                    @else
+                                                        Activate Card
+                                                    @endif
+                                                </label>
+                                                @error('activate')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -35,52 +46,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <div class="input-group input-group-static my-3">
-                                                <label for="user_name">User Name</label>
-                                                <input type="text" wire:model.defer='user_name'
-                                                    value="{{ old('user_name') }}"
-                                                    class="form-control  @error('user_name') is-invalid @enderror"
-                                                    placeholder="Enter User Name">
-                                                @error('user_name')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group input-group-static my-3">
-                                                <label for="email">Email</label>
-                                                <input type="email" wire:model.defer='email'
-                                                    value="{{ old('email') }}"
-                                                    class="form-control  @error('email') is-invalid @enderror"
-                                                    placeholder="Enter Email">
-                                                @error('email')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group input-group-static my-3">
-                                                <label for="number">Number</label>
-                                                <input type="text" wire:model.defer='number'
-                                                    value="{{ old('number') }}"
-                                                    class="form-control  @error('number') is-invalid @enderror"
-                                                    placeholder="Enter Number">
-                                                @error('number')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-2">
-                                        <div class="col-md-6">
-                                            <button type="button" class="btn btn-primary" wire:attr='disabled'
-                                                wire:click='UpdateProfile'>
+                                            <button type="submit" class="btn btn-primary" wire:attr='disabled'>
                                                 <span wire:loading class="spinner-border spinner-border-sm"
                                                     role="status" aria-hidden="true"></span>
                                                 Save Changes

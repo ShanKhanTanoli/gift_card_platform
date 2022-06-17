@@ -11,7 +11,8 @@ trait BusinessCards
     public static function Cards($business)
     {
         return Card::withTrashed()
-            ->where('user_id', $business);
+            ->where('user_id', $business)
+            ->where('type','card');
     }
 
     public static function CardsLatestPaginate($business, $quantity)

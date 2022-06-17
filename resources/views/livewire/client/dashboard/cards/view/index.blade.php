@@ -1,8 +1,7 @@
 <div class="container-fluid py-4">
     <!--Begin::Card Status-->
     @include(
-        'livewire.client.dashboard.cards.partials.card-status'
-    )
+        'livewire.client.dashboard.cards.partials.card-status')
     <!--End::Card Status-->
     <!--Begin::Errors-->
     @include('errors.alerts')

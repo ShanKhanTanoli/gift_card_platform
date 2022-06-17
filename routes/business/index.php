@@ -15,6 +15,28 @@ use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
 use App\Http\Livewire\Business\Dashboard\Cards\More\Index as CardMore;
 /*End::Cards*/
 
+/*Begin::Tickets*/
+use App\Http\Livewire\Business\Dashboard\Tickets\Index as Tickets;
+use App\Http\Livewire\Business\Dashboard\Tickets\Sold\Index as SoldTickets;
+use App\Http\Livewire\Business\Dashboard\Tickets\Check\Index as RedeemTicket;
+use App\Http\Livewire\Business\Dashboard\Tickets\View\Index as ViewTicket;
+use App\Http\Livewire\Business\Dashboard\Tickets\Issue\Index as IssueTicket;
+use App\Http\Livewire\Business\Dashboard\Tickets\Add\Index as AddTicket;
+use App\Http\Livewire\Business\Dashboard\Tickets\Edit\Index as EditTicket;
+use App\Http\Livewire\Business\Dashboard\Tickets\More\Index as TicketMore;
+/*End::Tickets*/
+
+/*Begin::Vouchers*/
+use App\Http\Livewire\Business\Dashboard\Vouchers\Index as Vouchers;
+use App\Http\Livewire\Business\Dashboard\Vouchers\Sold\Index as SoldVouchers;
+use App\Http\Livewire\Business\Dashboard\Vouchers\Check\Index as RedeemVoucher;
+use App\Http\Livewire\Business\Dashboard\Vouchers\View\Index as ViewVoucher;
+use App\Http\Livewire\Business\Dashboard\Vouchers\Issue\Index as IssueVoucher;
+use App\Http\Livewire\Business\Dashboard\Vouchers\Add\Index as AddVoucher;
+use App\Http\Livewire\Business\Dashboard\Vouchers\Edit\Index as EditVoucher;
+use App\Http\Livewire\Business\Dashboard\Vouchers\More\Index as VoucherMore;
+/*End::Vouchers*/
+
 /*Begin::Store*/
 use App\Http\Livewire\Business\Dashboard\Store\Index as Store;
 /*End::Store*/
@@ -67,6 +89,59 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('Card/{slug}/More', CardMore::class)
         ->name('BusinessCardMore');
     /*End::Cards*/
+
+
+    /*Begin::Tickets*/
+    Route::get('Tickets', Tickets::class)
+        ->name('BusinessTickets');
+
+    Route::get('SoldTickets', SoldTickets::class)
+        ->name('BusinessSoldTickets');
+
+    Route::get('RedeemTicket', RedeemTicket::class)
+        ->name('BusinessRedeemTicket');
+
+    Route::get('ViewTicket/{slug}', ViewTicket::class)
+        ->name('BusinessViewTicket');
+
+    Route::get('IssueTicket/{slug}', IssueTicket::class)
+        ->name('BusinessIssueTicket');
+
+    Route::get('AddTicket', AddTicket::class)
+        ->name('BusinessAddTicket');
+
+    Route::get('EditTicket/{slug}', EditTicket::class)
+        ->name('BusinessEditTicket');
+
+    Route::get('Ticket/{slug}/More', TicketMore::class)
+        ->name('BusinessTicketMore');
+    /*End::Tickets*/
+
+    /*Begin::Vouchers*/
+    Route::get('Vouchers', Vouchers::class)
+        ->name('BusinessVouchers');
+
+    Route::get('SoldVouchers', SoldVouchers::class)
+        ->name('BusinessSoldVouchers');
+
+    Route::get('RedeemVoucher', RedeemVoucher::class)
+        ->name('BusinessRedeemVoucher');
+
+    Route::get('ViewVoucher/{slug}', ViewVoucher::class)
+        ->name('BusinessViewVoucher');
+
+    Route::get('IssueVoucher/{slug}', IssueVoucher::class)
+        ->name('BusinessIssueVoucher');
+
+    Route::get('AddVoucher', AddVoucher::class)
+        ->name('BusinessAddVoucher');
+
+    Route::get('EditVoucher/{slug}', EditVoucher::class)
+        ->name('BusinessEditVoucher');
+
+    Route::get('Voucher/{slug}/More', VoucherMore::class)
+        ->name('BusinessVoucherMore');
+    /*End::Vouchers*/
 
     /*Begin::Store*/
     Route::get('Store', Store::class)->name('BusinessStore');

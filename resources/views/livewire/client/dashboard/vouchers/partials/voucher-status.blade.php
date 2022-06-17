@@ -21,6 +21,12 @@
                         This Voucher is not Active.
                     </strong>
                 </div>
+            @else
+                <div class="alert alert-success">
+                    <strong class="text-white">
+                        This Voucher is Active.
+                    </strong>
+                </div>
             @endif
             <!--End::Voucher is not Active-->
         @endif

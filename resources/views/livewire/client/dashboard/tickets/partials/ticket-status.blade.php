@@ -21,6 +21,12 @@
                         This Ticket is not Active.
                     </strong>
                 </div>
+            @else
+                <div class="alert alert-success">
+                    <strong class="text-white">
+                        This Ticket is Active.
+                    </strong>
+                </div>
             @endif
             <!--End::Ticket is not Active-->
         @endif
