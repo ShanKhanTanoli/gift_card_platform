@@ -13,7 +13,8 @@ class Voucher
     /*Begin::Vouchers*/
     public static function All()
     {
-        return VoucherModel::latest();
+        return VoucherModel::where('type', 'voucher')
+            ->latest();
     }
 
     public static function LatestPaginate($quantity)

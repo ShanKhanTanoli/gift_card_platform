@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\Issue;
+namespace App\Http\Livewire\Business\Dashboard\Tickets\Issue;
 
 use Livewire\Component;
 use App\Helpers\Business\Business;
@@ -16,10 +16,10 @@ class Index extends Component
         if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
             //This feature for later
-            return redirect(route('BusinessCards'));
+            return redirect(route('BusinessTickets'));
         } else {
             session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCards'));
+            return redirect(route('BusinessTickets'));
         } //End::If this Business owns a card
     }
 

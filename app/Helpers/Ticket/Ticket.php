@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Helpers\Card;
+namespace App\Helpers\Ticket;
 
 use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
 use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
-class Card
+class Ticket
 {
 
-    /*Begin::Cards*/
+    /*Begin::Tickets*/
     public static function All()
     {
-        return CardModel::where('type', 'card')->latest();
+        return CardModel::where('type', 'ticket')->latest();
     }
 
     public static function LatestPaginate($quantity)

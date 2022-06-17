@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\Edit;
+namespace App\Http\Livewire\Business\Dashboard\Tickets\Edit;
 
 use Exception;
 use Livewire\Component;

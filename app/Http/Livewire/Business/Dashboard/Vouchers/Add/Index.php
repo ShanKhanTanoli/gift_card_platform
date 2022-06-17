@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\Add;
+namespace App\Http\Livewire\Business\Dashboard\Vouchers\Add;
 
 use DateTime;
 use Exception;
@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.cards.add.index')
+        return view('livewire.business.dashboard.vouchers.add.index')
             ->extends('layouts.dashboard');
     }
 
@@ -60,7 +60,7 @@ class Index extends Component
         try {
             $card = Card::create($data);
             session()->flash('success', 'Added Successfully');
-            return redirect(route('BusinessEditCard', $card->slug));
+            return redirect(route('BusinessEditVoucher', $card->slug));
         } catch (Exception $e) {
             return session()->flash('error', 'Something went wrong');
         }

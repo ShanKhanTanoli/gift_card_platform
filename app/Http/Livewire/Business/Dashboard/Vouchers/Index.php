@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards;
+namespace App\Http\Livewire\Business\Dashboard\Vouchers;
 
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,8 +17,8 @@ class Index extends Component
 
     public function render()
     {
-        $cards = Business::CardsLatestPaginate(Auth::user()->id, 10);
-        return view('livewire.business.dashboard.cards.index')
+        $cards = Business::VouchersLatestPaginate(Auth::user()->id, 10);
+        return view('livewire.business.dashboard.vouchers.index')
             ->with(['cards' => $cards])
             ->extends('layouts.dashboard')
             ->section('content');
@@ -26,34 +26,34 @@ class Index extends Component
 
     public function Issue($slug)
     {
-        return redirect(route('BusinessIssueCard', $slug));
+        return redirect(route('BusinessIssueVoucher', $slug));
     }
 
     public function View($slug)
     {
-        return redirect(route('BusinessViewCard', $slug));
+        return redirect(route('BusinessViewVoucher', $slug));
     }
 
 
     public function Edit($slug)
     {
-        return redirect(route('BusinessEditCard', $slug));
+        return redirect(route('BusinessEditVoucher', $slug));
     }
 
     public function DeleteConfirmation($slug)
     {
-        if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
+        if ($card = Business::FindVoucherBySlug(Auth::user()->id, $slug)) {
             $this->delete = $card;
             $this->emit(['delete']);
-        } else return session()->flash('error', 'No such card found');
+        } else return session()->flash('error', 'No such voucher found');
     }
 
     public function Delete($id)
     {
-        if ($card = Business::FindCardById(Auth::user()->id, $id)) {
+        if ($card = Business::FindVoucherById(Auth::user()->id, $id)) {
             $card->delete();
             session()->flash('success', 'Deleted Successfully');
-            return redirect(route('BusinessCards'));
-        } else return session()->flash('error', 'No such card found');
+            return redirect(route('BusinessVouchers'));
+        } else return session()->flash('error', 'No such voucher found');
     }
 }

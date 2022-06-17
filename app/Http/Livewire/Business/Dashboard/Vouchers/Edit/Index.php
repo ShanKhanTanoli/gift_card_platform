@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\Edit;
+namespace App\Http\Livewire\Business\Dashboard\Vouchers\Edit;
 
 use Exception;
 use Livewire\Component;
@@ -19,10 +19,10 @@ class Index extends Component
 
     public function mount($slug)
     {
-        //Begin::If this Business owns a Card
-        if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
+        //Begin::If this Business owns a Voucher
+        if ($card = Business::FindVoucherBySlug(Auth::user()->id, $slug)) {
 
-            //Begin::If Card is Banned
+            //Begin::If Voucher is Banned
             if (!$card->trashed()) {
 
                 $this->card = $card;
@@ -35,28 +35,28 @@ class Index extends Component
                 $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
                 $this->visibility = $card->visibility;
             } else {
-                session()->flash('error', 'This Card is banned');
-                return redirect(route('BusinessCards'));
-            } //End::If Card is Banned
+                session()->flash('error', 'This voucher is banned');
+                return redirect(route('BusinessVouchers'));
+            } //End::If Voucher is Banned
 
         } else {
-            session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCards'));
-        } //End::If this Business owns a card
+            session()->flash('error', 'No such voucher found');
+            return redirect(route('BusinessVouchers'));
+        } //End::If this Business owns a Voucher
     }
 
     public function render()
     {
-        return view('livewire.business.dashboard.cards.edit.index')
+        return view('livewire.business.dashboard.vouchers.edit.index')
             ->extends('layouts.dashboard');
     }
 
     public function Update()
     {
-        //Begin::If this Business owns a card
-        if (Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
+        //Begin::If this Business owns a voucher
+        if (Business::FindVoucherBySlug(Auth::user()->id, $this->card->slug)) {
 
-            //Begin::If Card is Banned
+            //Begin::If Voucher is Banned
             if (!$this->card->trashed()) {
 
                 $validated = $this->validate([
@@ -70,26 +70,26 @@ class Index extends Component
                 try {
                     $this->card->update($validated);
                     session()->flash('success', 'Updated Successfully');
-                    return redirect(route('BusinessEditCard', $this->card->slug));
+                    return redirect(route('BusinessEditVoucher', $this->card->slug));
                 } catch (Exception $e) {
                     return session()->flash('error', $e->getMessage());
                 }
             } else {
                 session()->flash('error', 'This Card is banned');
-                return redirect(route('BusinessCards'));
-            } //End::If Card is Banned
+                return redirect(route('BusinessVouchers'));
+            } //End::If Voucher is Banned
 
         } else {
             session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCards'));
+            return redirect(route('BusinessVouchers'));
         }
     }
 
 
     public function Customize()
     {
-        //Begin::If this Business owns a card
-        if (Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
+        //Begin::If this Business owns a voucher
+        if (Business::FindVoucherBySlug(Auth::user()->id, $this->card->slug)) {
             $validated = $this->validate([
                 'text_color' => 'required|string',
                 'temporary_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -115,13 +115,13 @@ class Index extends Component
             try {
                 $this->card->update($data);
                 session()->flash('success', 'Updated Successfully');
-                return redirect(route('BusinessEditCard', $this->card->slug));
+                return redirect(route('BusinessEditVoucher', $this->card->slug));
             } catch (Exception $e) {
                 return session()->flash('error', $e->getMessage());
             }
         } else {
-            session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCards'));
+            session()->flash('error', 'No such voucher found');
+            return redirect(route('BusinessVouchers'));
         }
     }
 }

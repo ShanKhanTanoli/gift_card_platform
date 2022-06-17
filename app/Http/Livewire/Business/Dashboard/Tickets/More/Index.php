@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\More;
+namespace App\Http\Livewire\Business\Dashboard\Tickets\More;
 
 use Livewire\Component;
 

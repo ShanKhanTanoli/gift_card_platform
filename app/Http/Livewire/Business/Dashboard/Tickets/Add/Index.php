@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Business\Dashboard\Cards\Add;
+namespace App\Http\Livewire\Business\Dashboard\Tickets\Add;
 
 use DateTime;
 use Exception;
@@ -15,7 +15,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.cards.add.index')
+        return view('livewire.business.dashboard.tickets.add.index')
             ->extends('layouts.dashboard');
     }
 
