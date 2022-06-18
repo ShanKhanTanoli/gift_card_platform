@@ -3,7 +3,7 @@
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                 <h6 class="text-white text-capitalize ps-3">
-                    Update Card
+                    Update Voucher
                 </h6>
             </div>
         </div>
@@ -11,29 +11,12 @@
             <div class="container">
                 <form wire:submit.prevent='Update'>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group input-group-static my-3">
                                 <label for="name">Name</label>
                                 <input type="text" wire:model.defer='name' value="{{ old('name') }}"
                                     class="form-control  @error('name') is-invalid @enderror" placeholder="Enter Name ">
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group input-group-static my-3">
-                                <label for="type">Card Type</label>
-                                <select wire:model.defer='type'
-                                    class="form-control  @error('type') is-invalid @enderror">
-                                    <option value="">Select Type</option>
-                                    <option value="card">Card</option>
-                                    <option value="ticket">Ticket</option>
-                                    <option value="voucher">Voucher</option>
-                                </select>
-                                @error('type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

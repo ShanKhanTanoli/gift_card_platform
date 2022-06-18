@@ -72,12 +72,12 @@ class Index extends Component
                     return session()->flash('error', $e->getMessage());
                 }
             } else {
-                session()->flash('error', 'This Card is banned');
+                session()->flash('error', 'This voucher is banned');
                 return redirect(route('BusinessVouchers'));
             } //End::If Voucher is Banned
 
         } else {
-            session()->flash('error', 'No such card found');
+            session()->flash('error', 'No such voucher found');
             return redirect(route('BusinessVouchers'));
         }
     }

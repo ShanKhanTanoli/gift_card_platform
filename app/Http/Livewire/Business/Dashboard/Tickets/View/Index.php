@@ -25,6 +25,7 @@ class Index extends Component
     {
         //Begin::If this Business owns a Ticket
         if ($card = Business::FindTicketBySlug(Auth::user()->id, $slug)) {
+            dd($card);
             $this->card = $card;
         } else {
             session()->flash('error', 'No such tickets found');

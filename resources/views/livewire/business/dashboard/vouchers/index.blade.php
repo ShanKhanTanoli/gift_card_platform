@@ -2,7 +2,7 @@
     @include('errors.alerts')
     <div class="row mb-4">
         <div class="col-xl-6 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('BusinessCards') }}">
+            <a href="{{ route('BusinessVouchers') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -11,10 +11,10 @@
                         </div>
                         <div class="text-end pt-1">
                             <p
-                                class="text-sm mb-0 text-capitalize @if (Request::path() == 'Business/Cards') text-primary @endif">
-                                Cards</p>
-                            <h4 class="mb-0 @if (Request::path() == 'Business/Cards') text-primary @endif">
-                                {{ Business::CountCards(Auth::user()->id) }}
+                                class="text-sm mb-0 text-capitalize @if (Request::path() == 'Business/Vouchers') text-primary @endif">
+                                Vouchers</p>
+                            <h4 class="mb-0 @if (Request::path() == 'Business/Vouchers') text-primary @endif">
+                                {{ Business::CountVouchers(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
             </a>
         </div>
         <div class="col-xl-6 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('BusinessAddCard') }}">
+            <a href="{{ route('BusinessAddVoucher') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -32,7 +32,7 @@
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Add New</p>
                             <h4 class="mb-0">
-                                Card
+                                Voucher
                             </h4>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Cards
+                            Vouchers
                         </h6>
                     </div>
                 </div>

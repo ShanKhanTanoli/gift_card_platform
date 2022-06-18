@@ -22,9 +22,6 @@ class Index extends Component
     public function Add()
     {
         $msg = [
-            'type.required' => 'Select card type',
-            'type.in' => 'Select card type',
-
             'price.required' => 'Enter Price',
             'price.numeric' => 'Enter Price',
 

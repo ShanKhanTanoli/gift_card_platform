@@ -59,7 +59,7 @@ class Index extends Component
         try {
             $card = Card::create($data);
             session()->flash('success', 'Added Successfully');
-            return redirect(route('BusinessEditCard', $card->slug));
+            return redirect(route('BusinessEditTicket', $card->slug));
         } catch (Exception $e) {
             return session()->flash('error', 'Something went wrong');
         }
