@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Admin\Dashboard\Cards\View;
+namespace App\Http\Livewire\Admin\Dashboard\Tickets\View;
 
 use Livewire\Component;
-use App\Helpers\Card\Card;
+use App\Helpers\Ticket\Ticket;
 use Livewire\WithPagination;
 use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
@@ -23,28 +23,28 @@ class Index extends Component
 
     public function mount($slug)
     {
-        //Begin::If Card Exists
-        if ($card = Card::FindBySlug($slug)) {
+        //Begin::If Ticket Exists
+        if ($card = Ticket::FindBySlug($slug)) {
             $this->card = $card;
             $this->business = Business::Find($this->card->owner_id);
         } else {
-            session()->flash('error', 'No such card found');
-            return redirect(route('AdminCards'));
+            session()->flash('error', 'No such ticket found');
+            return redirect(route('AdminTickets'));
         }
-        //End::If Card Exists
+        //End::If Ticket Exists
     }
 
     public function render()
     {
-        $recharge = Card::Recharge($this->card->id)
+        $recharge = Ticket::Recharge($this->card->id)
             ->latest()
             ->take($this->recharge_quantity)
             ->get();
-        $redeeming = Card::Redeem($this->card->id)
+        $redeeming = Ticket::Redeem($this->card->id)
             ->latest()
             ->take($this->redeem_quantity)
             ->get();
-        return view('livewire.admin.dashboard.cards.view.index')
+        return view('livewire.admin.dashboard.tickets.view.index')
             ->with([
                 'recharge' => $recharge,
                 'redeeming' => $redeeming
@@ -67,7 +67,7 @@ class Index extends Component
             'balance' => 'required|numeric',
         ]);
 
-        //Begin::If this card is not expired
+        //Begin::If this ticket is not expired
         if (!$this->card->isExpired()) {
             $this->card->update([
                 'balance' => $this->card->balance + $validated['balance'],
@@ -78,13 +78,13 @@ class Index extends Component
                 'user_id' => Auth::user()->id,
                 'amount' => $validated['balance'],
             ]);
-            session()->flash('success', 'Card has been recharged successfully');
-            return redirect(route('AdminViewCard', $this->card->code));
+            session()->flash('success', 'Ticket has been recharged successfully');
+            return redirect(route('AdminViewTicket', $this->card->code));
         } else {
-            session()->flash('error', 'Expired card can not be recharged');
-            return redirect(route('AdminViewCard', $this->card->code));
+            session()->flash('error', 'Expired ticket can not be recharged');
+            return redirect(route('AdminViewTicket', $this->card->code));
         }
-        //End::If this card is not expired
+        //End::If this ticket is not expired
     }
 
     public function Redeem()
@@ -96,37 +96,37 @@ class Index extends Component
 
         try {
 
-            //Begin::If Card has Zero Balance
+            //Begin::If Ticket has Zero Balance
             if ($this->card->balance != 0) {
 
-                //Begin::If Card has Enough Balance
+                //Begin::If Ticket has Enough Balance
                 if ($this->card->balance >= $validated['balance']) {
                     Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
                     $this->card->update([
                         'balance' => $this->card->balance - $validated['balance'],
                     ]);
                 } else {
-                    session()->flash('error', "Card has not enough balance");
-                    return redirect(route('AdminViewCard', $this->card->code));
+                    session()->flash('error', "Ticket has not enough balance");
+                    return redirect(route('AdminViewTicket', $this->card->code));
                 }
-                //End::If Card has Enough Balance
+                //End::If Ticket has Enough Balance
 
             } else {
-                session()->flash('error', "Card has zero balance");
-                return redirect(route('AdminViewCard', $this->card->code));
+                session()->flash('error', "Ticket has zero balance");
+                return redirect(route('AdminViewTicket', $this->card->code));
             }
-            //End::If Card has Zero Balance
+            //End::If Ticket has Zero Balance
 
-            session()->flash('success', 'Card has been redeemed successfully');
-            return redirect(route('AdminViewCard', $this->card->code));
+            session()->flash('success', 'Ticket has been redeemed successfully');
+            return redirect(route('AdminViewTicket', $this->card->code));
         } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('AdminViewCard', $this->card->code));
+            return redirect(route('AdminViewTicket', $this->card->code));
         } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('AdminViewCard', $this->card->code));
+            return redirect(route('AdminViewTicket', $this->card->code));
         }
 
-        //End::If this card is not expired
+        //End::If this ticket is not expired
     }
 }

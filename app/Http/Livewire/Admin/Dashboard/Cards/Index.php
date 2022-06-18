@@ -24,22 +24,20 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($code)
+    public function View($slug)
     {
-        return redirect(route('AdminViewCard', $code));
+        return redirect(route('AdminViewCard', $slug));
     }
 
 
-    public function Edit($code)
+    public function Edit($slug)
     {
-        if ($card = Card::Find($code)) {
-            return redirect(route('AdminEditCard', $card->code));
-        } else return session()->flash('error', 'No such card found');
+        return redirect(route('AdminEditCard', $slug));
     }
 
-    public function DeleteConfirmation($code)
+    public function DeleteConfirmation($slug)
     {
-        if ($card = Card::Find($code)) {
+        if ($card = Card::FindBySlug($slug)) {
             $this->delete = $card;
             $this->emit(['delete']);
         } else return session()->flash('error', 'No such card found');
@@ -48,8 +46,26 @@ class Index extends Component
     public function Delete($id)
     {
         if ($card = Card::FindById($id)) {
-            $card->delete();
+            $card->forceDelete();
             session()->flash('success', 'Deleted Successfully');
+            return redirect(route('AdminCards'));
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Block($slug)
+    {
+        if ($card = Card::FindBySlug($slug)) {
+            $card->delete();
+            session()->flash('success', 'Blocked Successfully');
+            return redirect(route('AdminCards'));
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Unblock($slug)
+    {
+        if ($card = Card::FindBySlug($slug)) {
+            $card->restore();
+            session()->flash('success', 'Blocked Successfully');
             return redirect(route('AdminCards'));
         } else return session()->flash('error', 'No such card found');
     }

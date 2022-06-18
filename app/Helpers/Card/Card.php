@@ -13,7 +13,7 @@ class Card
     /*Begin::Cards*/
     public static function All()
     {
-        return CardModel::where('type', 'card')->latest();
+        return CardModel::withTrashed()->where('type', 'card')->latest();
     }
 
     public static function LatestPaginate($quantity)

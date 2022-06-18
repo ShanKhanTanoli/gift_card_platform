@@ -93,7 +93,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Name
+                                        Code
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
@@ -111,7 +111,7 @@
                                         Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Actions
+                                        Owner
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View
@@ -131,7 +131,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Str::substr($card->name, 0, 20) }}
+                                                        {{ $card->code }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -178,62 +178,32 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        <!--Begin::If card is Blocked-->
-                                                        @if($card->trashed())
-                                                        <span class="badge bg-gradient-danger">
-                                                            Blocked
-                                                        </span>
-                                                        @else
-                                                        <!--Begin::If card is Expired-->
                                                         @if ($card->isExpired())
                                                             <span class="badge bg-gradient-danger">
                                                                 Expired
                                                             </span>
                                                         @else
-                                                        <!--Begin::If card is Published-->
-                                                        @if ($card->isPublished())
                                                             <span class="badge bg-gradient-success">
-                                                                Published
+                                                                Active
                                                             </span>
-                                                        @else
-                                                        <span class="badge bg-gradient-info">
-                                                            Archived
-                                                        </span>
                                                         @endif
-                                                        <!--End::If card is Published-->
-                                                        @endif
-                                                        <!--End::If card is Expired-->
-                                                        @endif
-                                                        <!--End::If card is Blocked-->
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <div class="d-flex px-2 py-1">
-                                                @if($card->trashed())
-                                                <button class="btn btn-sm btn-success"
-                                                wire:click='Unblock("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Unblock("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Unblock
-                                            </button>
-                                            @else
-                                            <button class="btn btn-sm btn-danger"
-                                                wire:click='Block("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Block("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Block
-                                            </button>
-                                            @endif
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ Str::substr(Card::FindOwner($card->code)->name, 0, 12) }}
+                                                    </h6>
+                                                </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->slug }}")'
+                                                wire:click='View("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='View("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 View
@@ -241,8 +211,8 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $card->slug }}")'
+                                                wire:click='Edit("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
@@ -250,9 +220,9 @@
                                         </td>
                                         <td class="align-middle">
                                             <button class="btn btn-sm btn-danger"
-                                                wire:click='DeleteConfirmation("{{ $card->slug }}")'>
+                                                wire:click='DeleteConfirmation("{{ $card->code }}")'>
                                                 <span wire:loading
-                                                    wire:target='DeleteConfirmation("{{ $card->slug }}")'
+                                                    wire:target='DeleteConfirmation("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Delete

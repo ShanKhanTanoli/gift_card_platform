@@ -5,40 +5,28 @@
         <div class="col-xl-4 mb-xl-0 mb-4">
             <div class="card bg-transparent shadow-xl" id="PrintDev">
                 <div class="overflow-hidden position-relative border-radius-xl">
-
-                    <img src="@if ($card->background) {{ asset(Storage::url($card->background)) }} @else {{ asset('dashboard/img/illustrations/bg-3.jpg') }} @endif"
+                    <img src="{{ asset('dashboard/img/illustrations/bg-3.jpg') }}"
                         class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
-
                     <div class="card-body position-relative z-index-1 p-3">
-                        <h6 @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
-                            class="mt-0 mb-0 pb-0">
+                        <h6 class="text-white mt-0 mb-0 pb-0">
                             {{ Business::DisplayStoreName($card->user_id) }}
-                            -
-                            {{ Str::ucfirst($card->name) }}
                         </h6>
                         <div class="d-flex">
                             <div class="col-8">
-                                <h6 @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
-                                    class="mt-3 mb-0 pb-0">
-                                    {{ Str::ucfirst($card->type) }}
-                                </h6>
-                                <h6 @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
-                                    class="mt-3 mb-0 pb-0">
-                                    {{ __('Card Code') }}
+                                <h6 class="text-white mt-5 mb-0 pb-0">
+                                    {{ $card->code }}
                                 </h6>
                             </div>
                             <div class="col-4">
                                 <div class=" mt-2 mb-3 pb-0" style="text-align: right;">
-                                    {!! QrCode::size(80)->generate('Card Code') !!}
+                                    {!! QrCode::size(80)->generate($card->code) !!}
                                 </div>
                             </div>
                         </div>
                         <div class=" d-flex">
                             <div>
-                                <p @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
-                                    class="text-sm opacity-8 mb-0">Expiry</p>
-                                <h6 @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
-                                    class="mb-0">
+                                <p class="text-white text-sm opacity-8 mb-0">Expiry</p>
+                                <h6 class="text-white mb-0">
                                     {{ date('d/m/Y', strtotime($card->expires_at)) }}
                                 </h6>
                             </div>
@@ -96,8 +84,8 @@
                                         Recharge
                                     </a>
                                     @if ($card->balance != 0)
-                                        <a class="btn btn-link text-dark px-3 mb-0" href="#"
-                                            data-bs-toggle="modal" data-bs-target="#RedeemModal">
+                                        <a class="btn btn-link text-dark px-3 mb-0" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#RedeemModal">
                                             <i class="fas fa-money-bill text-sm me-2">
                                             </i>
                                             Redeem
@@ -113,22 +101,18 @@
                                     </span>
                                 @endif
 
-                                <a class="btn btn-link text-dark px-3 mb-0" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#PinCodeModal">
-                                    <i class="fas fa-key text-sm me-2">
-                                    </i>
-                                    PinCode
-                                </a>
-
-
-                                <a class="btn btn-link text-dark px-3 mb-0"
-                                    href="{{ route('AdminEditCard', $card->slug) }}">
-                                    <i class="fas fa-edit text-sm me-2">
-                                    </i>
-                                    Edit
-                                </a>
-
-
+                                @if (!$card->isSold())
+                                    <a class="btn btn-link text-dark px-3 mb-0"
+                                        href="{{ route('AdminEditCard', $card->code) }}">
+                                        <i class="fas fa-edit text-sm me-2">
+                                        </i>
+                                        Edit
+                                    </a>
+                                @else
+                                    <span class="badge bg-gradient-primary">
+                                        CARD SOLD
+                                    </span>
+                                @endif
                                 <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow">
                                     <i class="fas fa-print text-sm me-2"></i>
                                     Print
@@ -256,20 +240,19 @@
 
         @if (!$card->isExpired())
             <!--Begin::Recharge Modal-->
-            @include('livewire.admin.dashboard.cards.view.partials.recharge-modal')
+            @include(
+                'livewire.admin.dashboard.cards.view.partials.recharge-modal'
+            )
             <!--End::Recharge Modal-->
 
             @if ($card->balance != 0)
                 <!--Begin::Redeem Modal-->
-                @include('livewire.admin.dashboard.cards.view.partials.redeem-modal')
+                @include(
+                    'livewire.admin.dashboard.cards.view.partials.redeem-modal'
+                )
                 <!--End::Redeem Modal-->
             @endif
         @endif
-
-        <!--Begin::Pin Code Modal-->
-        @include('livewire.admin.dashboard.cards.view.partials.pin-modal')
-        <!--End::Pin Code Modal-->
-
     </div>
     <script>
         $(document).ready(function() {

@@ -1,8 +1,8 @@
 <div class="container-fluid">
     @include('errors.alerts')
     <div class="row mb-4">
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminCards') }}">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('BusinessCards') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -10,37 +10,17 @@
                             <i class="fas fa-credit-card opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
-                                Cards</p>
+                            <p class="text-sm mb-0 text-capitalize">UnSold Cards</p>
                             <h4 class="mb-0">
-                                {{ Card::count() }}
+                                {{ Business::CountUnSoldCards(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminTickets') }}">
-                <div class="card">
-                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
-                        <div
-                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                            <i class="fas fa-ticket-alt opacity-10"></i>
-                        </div>
-                        <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
-                                Tickets</p>
-                            <h4 class="mb-0">
-                                {{ Ticket::count() }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminVouchers') }}">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('BusinessSoldCards') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -48,18 +28,19 @@
                             <i class="fas fa-credit-card opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
-                                Vouchers</p>
-                            <h4 class="mb-0">
-                                {{ Voucher::count() }}
+                            <p
+                                class="text-sm mb-0 text-capitalize @if (Request::path() == 'Business/SoldCards') text-primary @endif">
+                                Sold Cards</p>
+                            <h4 class="mb-0 @if (Request::path() == 'Business/SoldCards') text-primary @endif">
+                                {{ Business::CountSoldCards(Auth::user()->id) }}
                             </h4>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminAddCard') }}">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('BusinessAddCard') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -93,7 +74,10 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Name
+                                        #
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Code
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
@@ -111,16 +95,7 @@
                                         Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Actions
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         View
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Edit
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Delete
                                     </th>
                                 </tr>
                             </thead>
@@ -131,7 +106,16 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Str::substr($card->name, 0, 20) }}
+                                                        {{ $loop->iteration }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ $card->code }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -141,7 +125,7 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $card->price }}
-                                                        {{ strtoupper(Business::Currency($card->user_id)) }}
+                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -151,7 +135,7 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         {{ $card->balance }}
-                                                        {{ strtoupper(Business::Currency($card->user_id)) }}
+                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -178,84 +162,26 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        <!--Begin::If card is Blocked-->
-                                                        @if($card->trashed())
-                                                        <span class="badge bg-gradient-danger">
-                                                            Blocked
-                                                        </span>
-                                                        @else
-                                                        <!--Begin::If card is Expired-->
-                                                        @if ($card->isExpired())
-                                                            <span class="badge bg-gradient-danger">
-                                                                Expired
-                                                            </span>
-                                                        @else
-                                                        <!--Begin::If card is Published-->
-                                                        @if ($card->isPublished())
+                                                        @if ($card->isSold())
                                                             <span class="badge bg-gradient-success">
-                                                                Published
+                                                                Sold
                                                             </span>
                                                         @else
-                                                        <span class="badge bg-gradient-info">
-                                                            Archived
-                                                        </span>
+                                                            <span class="badge bg-gradient-danger">
+                                                                UnSold
+                                                            </span>
                                                         @endif
-                                                        <!--End::If card is Published-->
-                                                        @endif
-                                                        <!--End::If card is Expired-->
-                                                        @endif
-                                                        <!--End::If card is Blocked-->
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                @if($card->trashed())
-                                                <button class="btn btn-sm btn-success"
-                                                wire:click='Unblock("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Unblock("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Unblock
-                                            </button>
-                                            @else
-                                            <button class="btn btn-sm btn-danger"
-                                                wire:click='Block("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Block("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Block
-                                            </button>
-                                            @endif
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
                                             <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->slug }}")'
+                                                wire:click='View("{{ $card->code }}")'>
+                                                <span wire:loading wire:target='View("{{ $card->code }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 View
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $card->slug }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Edit
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-sm btn-danger"
-                                                wire:click='DeleteConfirmation("{{ $card->slug }}")'>
-                                                <span wire:loading
-                                                    wire:target='DeleteConfirmation("{{ $card->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Delete
                                             </button>
                                         </td>
                                     </tr>
@@ -270,21 +196,4 @@
             </div>
         </div>
     </div>
-
-    @if ($delete)
-        <!--Begin::DeleteModel-->
-        @include('livewire.admin.dashboard.partials.delete-modal')
-        <!--End::DeleteModel-->
-    @endif
-
-    <!--Begin::Script-->
-    @section('scripts')
-        <script>
-            Livewire.on('delete', function() {
-                $('#delete-notification').modal('show');
-            })
-        </script>
-    @endsection
-    <!--End::Script-->
-
 </div>

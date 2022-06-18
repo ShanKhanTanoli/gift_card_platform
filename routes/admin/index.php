@@ -12,11 +12,28 @@ use App\Http\Livewire\Admin\Dashboard\Business\UpdatePassword\Index as UpdateBus
 
 /*Begin::Cards*/
 use App\Http\Livewire\Admin\Dashboard\Cards\Index as ViewAllCards;
-use App\Http\Livewire\Admin\Dashboard\Cards\Check\Index as RedeemCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\View\Index as ViewCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Admin\Dashboard\Cards\Edit\Index as EditCard;
 /*End::Cards*/
+
+/*Begin::Tickets*/
+use App\Http\Livewire\Admin\Dashboard\Tickets\Index as ViewAllTickets;
+use App\Http\Livewire\Admin\Dashboard\Tickets\View\Index as ViewTicket;
+use App\Http\Livewire\Admin\Dashboard\Tickets\Add\Index as AddTicket;
+use App\Http\Livewire\Admin\Dashboard\Tickets\Edit\Index as EditTicket;
+/*End::Tickets*/
+
+/*Begin::Vouchers*/
+use App\Http\Livewire\Admin\Dashboard\Vouchers\Index as ViewAllVouchers;
+use App\Http\Livewire\Admin\Dashboard\Vouchers\View\Index as ViewVoucher;
+use App\Http\Livewire\Admin\Dashboard\Vouchers\Add\Index as AddVoucher;
+use App\Http\Livewire\Admin\Dashboard\Vouchers\Edit\Index as EditVoucher;
+/*End::Vouchers*/
+
+/*Begin::Redeem*/
+use App\Http\Livewire\Admin\Dashboard\Cards\Check\Index as RedeemCard;
+/*End::Redeem*/
 
 /*Begin::Clients*/
 use App\Http\Livewire\Admin\Dashboard\Clients\Index as ViewAllClients;
@@ -55,11 +72,28 @@ Route::middleware(['auth', 'admin'])->prefix('mapanel')->group(function () {
 
     /*Begin::Cards*/
     Route::get('Cards', ViewAllCards::class)->name('AdminCards');
-    Route::get('RedeemCard', RedeemCard::class)->name('AdminRedeemCard');
-    Route::get('ViewCard/{code}', ViewCard::class)->name('AdminViewCard');
+    Route::get('ViewCard/{slug}', ViewCard::class)->name('AdminViewCard');
     Route::get('AddCard', AddCard::class)->name('AdminAddCard');
-    Route::get('EditCard/{code}', EditCard::class)->name('AdminEditCard');
+    Route::get('EditCard/{slug}', EditCard::class)->name('AdminEditCard');
     /*End::Cards*/
+
+    /*Begin::Tickets*/
+    Route::get('Tickets', ViewAllTickets::class)->name('AdminTickets');
+    Route::get('ViewTicket/{slug}', ViewTicket::class)->name('AdminViewTicket');
+    Route::get('AddTicket', AddTicket::class)->name('AdminAddTicket');
+    Route::get('EditTicket/{slug}', EditTicket::class)->name('AdminEditTicket');
+    /*End::Tickets*/
+
+    /*Begin::Vouchers*/
+    Route::get('Vouchers', ViewAllVouchers::class)->name('AdminVouchers');
+    Route::get('ViewVoucher/{slug}', ViewVoucher::class)->name('AdminViewVoucher');
+    Route::get('AddVoucher', AddVoucher::class)->name('AdminAddVoucher');
+    Route::get('EditVoucher/{slug}', EditVoucher::class)->name('AdminEditVoucher');
+    /*End::Vouchers*/
+
+    /*Begin::Redeem*/
+    Route::get('RedeemCard', RedeemCard::class)->name('AdminRedeemCard');
+    /*End::Redeem*/
 
     /*Begin::Clients*/
     Route::get('Clients', ViewAllClients::class)->name('AdminClients');
