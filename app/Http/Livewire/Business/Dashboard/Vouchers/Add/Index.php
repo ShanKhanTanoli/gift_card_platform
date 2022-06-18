@@ -11,7 +11,7 @@ use FrittenKeeZ\Vouchers\Models\Card;
 
 class Index extends Component
 {
-    public $name, $type, $price, $balance, $expires_at, $user_id, $visibility;
+    public $name, $price, $balance, $expires_at, $user_id, $visibility;
 
     public function render()
     {
@@ -40,7 +40,6 @@ class Index extends Component
         ];
         $validated = $this->validate([
             'name' => 'required|string',
-            'type' => 'required|string|in:card,ticket,voucher',
             'price' => 'required|numeric',
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
@@ -49,7 +48,7 @@ class Index extends Component
         ], $msg);
         $data = [
             'name' => $validated['name'],
-            'type' => $validated['type'],
+            'type' => 'voucher',
             'price' => $validated['price'],
             'balance' => $validated['balance'],
             'expires_at' => new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at']))),

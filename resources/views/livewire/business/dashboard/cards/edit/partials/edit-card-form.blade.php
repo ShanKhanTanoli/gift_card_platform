@@ -11,29 +11,12 @@
             <div class="container">
                 <form wire:submit.prevent='Update'>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="input-group input-group-static my-3">
                                 <label for="name">Name</label>
                                 <input type="text" wire:model.defer='name' value="{{ old('name') }}"
                                     class="form-control  @error('name') is-invalid @enderror" placeholder="Enter Name ">
                                 @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="input-group input-group-static my-3">
-                                <label for="type">Card Type</label>
-                                <select wire:model.defer='type'
-                                    class="form-control  @error('type') is-invalid @enderror">
-                                    <option value="">Select Type</option>
-                                    <option value="card">Card</option>
-                                    <option value="ticket">Ticket</option>
-                                    <option value="voucher">Voucher</option>
-                                </select>
-                                @error('type')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

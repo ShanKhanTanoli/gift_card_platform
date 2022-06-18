@@ -13,7 +13,7 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $card, $name, $type, $background, $text_color, $price, $balance, $expires_at, $visibility;
+    public $card, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
 
     public $temporary_image;
 
@@ -61,7 +61,6 @@ class Index extends Component
 
                 $validated = $this->validate([
                     'name' => 'required|string',
-                    'type' => 'required|string|in:card,ticket,voucher',
                     'price' => 'required|numeric',
                     'balance' => 'required|numeric',
                     'expires_at' => 'required|date',

@@ -7,7 +7,6 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
@@ -24,7 +23,6 @@ class Index extends Component
 
             //Begin::If Voucher is Banned
             if (!$card->trashed()) {
-
                 $this->card = $card;
                 $this->name = $card->name;
                 $this->type = $card->type;
@@ -61,7 +59,6 @@ class Index extends Component
 
                 $validated = $this->validate([
                     'name' => 'required|string',
-                    'type' => 'required|string|in:card,ticket,voucher',
                     'price' => 'required|numeric',
                     'balance' => 'required|numeric',
                     'expires_at' => 'required|date',

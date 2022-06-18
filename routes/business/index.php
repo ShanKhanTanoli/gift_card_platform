@@ -77,9 +77,6 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('ViewCard/{slug}', ViewCard::class)
         ->name('BusinessViewCard');
 
-    Route::get('IssueCard/{slug}', IssueCard::class)
-        ->name('BusinessIssueCard');
-
     Route::get('AddCard', AddCard::class)
         ->name('BusinessAddCard');
 
@@ -98,14 +95,8 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('SoldTickets', SoldTickets::class)
         ->name('BusinessSoldTickets');
 
-    Route::get('RedeemTicket', RedeemTicket::class)
-        ->name('BusinessRedeemTicket');
-
     Route::get('ViewTicket/{slug}', ViewTicket::class)
         ->name('BusinessViewTicket');
-
-    Route::get('IssueTicket/{slug}', IssueTicket::class)
-        ->name('BusinessIssueTicket');
 
     Route::get('AddTicket', AddTicket::class)
         ->name('BusinessAddTicket');
@@ -124,14 +115,8 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('SoldVouchers', SoldVouchers::class)
         ->name('BusinessSoldVouchers');
 
-    Route::get('RedeemVoucher', RedeemVoucher::class)
-        ->name('BusinessRedeemVoucher');
-
     Route::get('ViewVoucher/{slug}', ViewVoucher::class)
         ->name('BusinessViewVoucher');
-
-    Route::get('IssueVoucher/{slug}', IssueVoucher::class)
-        ->name('BusinessIssueVoucher');
 
     Route::get('AddVoucher', AddVoucher::class)
         ->name('BusinessAddVoucher');
