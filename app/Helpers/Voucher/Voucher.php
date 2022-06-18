@@ -3,9 +3,8 @@
 namespace App\Helpers\Voucher;
 
 use App\Models\User;
+use FrittenKeeZ\Vouchers\Models\Card;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
-use FrittenKeeZ\Vouchers\Models\Voucher as VoucherModel;
-use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
 class Voucher
 {
@@ -13,7 +12,7 @@ class Voucher
     /*Begin::Vouchers*/
     public static function All()
     {
-        return VoucherModel::where('type', 'voucher')
+        return Card::where('type', 'voucher')
             ->latest();
     }
 
@@ -40,13 +39,13 @@ class Voucher
 
     public static function Expiry($slug)
     {
-        return VoucherModel::where('slug', $slug)
+        return Card::where('slug', $slug)
             ->first();
     }
 
     public static function FindOwner($slug)
     {
-        $voucher = VoucherModel::where('slug', $slug)->first();
+        $voucher = Card::where('slug', $slug)->first();
         if ($voucher) {
             if ($owner = User::find($voucher->user_id)) {
                 return $owner;
@@ -54,24 +53,24 @@ class Voucher
         } else return "Add Owner";
     }
 
+    public static function CanBePurchased($slug): bool
+    {
+        //If Card Found
+        if ($card = self::FindBySlug($slug)) {
+            //If Card is not banned
+            if (!$card->trashed()) {
+                //If Card is not expired
+                if (!$card->isExpired()) {
+                    //If Card is not expired
+                    if ($card->isPublished()) {
+                        return true;
+                    } else return false;
+                } else return false;
+            } else return false;
+        } else return false;
+    }
+
     /*End::Vouchers*/
-
-    /*Begin::Voucher Recharge History*/
-    public static function Recharge($voucher_id)
-    {
-        return VoucherRecharge::where('voucher_id', $voucher_id);
-    }
-
-    public static function LatestRechargePaginate($voucher_id, $quantity)
-    {
-        return self::Recharge($voucher_id)->latest()->paginate($quantity);
-    }
-
-    public static function RechargeCount($voucher_id)
-    {
-        return self::Recharge($voucher_id)->count();
-    }
-    /*End::Voucher Recharge History*/
 
     /*Begin::Voucher Redeem History*/
     public static function Redeem($voucher_id)

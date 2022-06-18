@@ -1,7 +1,6 @@
   <!-- ======= Header ======= -->
   <header id="header" class="fixed-top d-flex align-items-center header-transparent">
       <div class="container d-flex align-items-center justify-content-between">
-
           <div class="logo">
               <h1>
                   <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3"
@@ -13,8 +12,6 @@
                       @endif
                   </a>
               </h1>
-              <!-- Uncomment below if you prefer to use an image logo -->
-              <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
           </div>
           <nav id="navbar" class="navbar">
               <ul>
@@ -23,6 +20,12 @@
                       <li><a class="nav-link scrollto" href="#about">About</a></li>
                       @if ($store->display_cards)
                           <li><a class="nav-link scrollto" href="#cards">Cards</a></li>
+                      @endif
+                      @if ($store->display_cards)
+                          <li><a class="nav-link scrollto" href="#tickets">Tickets</a></li>
+                      @endif
+                      @if ($store->display_cards)
+                          <li><a class="nav-link scrollto" href="#vouchers">Vouchers</a></li>
                       @endif
                   @endif
                   @if (Auth::user())

@@ -8,7 +8,7 @@
             </div>
             <div class="row" data-aos="fade-left">
                 <div class="col-lg-12 col-md-12">
-                   <p>{!! $store->store_description !!}</p>
+                    <p>{!! $store->store_description !!}</p>
                 </div>
             </div>
         </div>
@@ -18,4 +18,12 @@
     <!--Begin::Available Cards-->
     @include('livewire.store.partials.available-cards')
     <!--End::Available Cards-->
+
+    <!--Begin::Available Tickets-->
+    @include('livewire.store.partials.available-tickets')
+    <!--End::Available Tickets-->
+
+    <!--Begin::Available Vouchers-->
+    @include('livewire.store.partials.available-vouchers')
+    <!--End::Available Vouchers-->
 </main>

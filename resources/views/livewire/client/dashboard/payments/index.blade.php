@@ -51,19 +51,27 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
+
+                                                        <!--Begin::If Card Found-->
+                                                        @if ($card = Card::FindById($payment->voucher_id))
+                                                            {{ Str::substr(Str::upper($card->type), 0, 20) }}
+                                                        @endif
+                                                        <!--End::If Card Found-->
+
+                                                        {{ $payment->voucher_id }}
+
                                                         <!--Begin::If Voucher Found-->
                                                         @if ($voucher = Voucher::FindById($payment->voucher_id))
-                                                            <!--Begin::If Card Found-->
-                                                            @if ($card = Card::FindById($voucher->card_id))
-                                                                {{ Str::substr(Str::upper($card->type), 0, 20) }}
-                                                            @else
-                                                                {{ __('Not Found') }}
-                                                            @endif
-                                                            <!--End::If Card Found-->
-                                                        @else
-                                                            {{ __('Not Found') }}
+                                                            {{ Str::substr(Str::upper($voucher->type), 0, 20) }}
                                                         @endif
                                                         <!--End::If Voucher Found-->
+
+                                                        <!--Begin::If Ticket Found-->
+                                                        @if ($ticket = Ticket::FindById($payment->voucher_id))
+                                                            {{ Str::substr(Str::upper($ticket->type), 0, 20) }}
+                                                        @endif
+                                                        <!--End::If Ticket Found-->
+
                                                     </h6>
                                                 </div>
                                             </div>
@@ -91,19 +99,25 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
+
+                                                        <!--Begin::If Card Found-->
+                                                        @if ($voucher = Card::FindById($payment->voucher_id))
+                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
+                                                        @endif
+                                                        <!--End::If Card Found-->
+
                                                         <!--Begin::If Voucher Found-->
                                                         @if ($voucher = Voucher::FindById($payment->voucher_id))
-                                                            <!--Begin::If Card Found-->
-                                                            @if ($card = Card::FindById($voucher->card_id))
-                                                                {{ date('d M Y', strtotime($card->expires_at)) }}
-                                                            @else
-                                                                {{ __('Not Found') }}
-                                                            @endif
-                                                            <!--End::If Card Found-->
-                                                        @else
-                                                            {{ __('Not Found') }}
+                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
                                                         @endif
                                                         <!--End::If Voucher Found-->
+
+                                                        <!--Begin::If Ticket Found-->
+                                                        @if ($voucher = Ticket::FindById($payment->voucher_id))
+                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
+                                                        @endif
+                                                        <!--End::If Ticket Found-->
+
                                                     </h6>
                                                 </div>
                                             </div>

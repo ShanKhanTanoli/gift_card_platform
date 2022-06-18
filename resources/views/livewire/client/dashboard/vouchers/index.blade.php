@@ -110,7 +110,7 @@
                                                 <div class="d-flex px-2 py-1">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm">
-                                                            @if ($card = Card::FindById($voucher->card_id))
+                                                            @if ($card = Voucher::FindById($voucher->card_id))
                                                                 {{ Str::substr($card->name, 0, 15) }}
                                                             @else
                                                                 NOT FOUND
@@ -122,7 +122,7 @@
                                             <td>
                                                 <div class="d-flex px-2 py-1">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        @if ($card = Card::FindById($voucher->card_id))
+                                                        @if ($card = Voucher::FindById($voucher->card_id))
                                                             <span class="badge bg-info">
                                                                 {{ Str::substr($card->type, 0, 15) }}
                                                             </span>

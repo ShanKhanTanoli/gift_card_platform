@@ -2,11 +2,11 @@
     @include('errors.alerts')
     <div class="row mt-3">
         <!--Begin::Edit Voucher Form-->
-        @include('livewire.business.dashboard.cards.edit.partials.edit-voucher-form')
+        @include('livewire.business.dashboard.vouchers.edit.partials.edit-voucher-form')
         <!--End::Edit Voucher Form-->
 
         <!--Begin::Edit Voucher-->
-        @include('livewire.business.dashboard.cards.edit.partials.edit-voucher')
+        @include('livewire.business.dashboard.vouchers.edit.partials.edit-voucher')
         <!--End::Edit Voucher-->
     </div>
 </div>
