@@ -12,17 +12,18 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $card, $name, $type, $background, $text_color, $price, $balance, $expires_at, $visibility;
+    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
 
     public $temporary_image;
 
     public function mount($slug)
     {
-        //Begin::If this Business owns a Voucher
+        //Begin::If this Business owns a voucher
         if ($card = Business::FindVoucherBySlug(Auth::user()->id, $slug)) {
 
-            //Begin::If Voucher is Banned
+            //Begin::If voucher is Banned
             if (!$card->trashed()) {
+
                 $this->card = $card;
                 $this->name = $card->name;
                 $this->type = $card->type;
@@ -35,12 +36,12 @@ class Index extends Component
             } else {
                 session()->flash('error', 'This voucher is banned');
                 return redirect(route('BusinessVouchers'));
-            } //End::If Voucher is Banned
+            } //End::If voucher is Banned
 
         } else {
             session()->flash('error', 'No such voucher found');
             return redirect(route('BusinessVouchers'));
-        } //End::If this Business owns a Voucher
+        } //End::If this Business owns a voucher
     }
 
     public function render()
@@ -54,7 +55,7 @@ class Index extends Component
         //Begin::If this Business owns a voucher
         if (Business::FindVoucherBySlug(Auth::user()->id, $this->card->slug)) {
 
-            //Begin::If Voucher is Banned
+            //Begin::If voucher is Banned
             if (!$this->card->trashed()) {
 
                 $validated = $this->validate([
@@ -74,7 +75,7 @@ class Index extends Component
             } else {
                 session()->flash('error', 'This voucher is banned');
                 return redirect(route('BusinessVouchers'));
-            } //End::If Voucher is Banned
+            } //End::If voucher is Banned
 
         } else {
             session()->flash('error', 'No such voucher found');
@@ -89,28 +90,47 @@ class Index extends Component
         if (Business::FindVoucherBySlug(Auth::user()->id, $this->card->slug)) {
             $validated = $this->validate([
                 'text_color' => 'required|string',
-                'temporary_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'temporary_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $this->temporary_image = $validated['temporary_image']->hashName();
 
-            $data = [
-                'text_color' => $validated['text_color'],
-                'background' => $this->temporary_image,
-            ];
+            if ($validated['temporary_image']) {
 
-            //$this->temporary_image->store('CardBackgrounds');
+                $image = time() . '.' . $validated['temporary_image']->getClientOriginalExtension();
+                $path = $validated['temporary_image']->storeAs('public/images/cards/backgrounds/', $image);
 
-            $imageName = time() . '.' . $validated['temporary_image']->extension();
+                $data = [
+                    'text_color' => $validated['text_color'],
+                    'background' => $path,
+                ];
+            } else {
 
-            //dd($imageName);
+                $data = [
+                    'text_color' => $validated['text_color'],
+                ];
+            }
 
-            $image = $validated['temporary_image']->move(public_path('CardBackgrounds'), $imageName);
-
-            dd($image);
 
             try {
                 $this->card->update($data);
+                session()->flash('success', 'Updated Successfully');
+                return redirect(route('BusinessEditVoucher', $this->card->slug));
+            } catch (Exception $e) {
+                return session()->flash('error', $e->getMessage());
+            }
+        } else {
+            session()->flash('error', 'No such voucher found');
+            return redirect(route('BusinessVouchers'));
+        }
+    }
+
+
+    public function RemoveBG()
+    {
+        //Begin::If this Business owns a voucher
+        if (Business::FindVoucherBySlug(Auth::user()->id, $this->card->slug)) {
+            try {
+                $this->card->update(['background' => null]);
                 session()->flash('success', 'Updated Successfully');
                 return redirect(route('BusinessEditVoucher', $this->card->slug));
             } catch (Exception $e) {

@@ -15,7 +15,7 @@
                 <h6 @if ($card->text_color) style="color: {{ $card->text_color }} ;" @else style="color:#fff;" @endif
                     class="mt-0 mb-0 pb-0">
                     {{ Business::DisplayStoreName($card->user_id) }}
-                    - 
+                    -
                     {{ Str::ucfirst($card->name) }}
                 </h6>
                 <div class="d-flex">
@@ -72,8 +72,8 @@
                         <div class="col-md-12">
                             <div class="input-group input-group-static my-3">
                                 <label for="background">Background</label>
-                                <input style="display: none;" id="background" type="file" wire:model.defer='temporary_image'
-                                    value="{{ old('temporary_image') }}"
+                                <input style="display: none;" id="background" type="file"
+                                    wire:model.defer='temporary_image' value="{{ old('temporary_image') }}"
                                     class="form-control  @error('temporary_image') is-invalid @enderror"
                                     placeholder="Select Background">
                                 @error('temporary_image')
@@ -84,10 +84,15 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <button type="button" id="ChangeBG" class="btn btn-link p-0" wire:attr='disabled'>
+                            <button type="button" id="ChangeBG" class="btn btn-info btn-sm" wire:attr='disabled'>
                                 <span wire:loading wire:target='ChangeBG' class="spinner-border spinner-border-sm"
                                     role="status" aria-hidden="true"></span>
-                                <i class="fas fa-upload"></i> Change Background
+                                <i class="fas fa-upload"></i>
+                            </button>
+                            <button type="button" wire:click="RemoveBG" class="btn btn-danger btn-sm" wire:attr='disabled'>
+                                <span wire:loading wire:target='RemoveBG' class="spinner-border spinner-border-sm"
+                                    role="status" aria-hidden="true"></span>
+                                <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
                         <div class="col-md-12">

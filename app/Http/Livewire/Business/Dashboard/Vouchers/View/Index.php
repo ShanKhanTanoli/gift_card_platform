@@ -7,7 +7,6 @@ use App\Helpers\Card\Card;
 use Livewire\WithPagination;
 use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
-use FrittenKeeZ\Vouchers\Facades\Vouchers;
 
 class Index extends Component
 {

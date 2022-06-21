@@ -7,22 +7,21 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class Index extends Component
 {
     use WithFileUploads;
 
-    public $card, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
+    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
 
     public $temporary_image;
 
     public function mount($slug)
     {
-        //Begin::If this Business owns a Ticket
+        //Begin::If this Business owns a Card
         if ($card = Business::FindTicketBySlug(Auth::user()->id, $slug)) {
 
-            //Begin::If Card is Banned
+            //Begin::If ticket is Banned
             if (!$card->trashed()) {
 
                 $this->card = $card;
@@ -35,25 +34,25 @@ class Index extends Component
                 $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
                 $this->visibility = $card->visibility;
             } else {
-                session()->flash('error', 'This Card is banned');
+                session()->flash('error', 'This ticket is banned');
                 return redirect(route('BusinessTickets'));
-            } //End::If Card is Banned
+            } //End::If ticket is Banned
 
         } else {
-            session()->flash('error', 'No such card found');
+            session()->flash('error', 'No such tickets found');
             return redirect(route('BusinessTickets'));
-        } //End::If this Business owns a ticket
+        } //End::If this Business owns a card
     }
 
     public function render()
     {
-        return view('livewire.business.dashboard.cards.edit.index')
+        return view('livewire.business.dashboard.tickets.edit.index')
             ->extends('layouts.dashboard');
     }
 
     public function Update()
     {
-        //Begin::If this Business owns a ticket
+        //Begin::If this Business owns a card
         if (Business::FindTicketBySlug(Auth::user()->id, $this->card->slug)) {
 
             //Begin::If ticket is Banned
@@ -79,7 +78,7 @@ class Index extends Component
             } //End::If ticket is Banned
 
         } else {
-            session()->flash('error', 'No such ticket found');
+            session()->flash('error', 'No such tickets found');
             return redirect(route('BusinessTickets'));
         }
     }
@@ -87,29 +86,30 @@ class Index extends Component
 
     public function Customize()
     {
-        //Begin::If this Business owns a ticket
-        if (Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
+        //Begin::If this Business owns a card
+        if (Business::FindTicketBySlug(Auth::user()->id, $this->card->slug)) {
             $validated = $this->validate([
                 'text_color' => 'required|string',
-                'temporary_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'temporary_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $this->temporary_image = $validated['temporary_image']->hashName();
 
-            $data = [
-                'text_color' => $validated['text_color'],
-                'background' => $this->temporary_image,
-            ];
+            if ($validated['temporary_image']) {
 
-            //$this->temporary_image->store('CardBackgrounds');
+                $image = time() . '.' . $validated['temporary_image']->getClientOriginalExtension();
+                $path = $validated['temporary_image']->storeAs('public/images/cards/backgrounds/', $image);
 
-            $imageName = time() . '.' . $validated['temporary_image']->extension();
+                $data = [
+                    'text_color' => $validated['text_color'],
+                    'background' => $path,
+                ];
+            } else {
 
-            //dd($imageName);
+                $data = [
+                    'text_color' => $validated['text_color'],
+                ];
+            }
 
-            $image = $validated['temporary_image']->move(public_path('CardBackgrounds'), $imageName);
-
-            dd($image);
 
             try {
                 $this->card->update($data);
@@ -119,7 +119,25 @@ class Index extends Component
                 return session()->flash('error', $e->getMessage());
             }
         } else {
-            session()->flash('error', 'No such ticket found');
+            session()->flash('error', 'No such tickets found');
+            return redirect(route('BusinessTickets'));
+        }
+    }
+
+
+    public function RemoveBG()
+    {
+        //Begin::If this Business owns a card
+        if (Business::FindTicketBySlug(Auth::user()->id, $this->card->slug)) {
+            try {
+                $this->card->update(['background' => null]);
+                session()->flash('success', 'Updated Successfully');
+                return redirect(route('BusinessEditTicket', $this->card->slug));
+            } catch (Exception $e) {
+                return session()->flash('error', $e->getMessage());
+            }
+        } else {
+            session()->flash('error', 'No such tickets found');
             return redirect(route('BusinessTickets'));
         }
     }

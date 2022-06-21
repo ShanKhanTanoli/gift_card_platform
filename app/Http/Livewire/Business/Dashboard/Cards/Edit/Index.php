@@ -90,28 +90,47 @@ class Index extends Component
         if (Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
             $validated = $this->validate([
                 'text_color' => 'required|string',
-                'temporary_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+                'temporary_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             ]);
 
-            $this->temporary_image = $validated['temporary_image']->hashName();
 
-            $data = [
-                'text_color' => $validated['text_color'],
-                'background' => $this->temporary_image,
-            ];
+            if ($validated['temporary_image']) {
 
-            //$this->temporary_image->store('CardBackgrounds');
+                $image = time() . '.' . $validated['temporary_image']->getClientOriginalExtension();
+                $path = $validated['temporary_image']->storeAs('public/images/cards/backgrounds/', $image);
 
-            $imageName = time() . '.' . $validated['temporary_image']->extension();
+                $data = [
+                    'text_color' => $validated['text_color'],
+                    'background' => $path,
+                ];
+            } else {
 
-            //dd($imageName);
+                $data = [
+                    'text_color' => $validated['text_color'],
+                ];
+            }
 
-            $image = $validated['temporary_image']->move(public_path('CardBackgrounds'), $imageName);
-
-            dd($image);
 
             try {
                 $this->card->update($data);
+                session()->flash('success', 'Updated Successfully');
+                return redirect(route('BusinessEditCard', $this->card->slug));
+            } catch (Exception $e) {
+                return session()->flash('error', $e->getMessage());
+            }
+        } else {
+            session()->flash('error', 'No such card found');
+            return redirect(route('BusinessCards'));
+        }
+    }
+
+
+    public function RemoveBG()
+    {
+        //Begin::If this Business owns a card
+        if (Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
+            try {
+                $this->card->update(['background' => null]);
                 session()->flash('success', 'Updated Successfully');
                 return redirect(route('BusinessEditCard', $this->card->slug));
             } catch (Exception $e) {
