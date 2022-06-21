@@ -24,7 +24,7 @@ class Index extends Component
     public function mount($slug)
     {
         //Begin::If this Business owns a Card
-        if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
+        if ($card = Business::FindAnyCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
         } else {
             session()->flash('error', 'No such card found');

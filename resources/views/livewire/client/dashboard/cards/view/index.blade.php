@@ -1,7 +1,6 @@
 <div class="container-fluid py-4">
     <!--Begin::Card Status-->
-    @include(
-        'livewire.client.dashboard.cards.partials.card-status')
+    @include('livewire.client.dashboard.cards.partials.card-status')
     <!--End::Card Status-->
     <!--Begin::Errors-->
     @include('errors.alerts')
@@ -11,12 +10,12 @@
         <div class="col-xl-4 mb-xl-0 mb-4">
             <div class="card bg-transparent shadow-xl" id="PrintDev">
                 <div class="overflow-hidden position-relative border-radius-xl">
-                    <img src="{{ asset('dashboard/img/illustrations/bg-3.jpg') }}"
+                    <img src="@if ($card->background) {{ asset(Storage::url($card->background)) }} @else {{ asset('dashboard/img/illustrations/bg-3.jpg') }} @endif"
                         class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
                     <div class="card-body position-relative z-index-1 p-3">
                         <div class="d-flex">
                             <div class="col-6">
-                                <h6 class="text-white mt-0 mb-0 pb-0">
+                                <h6 class="mt-0 mb-0 pb-0" style="color: {{ $card->text_color }} !important;">
                                     {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
                                     @if ($find = Card::FindById($card->card_id))
                                         - {{ Str::ucfirst($card->type) }}
@@ -24,7 +23,7 @@
                                 </h6>
                             </div>
                             <div class="col-6">
-                                <h6 class="text-white mt-0 mb-0 pb-0" style="text-align: right;">
+                                <h6 class="mt-0 mb-0 pb-0" style="text-align: right; color:{{ $card->text_color }}!important;">
                                     @if ($find = Card::FindById($card->card_id))
                                         {{ Str::substr($find->name, 0, 15) }}
                                     @endif
@@ -33,7 +32,7 @@
                         </div>
                         <div class="d-flex">
                             <div class="col-8">
-                                <h6 class="text-white mt-5 pb-0">
+                                <h6 class="mt-5 pb-0" style="color: {{ $card->text_color }} ;">
                                     {{ $card->code }}
                                 </h6>
                             </div>
@@ -43,10 +42,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class=" d-flex">
+                        <div class="d-flex">
                             <div>
-                                <p class="text-white text-sm opacity-8 mb-0">Expiry</p>
-                                <h6 class="text-white mb-0">
+                                <p class="text-sm opacity-8 mb-0" style="color: {{ $card->text_color }} !important;">Expiry</p>
+                                <h6 class="mb-0" style="color: {{ $card->text_color }} !important;">
                                     {{ date('d/m/Y', strtotime($card->expires_at)) }}
                                 </h6>
                             </div>
@@ -130,8 +129,8 @@
                                             </i>
                                             Recharge
                                         </a>
-                                        <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow" <i
-                                            class="fas fa-print text-sm me-2">
+                                        <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow"
+                                            <i class="fas fa-print text-sm me-2">
                                             </i>
                                             Print Card
                                         </button>

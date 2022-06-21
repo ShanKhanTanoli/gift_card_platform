@@ -7,9 +7,7 @@ use App\Http\Livewire\Business\Dashboard\Index as BusinessDashboard;
 /*Begin::Cards*/
 use App\Http\Livewire\Business\Dashboard\Cards\Index as Cards;
 use App\Http\Livewire\Business\Dashboard\Cards\Sold\Index as SoldCards;
-use App\Http\Livewire\Business\Dashboard\Cards\Check\Index as RedeemCard;
 use App\Http\Livewire\Business\Dashboard\Cards\View\Index as ViewCard;
-use App\Http\Livewire\Business\Dashboard\Cards\Issue\Index as IssueCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Add\Index as AddCard;
 use App\Http\Livewire\Business\Dashboard\Cards\Edit\Index as EditCard;
 use App\Http\Livewire\Business\Dashboard\Cards\More\Index as CardMore;
@@ -18,9 +16,7 @@ use App\Http\Livewire\Business\Dashboard\Cards\More\Index as CardMore;
 /*Begin::Tickets*/
 use App\Http\Livewire\Business\Dashboard\Tickets\Index as Tickets;
 use App\Http\Livewire\Business\Dashboard\Tickets\Sold\Index as SoldTickets;
-use App\Http\Livewire\Business\Dashboard\Tickets\Check\Index as RedeemTicket;
 use App\Http\Livewire\Business\Dashboard\Tickets\View\Index as ViewTicket;
-use App\Http\Livewire\Business\Dashboard\Tickets\Issue\Index as IssueTicket;
 use App\Http\Livewire\Business\Dashboard\Tickets\Add\Index as AddTicket;
 use App\Http\Livewire\Business\Dashboard\Tickets\Edit\Index as EditTicket;
 use App\Http\Livewire\Business\Dashboard\Tickets\More\Index as TicketMore;
@@ -29,13 +25,15 @@ use App\Http\Livewire\Business\Dashboard\Tickets\More\Index as TicketMore;
 /*Begin::Vouchers*/
 use App\Http\Livewire\Business\Dashboard\Vouchers\Index as Vouchers;
 use App\Http\Livewire\Business\Dashboard\Vouchers\Sold\Index as SoldVouchers;
-use App\Http\Livewire\Business\Dashboard\Vouchers\Check\Index as RedeemVoucher;
 use App\Http\Livewire\Business\Dashboard\Vouchers\View\Index as ViewVoucher;
-use App\Http\Livewire\Business\Dashboard\Vouchers\Issue\Index as IssueVoucher;
 use App\Http\Livewire\Business\Dashboard\Vouchers\Add\Index as AddVoucher;
 use App\Http\Livewire\Business\Dashboard\Vouchers\Edit\Index as EditVoucher;
 use App\Http\Livewire\Business\Dashboard\Vouchers\More\Index as VoucherMore;
 /*End::Vouchers*/
+
+/*Begin::Redeem*/
+use App\Http\Livewire\Business\Dashboard\Redeem\Index as Redeem;
+/*End::Redeem*/
 
 /*Begin::Store*/
 use App\Http\Livewire\Business\Dashboard\Store\Index as Store;
@@ -70,9 +68,6 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
 
     Route::get('SoldCards', SoldCards::class)
         ->name('BusinessSoldCards');
-
-    Route::get('RedeemCard', RedeemCard::class)
-        ->name('BusinessRedeemCard');
 
     Route::get('ViewCard/{slug}', ViewCard::class)
         ->name('BusinessViewCard');
@@ -127,6 +122,10 @@ Route::middleware(['auth', 'business'])->prefix('Business')->group(function () {
     Route::get('Voucher/{slug}/More', VoucherMore::class)
         ->name('BusinessVoucherMore');
     /*End::Vouchers*/
+
+    /*Begin::Redeem*/
+    Route::get('Redeem', Redeem::class)->name('BusinessRedeem');
+    /*End::Redeem*/
 
     /*Begin::Store*/
     Route::get('Store', Store::class)->name('BusinessStore');

@@ -2,13 +2,15 @@
 
 namespace App\Helpers\Business;
 
+use App\Models\User;
+use App\Helpers\Currency\Currency;
+use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Models\Card;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use App\Helpers\Business\Traits\BusinessCards;
 use App\Helpers\Business\Traits\BusinessStore;
 use App\Helpers\Business\Traits\BusinessTicket;
 use App\Helpers\Business\Traits\BusinessVoucher;
-use App\Models\User;
-use App\Helpers\Currency\Currency;
-use Illuminate\Support\Facades\Auth;
 
 class Business
 {
@@ -74,4 +76,33 @@ class Business
         } else return "usd";
     }
     /*End::Business Details*/
+
+
+    public static function FindAnyCardBySlug($business, $slug)
+    {
+        $voucher = Voucher::where('slug', $slug)->first();
+        if ($voucher) {
+            $card = Card::find($voucher->card_id);
+            if ($card) {
+                if ($card->user_id == $business) {
+                    return $voucher;
+                } else return false;
+            } else return false;
+        } else return false;
+    }
+
+    public static function FindAnyCardByCode($business, $code)
+    {
+        //53C8-C4O7-F7HK-4KHJ
+
+        $voucher = Voucher::where('code', $code)->first();
+        if ($voucher) {
+            $card = Card::find($voucher->card_id);
+            if ($card) {
+                if ($card->user_id == $business) {
+                    return $voucher;
+                } else return false;
+            } else return false;
+        } else return false;
+    }
 }

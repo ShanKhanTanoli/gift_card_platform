@@ -60,14 +60,19 @@
                     </span>
                 </a>
             </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">
+                    Redeem
+                </h6>
+            </li>
             <li class="nav-item">
-                <a class="nav-link text-white @if (Request::path() == 'Business/RedeemCard') active bg-gradient-primary @else '' @endif"
-                    href="{{ route('BusinessRedeemCard') }}">
+                <a class="nav-link text-white @if (Request::path() == 'Business/Redeem') active bg-gradient-primary @else '' @endif"
+                    href="{{ route('BusinessRedeem') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fas fa-credit-card"></i>
                     </div>
                     <span class="nav-link-text ms-1">
-                        Redeem Card
+                        Redeem
                     </span>
                 </a>
             </li>

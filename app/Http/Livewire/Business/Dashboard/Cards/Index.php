@@ -24,17 +24,6 @@ class Index extends Component
             ->section('content');
     }
 
-    public function Issue($slug)
-    {
-        return redirect(route('BusinessIssueCard', $slug));
-    }
-
-    public function View($slug)
-    {
-        return redirect(route('BusinessViewCard', $slug));
-    }
-
-
     public function Edit($slug)
     {
         return redirect(route('BusinessEditCard', $slug));

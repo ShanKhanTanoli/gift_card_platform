@@ -22,11 +22,11 @@ class Index extends Component
     public function mount($slug)
     {
         //Begin::If this Business owns a Voucher
-        if ($card = Business::FindVoucherBySlug(Auth::user()->id, $slug)) {
+        if ($card = Business::FindAnyCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
         } else {
-            session()->flash('error', 'No such card found');
-            return redirect(route('BusinessCards'));
+            session()->flash('error', 'No such voucher found');
+            return redirect(route('BusinessRedeem'));
         }
         //End::If this Business owns a Voucher
     }
@@ -37,10 +37,10 @@ class Index extends Component
             ->latest()
             ->take($this->redeem_quantity)
             ->get();
-        return view('livewire.business.dashboard.cards.view.index')
-            ->with([
-                'redeeming' => $redeeming
-            ])->extends('layouts.dashboard');
+
+        return view('livewire.business.dashboard.vouchers.view.index')
+            ->with(['redeeming' => $redeeming])
+            ->extends('layouts.dashboard');
     }
 
 

@@ -9,6 +9,7 @@ use App\Helpers\Client\Traits\ClientCards;
 use App\Helpers\Client\Traits\ClientPayments;
 use App\Helpers\Client\Traits\ClientTickets;
 use App\Helpers\Client\Traits\ClientVouchers;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 
 class Client
 {

@@ -80,9 +80,6 @@
                                         Sold
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Edit
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -197,21 +194,6 @@
                                                     </h6>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            @if ($card->trashed())
-                                                <button class="btn btn-sm btn-danger disabled">
-                                                    BANNED
-                                                </button>
-                                            @else
-                                                <button class="btn btn-sm btn-info"
-                                                    wire:click='View("{{ $card->slug }}")'>
-                                                    <span wire:loading wire:target='View("{{ $card->slug }}")'
-                                                        class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span>
-                                                    View
-                                                </button>
-                                            @endif
                                         </td>
                                         <td class="align-middle">
                                             @if ($card->trashed())
