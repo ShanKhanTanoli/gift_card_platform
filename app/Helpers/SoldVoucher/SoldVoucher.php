@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Helpers\SoldCard;
+namespace App\Helpers\SoldVoucher;
 
 use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
 use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
-class SoldCard
+class SoldVoucher
 {
 
     /*Begin::Cards*/
     public static function All()
     {
         return Voucher::withTrashed()
-            ->where(['type' => 'card'])
+            ->where(['type' => 'voucher'])
             ->latest();
     }
 

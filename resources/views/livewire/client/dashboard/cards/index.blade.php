@@ -81,6 +81,9 @@
                                         Name
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Company
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Type
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -105,114 +108,123 @@
                             </thead>
                             <tbody>
                                 @foreach ($cards as $voucher)
-                                @if($voucher->type == "card")
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
+                                    @if ($voucher->type == 'card')
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            @if ($card = Card::FindById($voucher->card_id))
+                                                                {{ Str::substr($card->name, 0, 15) }}
+                                                            @else
+                                                                NOT FOUND
+                                                            @endif
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            {{ Business::DisplayStoreName($card->user_id) }}
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
                                                         @if ($card = Card::FindById($voucher->card_id))
-                                                            {{ Str::substr($card->name, 0, 15) }}
+                                                            <span class="badge bg-info">
+                                                                {{ Str::substr($card->type, 0, 15) }}
+                                                            </span>
                                                         @else
-                                                            NOT FOUND
+                                                            <span class="badge bg-danger">
+                                                                NOT FOUND
+                                                            </span>
                                                         @endif
-                                                    </h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    @if ($card = Card::FindById($voucher->card_id))
-                                                        <span class="badge bg-info">
-                                                            {{ Str::substr($card->type, 0, 15) }}
-                                                        </span>
-                                                    @else
-                                                        <span class="badge bg-danger">
-                                                            NOT FOUND
-                                                        </span>
-                                                    @endif
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            {{ $voucher->code }}
+                                                        </h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        {{ $voucher->code }}
-                                                    </h6>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            {{ $voucher->balance }}
+                                                            {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                                        </h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        {{ $voucher->balance }}
-                                                        {{ strtoupper(Business::Currency(Auth::user()->id)) }}
-                                                    </h6>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
+                                                        </h6>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
-                                                        {{ date('d M Y', strtotime($voucher->expires_at)) }}
-                                                    </h6>
+                                            </td>
+                                            <td class="align-middle">
+                                                @if ($voucher->type == 'card')
+                                                    <button class="btn btn-sm btn-info"
+                                                        wire:click='More("{{ $voucher->slug }}")'>
+                                                        <span wire:loading wire:target='More("{{ $voucher->slug }}")'
+                                                            class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        More
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-sm btn-danger disabled">
+                                                        CAN NOT
+                                                    </button>
+                                                @endif
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <!--Begin::If Banned-->
+                                                        @if ($voucher->trashed())
+                                                            <span class="badge bg-gradient-danger">
+                                                                BANNED
+                                                            </span>
+                                                        @else
+                                                            <!--Begin::If Expired-->
+                                                            @if ($voucher->isExpired())
+                                                                <span class="badge bg-gradient-danger">
+                                                                    Expired
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-gradient-success">
+                                                                    Active
+                                                                </span>
+                                                            @endif
+                                                            <!--End::If Expired-->
+                                                        @endif
+                                                        <!--End::If Banned-->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            @if ($voucher->type == 'card')
+                                            </td>
+                                            <td class="align-middle">
                                                 <button class="btn btn-sm btn-info"
-                                                    wire:click='More("{{ $voucher->slug }}")'>
-                                                    <span wire:loading wire:target='More("{{ $voucher->slug }}")'
+                                                    wire:click='View("{{ $voucher->slug }}")'>
+                                                    <span wire:loading wire:target='View("{{ $voucher->slug }}")'
                                                         class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
-                                                    More
+                                                    View
                                                 </button>
-                                            @else
-                                                <button class="btn btn-sm btn-danger disabled">
-                                                    CAN NOT
-                                                </button>
-                                            @endif
-                                        </td>
-                                        <td class="align-middle">
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <!--Begin::If Banned-->
-                                                    @if ($voucher->trashed())
-                                                        <span class="badge bg-gradient-danger">
-                                                            BANNED
-                                                        </span>
-                                                    @else
-                                                        <!--Begin::If Expired-->
-                                                        @if ($voucher->isExpired())
-                                                            <span class="badge bg-gradient-danger">
-                                                                Expired
-                                                            </span>
-                                                        @else
-                                                            <span class="badge bg-gradient-success">
-                                                                Active
-                                                            </span>
-                                                        @endif
-                                                        <!--End::If Expired-->
-                                                    @endif
-                                                    <!--End::If Banned-->
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $voucher->slug }}")'>
-                                                <span wire:loading wire:target='View("{{ $voucher->slug }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                View
-                                            </button>
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     @endif
                                 @endforeach
                             </tbody>

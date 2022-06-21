@@ -22,6 +22,9 @@
                                         Type
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Code
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Paid
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -50,27 +53,52 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
+                                                    <span class="badge bg-info">
 
                                                         <!--Begin::If Card Found-->
-                                                        @if ($card = Card::FindById($payment->voucher_id))
+                                                        @if ($card = SoldCard::FindById($payment->voucher_id))
                                                             {{ Str::substr(Str::upper($card->type), 0, 20) }}
                                                         @endif
                                                         <!--End::If Card Found-->
 
-                                                        {{ $payment->voucher_id }}
+                                                        <!--Begin::If Ticket , Voucher Found-->
+                                                        @if ($card = SoldTicket::FindById($payment->voucher_id))
+                                                            {{ Str::substr(Str::upper($card->type), 0, 20) }}
+                                                        @endif
+                                                        <!--End::If Ticket , Voucher Found-->
 
                                                         <!--Begin::If Voucher Found-->
-                                                        @if ($voucher = Voucher::FindById($payment->voucher_id))
-                                                            {{ Str::substr(Str::upper($voucher->type), 0, 20) }}
+                                                        @if ($card = SoldVoucher::FindById($payment->voucher_id))
+                                                            {{ Str::substr(Str::upper($card->type), 0, 20) }}
                                                         @endif
                                                         <!--End::If Voucher Found-->
 
-                                                        <!--Begin::If Ticket Found-->
-                                                        @if ($ticket = Ticket::FindById($payment->voucher_id))
-                                                            {{ Str::substr(Str::upper($ticket->type), 0, 20) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+
+                                                        <!--Begin::If Card Found-->
+                                                        @if ($card = SoldCard::FindById($payment->voucher_id))
+                                                            {{ $card->code }}
                                                         @endif
-                                                        <!--End::If Ticket Found-->
+                                                        <!--End::If Card Found-->
+
+                                                        <!--Begin::If Ticket , Voucher Found-->
+                                                        @if ($card = SoldTicket::FindById($payment->voucher_id))
+                                                            {{ $card->code }}
+                                                        @endif
+                                                        <!--End::If Ticket , Voucher Found-->
+
+                                                        <!--Begin::If Voucher Found-->
+                                                        @if ($card = SoldVoucher::FindById($payment->voucher_id))
+                                                            {{ $card->code }}
+                                                        @endif
+                                                        <!--End::If Voucher Found-->
 
                                                     </h6>
                                                 </div>
@@ -101,22 +129,23 @@
                                                     <h6 class="mb-0 text-sm">
 
                                                         <!--Begin::If Card Found-->
-                                                        @if ($voucher = Card::FindById($payment->voucher_id))
-                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
+                                                        @if ($card = SoldCard::FindById($payment->voucher_id))
+                                                            {{ date('d M Y', strtotime($card->expires_at)) }}
                                                         @endif
                                                         <!--End::If Card Found-->
 
+                                                        <!--Begin::If Ticket , Voucher Found-->
+                                                        @if ($card = SoldTicket::FindById($payment->voucher_id))
+                                                            {{ date('d M Y', strtotime($card->expires_at)) }}
+                                                        @endif
+                                                        <!--End::If Ticket , Voucher Found-->
+
                                                         <!--Begin::If Voucher Found-->
-                                                        @if ($voucher = Voucher::FindById($payment->voucher_id))
-                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
+                                                        @if ($card = SoldVoucher::FindById($payment->voucher_id))
+                                                            {{ date('d M Y', strtotime($card->expires_at)) }}
                                                         @endif
                                                         <!--End::If Voucher Found-->
 
-                                                        <!--Begin::If Ticket Found-->
-                                                        @if ($voucher = Ticket::FindById($payment->voucher_id))
-                                                            {{ date('d M Y', strtotime($voucher->expires_at)) }}
-                                                        @endif
-                                                        <!--End::If Ticket Found-->
 
                                                     </h6>
                                                 </div>

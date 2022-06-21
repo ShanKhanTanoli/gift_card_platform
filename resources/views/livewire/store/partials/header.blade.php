@@ -19,13 +19,19 @@
                       <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                       <li><a class="nav-link scrollto" href="#about">About</a></li>
                       @if ($store->display_cards)
-                          <li><a class="nav-link scrollto" href="#cards">Cards</a></li>
+                          @if ($cards->count() > 0)
+                              <li><a class="nav-link scrollto" href="#cards">Cards</a></li>
+                          @endif
                       @endif
                       @if ($store->display_cards)
-                          <li><a class="nav-link scrollto" href="#tickets">Tickets</a></li>
+                          @if ($tickets->count() > 0)
+                              <li><a class="nav-link scrollto" href="#tickets">Tickets</a></li>
+                          @endif
                       @endif
                       @if ($store->display_cards)
-                          <li><a class="nav-link scrollto" href="#vouchers">Vouchers</a></li>
+                          @if ($vouchers->count() > 0)
+                              <li><a class="nav-link scrollto" href="#vouchers">Vouchers</a></li>
+                          @endif
                       @endif
                   @endif
                   @if (Auth::user())

@@ -204,6 +204,9 @@ return [
         'Business' => App\Helpers\Business\Business::class,
         'Currency' => App\Helpers\Currency\Currency::class,
         'Payments' => App\Helpers\Payments\Payments::class,
+        'SoldCard' => App\Helpers\SoldCard\SoldCard::class,
+        'SoldTicket' => App\Helpers\SoldTicket\SoldTicket::class,
+        'SoldVoucher' => App\Helpers\SoldVoucher\SoldVoucher::class,
 
     ])->toArray(),
 

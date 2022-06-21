@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Livewire\Component;
 use App\Helpers\Card\Card;
+use Illuminate\Support\Str;
 use Livewire\WithPagination;
 use App\Helpers\Ticket\Ticket;
 use App\Helpers\Voucher\Voucher;
@@ -27,7 +28,7 @@ class Index extends Component
         if ($store = Business::FindStoreByName($store_name)) {
             $this->store = $store;
             $this->business = $store->user_id;
-        } else return session()->flash('error', 'Something went wrong');
+        } else abort(404);
     }
 
     public function render()
@@ -116,7 +117,7 @@ class Index extends Component
                     //Begin::If Card is a Ticket
                     if ($card->type == "ticket") {
                         $this->voucher = Vouchers::withType($card->type)
-                            ->withMask('a1b2c3d4e5f6g7h8')
+                            ->withCharacters(Str::random(15))
                             ->withCard($card->id)
                             ->withPrice($card->price)
                             ->withBalance($card->balance)

@@ -17,14 +17,14 @@
                             <div class="col-6">
                                 <h6 class="text-white mt-0 mb-0 pb-0">
                                     {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
-                                    @if ($find = Card::FindById($card->card_id))
+                                    @if ($find = Ticket::FindById($card->card_id))
                                         - {{ Str::ucfirst($card->type) }}
                                     @endif
                                 </h6>
                             </div>
                             <div class="col-6">
                                 <h6 class="text-white mt-0 mb-0 pb-0" style="text-align: right;">
-                                    @if ($find = Card::FindById($card->card_id))
+                                    @if ($find = Ticket::FindById($card->card_id))
                                         {{ Str::substr($find->name, 0, 15) }}
                                     @endif
                                 </h6>
@@ -74,7 +74,7 @@
                                 </span>
                                 <span class="mb-2 text-xs">
                                     Ticket:
-                                    @if ($find = Card::FindById($card->card_id))
+                                    @if ($find = Ticket::FindById($card->card_id))
                                         <span class="badge bg-info ms-sm-2">
                                             {{ Str::substr($find->name, 0, 15) }}
                                         </span>
