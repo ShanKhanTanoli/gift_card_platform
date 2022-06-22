@@ -24,53 +24,36 @@
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="container">
-                                <form wire:submit.prevent='Update'>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-check form-switch">
-                                                <input wire:model='enable_pin' class="form-check-input" type="checkbox"
-                                                    id="enable_pin" checked="">
-                                                <label
-                                                    class="form-check-label @error('enable_pin') is-invalid @enderror"
-                                                    for="enable_pin">
-                                                    @if ($card->pin)
-                                                        Disable Pin
-                                                    @else
-                                                        Enable Pin
-                                                    @endif
-                                                </label>
-                                                @error('enable_pin')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        @if ($enable_pin)
-                                            <div class="col-md-12">
-                                                <div class="input-group input-group-static my-3">
-                                                    <label for="pin">Pin Code (Max 5 Digits)</label>
-                                                    <input type="text" wire:model.defer='pin'
-                                                        value="{{ old('pin') }}"
-                                                        class="form-control  @error('pin') is-invalid @enderror"
-                                                        placeholder="Enter Pin">
-                                                    @error('pin')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong>{{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div>
-                                        @endif
-                                        <div class="col-md-6">
-                                            <button type="submit" class="btn btn-primary" wire:attr='disabled'>
-                                                <span wire:loading wire:target='Update' class="spinner-border spinner-border-sm"
-                                                    role="status" aria-hidden="true"></span>
-                                                Save Changes
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
+                                <div class="col-md-12 p-0">
+                                    @if ($card->pin)
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#RemovePinModal">
+                                            <i class="fas fa-lock-open text-sm me-2">
+                                            </i>
+                                            Remove Pin
+
+                                        </a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#ChangePinModal">
+                                            <i class="fas fa-key text-sm me-2">
+                                            </i>
+                                            Change Pin
+                                        </a>
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#ForgotPinModal">
+                                            <i class="fas fa-lock text-sm me-2">
+                                            </i>
+                                            Forgot Pin
+                                        </a>
+                                    @else
+                                        <a class="btn btn-link text-dark px-1 mb-0" href="#"
+                                            data-bs-toggle="modal" data-bs-target="#AddPinModal">
+                                            <i class="fas fa-edit text-sm me-2">
+                                            </i>
+                                            Add Pin
+                                        </a>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -78,4 +61,21 @@
             </div>
         </div>
     </div>
+
+    <!--Begin::Add Pin Modal-->
+    @include('livewire.client.dashboard.cards.pin.partials.add-pin-modal')
+    <!--End::Add Pin Modal-->
+
+    <!--Begin::Remove Pin Modal-->
+    @include('livewire.client.dashboard.cards.pin.partials.remove-pin-modal')
+    <!--End::Remove Pin Modal-->
+
+    <!--Begin::Change Pin Modal-->
+    @include('livewire.client.dashboard.cards.pin.partials.change-pin-modal')
+    <!--End::Change Pin Modal-->
+
+    <!--Begin::Forgot Pin Modal-->
+    @include('livewire.client.dashboard.cards.pin.partials.forgot-pin-modal')
+    <!--End::Forgot Pin Modal-->
+
 </div>

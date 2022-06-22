@@ -12,6 +12,18 @@ use App\Http\Livewire\Client\Dashboard\Cards\Pin\Index as CardPin;
 use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Index as RechargeCard;
 /*End::Cards*/
 
+/*Begin::Recharge with Stripe*/
+use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Stripe\Index as RechargeWithStripe;
+/*End::Recharge with Stripe*/
+
+/*Begin::Recharge with Paypal*/
+use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Paypal\Index as RechargeWithPaypal;
+/*End::Recharge with Paypal*/
+
+/*Begin::Recharge with Crypto*/
+use App\Http\Livewire\Client\Dashboard\Cards\Recharge\Crypto\Index as RechargeWithCrypto;
+/*End::Recharge with Crypto*/
+
 /*Begin::Tickets*/
 use App\Http\Livewire\Client\Dashboard\Tickets\Index as Tickets;
 use App\Http\Livewire\Client\Dashboard\Tickets\View\Index as ViewTicket;
@@ -54,6 +66,26 @@ Route::middleware(['auth', 'client'])->prefix('Client')->group(function () {
         ->name('ClientCardPin');
 
     /*End::Cards*/
+
+    /*Begin::Recharge with Stripe*/
+    Route::get('Card/{slug}/RechargeWithStripe', RechargeWithStripe::class)
+        ->name('ClientRechargeWithStripe');
+    /*End::Recharge with Stripe*/
+
+    /*Begin::Recharge with Paypal*/
+    Route::get('Card/{slug}/RechargeWithPaypal', RechargeWithPaypal::class)
+        ->name('ClientRechargeWithPaypal');
+    /*End::Recharge with Paypal*/
+
+    /*Begin::Recharge with Paypal*/
+    Route::get('Card/{slug}/RechargeWithPaypal', RechargeWithPaypal::class)
+        ->name('ClientRechargeWithPaypal');
+    /*End::Recharge with Paypal*/
+
+    /*Begin::Recharge with Crypto*/
+    Route::get('Card/{slug}/RechargeWithCrypto', RechargeWithCrypto::class)
+        ->name('ClientRechargeWithCrypto');
+    /*End::Recharge with Crypto*/
 
     /*Begin::Tickets*/
     Route::get('Tickets', Tickets::class)
