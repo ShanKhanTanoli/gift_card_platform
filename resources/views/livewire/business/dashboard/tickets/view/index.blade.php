@@ -13,7 +13,7 @@
                                 <h6 class="mt-0 mb-0 pb-0" style="color: {{ $card->text_color }} !important;">
                                     {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
                                     @if ($find = Ticket::FindById($card->card_id))
-                                        - {{ Str::ucfirst($card->type) }}
+                                        {{ Str::ucfirst($card->type) }}
                                     @endif
                                 </h6>
                             </div>
@@ -101,21 +101,41 @@
                                         {{ date('d/m/Y', strtotime($card->expires_at)) }}
                                     </span>
                                 </span>
+                                @if($card->isRedeemed())
+                                <span class="mb-2 text-xs">
+                                    Redeemed:
+                                    <span class="text-dark font-weight-bold ms-sm-2">
+                                        {{ date('d/m/Y', strtotime($card->redeemed_at)) }}
+                                    </span>
+                                </span>
+                                @endif
                             </div>
                             <div class="ms-auto text-end">
 
-                                @if ($card->balance != 0)
-                                    <a class="btn btn-link text-dark px-3 mb-0" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#RedeemModal">
-                                        <i class="fas fa-money-bill text-sm me-2">
-                                        </i>
-                                        Redeem
-                                    </a>
-                                @else
-                                    <span class="badge bg-gradient-danger">
-                                        ZER0 BALANCE
-                                    </span>
+                                <!--Begin::If card is not expired-->
+                                @if (!$card->isExpired())
+                                    <!--Begin::If card is not redeemed-->
+                                    @if (!$card->isRedeemed())
+                                        @if ($card->balance != 0)
+                                            <a class="btn btn-link text-dark px-3 mb-0" href="#"
+                                                data-bs-toggle="modal" data-bs-target="#RedeemModal">
+                                                <i class="fas fa-money-bill text-sm me-2">
+                                                </i>
+                                                Redeem
+                                            </a>
+                                        @else
+                                            <span class="badge bg-gradient-danger">
+                                                ZER0 BALANCE
+                                            </span>
+                                        @endif
+                                    @else
+                                        <span class="badge bg-gradient-danger">
+                                            REDEEMED
+                                        </span>
+                                    @endif
+                                    <!--Begin::If card is not redeemed-->
                                 @endif
+                                <!--End::If card is not expired-->
                                 <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow">
                                     <i class="fas fa-print text-sm me-2"></i>
                                     Print Ticket

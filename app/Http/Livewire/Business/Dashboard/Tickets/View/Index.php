@@ -7,6 +7,9 @@ use App\Helpers\Card\Card;
 use Livewire\WithPagination;
 use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException;
 
 class Index extends Component
 {
@@ -43,6 +46,54 @@ class Index extends Component
             ->extends('layouts.dashboard');
     }
 
+
+    public function Redeem()
+    {
+        $validated = $this->validate([
+            'balance' => 'required|numeric',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            //Begin::If ticket has Zero Balance
+            if ($this->card->balance != 0) {
+
+                //Begin::If ticket has Enough Balance
+                if ($this->card->balance >= $validated['balance']) {
+
+                    Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], Business::Currency(Auth::user()->id), Auth::user(), ['redeem' => 'success']);
+
+                    $this->card->update([
+                        'balance' => 0,
+                    ]);
+
+                    session()->flash('success', 'Ticket has been redeemed successfully');
+                    return redirect(route('BusinessViewTicket', $this->card->slug));
+                } else {
+                    session()->flash('error', "Ticket has not enough balance");
+                    return redirect(route('BusinessViewTicket', $this->card->slug));
+                }
+                //End::If ticket has Enough Balance
+
+            } else {
+                session()->flash('error', "Ticket has zero balance");
+                return redirect(route('BusinessViewTicket', $this->card->slug));
+            }
+            //End::If ticket has Zero Balance
+
+            //End::If this Business owns this ticket
+        } catch (VoucherNotFoundException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect(route('BusinessViewTicket', $this->card->slug));
+        } catch (VoucherAlreadyRedeemedException $e) {
+            session()->flash('error', $e->getMessage());
+            return redirect(route('BusinessViewTicket', $this->card->slug));
+        }
+        //End::If this Business owns this ticket
+
+        //End::If this card is not expired
+    }
 
     public function LoadMoreRedeemingHistory()
     {

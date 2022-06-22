@@ -5,6 +5,7 @@ namespace App\Helpers\Voucher;
 use App\Models\User;
 use FrittenKeeZ\Vouchers\Models\Card;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
+use FrittenKeeZ\Vouchers\Models\Voucher as VoucherModel;
 
 class Voucher
 {
@@ -68,6 +69,14 @@ class Voucher
                 } else return false;
             } else return false;
         } else return false;
+    }
+
+    //Count Sold tickets
+    public static function CountSold($id)
+    {
+        return VoucherModel::where('card_id', $id)
+            ->where('type', 'voucher')
+            ->count();
     }
 
     /*End::Vouchers*/

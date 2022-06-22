@@ -3,9 +3,10 @@
 namespace App\Helpers\Card;
 
 use App\Models\User;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
-use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
+use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 
 class Card
 {
@@ -68,6 +69,14 @@ class Card
                 return $owner;
             } else return "Add Owner";
         } else return "Add Owner";
+    }
+
+    //Count Sold cards
+    public static function CountSold($id)
+    {
+        return Voucher::where('card_id',$id)
+        ->where('type','card')
+        ->count();
     }
 
     /*End::Cards*/

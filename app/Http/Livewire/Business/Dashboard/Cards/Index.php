@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $delete;
+    public $archive;
 
     use WithPagination;
 
@@ -29,20 +29,37 @@ class Index extends Component
         return redirect(route('BusinessEditCard', $slug));
     }
 
-    public function DeleteConfirmation($slug)
+    public function ArchiveConfirmation($slug)
     {
         if ($card = Business::FindCardBySlug(Auth::user()->id, $slug)) {
-            $this->delete = $card;
-            $this->emit(['delete']);
+            $this->archive = $card;
+            $this->emit(['archive']);
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Delete($id)
+    public function Archive($id)
     {
         if ($card = Business::FindCardById(Auth::user()->id, $id)) {
-            $card->delete();
-            session()->flash('success', 'Deleted Successfully');
-            return redirect(route('BusinessCards'));
+            /*Begin::If card is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                session()->flash('success', 'Archived Successfully');
+                return redirect(route('BusinessCards'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If card is not Banned*/
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Publish($id)
+    {
+        if ($card = Business::FindCardById(Auth::user()->id, $id)) {
+            /*Begin::If card is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 1]);
+                session()->flash('success', 'Published Successfully');
+                return redirect(route('BusinessCards'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If card is not Banned*/
         } else return session()->flash('error', 'No such card found');
     }
 }

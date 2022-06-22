@@ -10,7 +10,13 @@ class Index extends Component
 {
     public $code;
 
-    public $pin = false;
+    public $pin;
+
+    public function mount()
+    {
+        //Forget Session
+        Session()->forget('validate_pin');
+    }
 
     public function render()
     {
@@ -20,8 +26,6 @@ class Index extends Component
 
     public function Redeem()
     {
-        //9801-5030-6903-1371
-
         $validated = $this->validate([
             'code' => 'required|string',
         ]);
@@ -40,7 +44,11 @@ class Index extends Component
             }
             /*Begin::If Voucher*/
 
-            
+            /*Begin::If Card*/
+            if ($card->type == 'card') {
+                return redirect()->route('BusinessViewCard', $card->slug);
+            }
+            /*Begin::If Card*/
         } else session()->flash('error', 'Not found');
     }
 }

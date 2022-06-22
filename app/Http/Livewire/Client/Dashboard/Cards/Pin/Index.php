@@ -47,7 +47,7 @@ class Index extends Component
                 /*Begin::Add Or Remove Pin*/
                 if ($this->enable_pin) {
                     $validated = $this->validate([
-                        'pin' => 'required|numeric|digits:5',
+                        'pin' => 'required|numeric',
                     ]);
                     $this->card->update($validated);
                     session()->flash('success', 'Updated Successfully');

@@ -2,17 +2,24 @@
 
 namespace App\Http\Livewire\Business\Dashboard\Cards\View;
 
+use App\Models\User;
 use Livewire\Component;
 use App\Helpers\Card\Card;
 use Livewire\WithPagination;
 use App\Helpers\Business\Business;
+use App\Helpers\Client\Client;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException;
 
 class Index extends Component
 {
     use WithPagination;
+
+    public $pin, $pin_confirmation, $old_pin, $email;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -23,6 +30,7 @@ class Index extends Component
 
     public function mount($slug)
     {
+
         //Begin::If this Business owns a Card
         if ($card = Business::FindAnyCardBySlug(Auth::user()->id, $slug)) {
             $this->card = $card;
@@ -85,42 +93,37 @@ class Index extends Component
 
         try {
 
-            //Begin::If this Business owns a Card
-            if ($card = Business::FindCardBySlug(Auth::user()->id, $this->card->slug)) {
+            //Begin::If Card has Zero Balance
+            if ($this->card->balance != 0) {
 
-                //Begin::If Card has Zero Balance
-                if ($this->card->balance != 0) {
+                //Begin::If Card has Enough Balance
+                if ($this->card->balance >= $validated['balance']) {
 
-                    //Begin::If Card has Enough Balance
-                    if ($this->card->balance >= $validated['balance']) {
+                    Vouchers::RedeemCard($this->card->code, $validated['balance'], $validated['description'], Business::Currency(Auth::user()->id), Auth::user(), ['redeem' => 'success']);
 
-                        Vouchers::redeem($this->card->slug, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
-                        $this->card->update([
-                            'balance' => $this->card->balance - $validated['balance'],
-                        ]);
-                        session()->flash('success', 'Card has been redeemed successfully');
-                        return redirect(route('BusinessViewCard', $this->card->slug));
-                    } else {
-                        session()->flash('error', "Card has not enough balance");
-                        return redirect(route('BusinessViewCard', $this->card->slug));
-                    }
-                    //End::If Card has Enough Balance
+                    $this->card->update([
+                        'balance' => $this->card->balance - $validated['balance'],
+                    ]);
 
+                    session()->flash('success', 'Card has been redeemed successfully');
+                    return redirect(route('BusinessViewCard', $this->card->slug));
                 } else {
-                    session()->flash('error', "Card has zero balance");
+                    session()->flash('error', "Card has not enough balance");
                     return redirect(route('BusinessViewCard', $this->card->slug));
                 }
-                //End::If Card has Zero Balance
+                //End::If Card has Enough Balance
 
             } else {
-                session()->flash('error', 'No such card found');
-                return redirect(route('BusinessCards'));
+                session()->flash('error', "Card has zero balance");
+                return redirect(route('BusinessViewCard', $this->card->slug));
             }
+            //End::If Card has Zero Balance
+
             //End::If this Business owns a Card
-        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException $e) {
+        } catch (VoucherNotFoundException $e) {
             session()->flash('error', $e->getMessage());
             return redirect(route('BusinessViewCard', $this->card->slug));
-        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException $e) {
+        } catch (VoucherAlreadyRedeemedException $e) {
             session()->flash('error', $e->getMessage());
             return redirect(route('BusinessViewCard', $this->card->slug));
         }
@@ -137,5 +140,84 @@ class Index extends Component
     public function LoadMoreRedeemingHistory()
     {
         return $this->redeem_quantity += 3;
+    }
+
+    public function Pin()
+    {
+        $validated = $this->validate([
+            'pin' => 'required|numeric',
+        ]);
+
+        if (Hash::check($validated['pin'], $this->card->pin)) {
+            Session()->put('validate_pin', true);
+            return redirect()->route('BusinessViewCard', $this->card->slug);
+        } else return session()->flash('error', 'Please enter the correct pin code');
+    }
+
+    public function RemovePin()
+    {
+        $validated = $this->validate([
+            'pin' => 'required|numeric',
+        ]);
+
+        if (Hash::check($validated['pin'], $this->card->pin)) {
+            $this->card->update(['pin' => null]);
+            session()->flash('success', 'Pin removed successfully');
+            return redirect()->route('BusinessViewCard', $this->card->slug);
+        } else return session()->flash('error', 'Please enter the correct pin code');
+    }
+
+    public function AddPin()
+    {
+        $validated = $this->validate([
+            'pin' => 'required|numeric|confirmed',
+            'pin_confirmation' => 'required|numeric',
+        ]);
+
+        $this->card->update(['pin' => Hash::make($validated['pin'])]);
+        session()->flash('success', 'Pin added successfully');
+        return redirect()->route('BusinessViewCard', $this->card->slug);
+    }
+
+    public function ChangePin()
+    {
+        $pin = $this->validate([
+            'old_pin' => 'required|numeric',
+        ]);
+
+        if (Hash::check($pin['old_pin'], $this->card->pin)) {
+
+            $validated = $this->validate([
+                'pin' => 'required|numeric|confirmed',
+                'pin_confirmation' => 'required|numeric',
+            ]);
+
+            $this->card->update(['pin' => Hash::make($validated['pin'])]);
+            session()->flash('success', 'Pin changed successfully');
+            return redirect()->route('BusinessViewCard', $this->card->slug);
+        } else return session()->flash('error', 'Please enter the correct pin code');
+    }
+
+    public function ForgotPin()
+    {
+        $validated = $this->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email',$validated['email'])->first();
+
+        if ($user) {
+
+            if(Client::FindCardBySlug($user->id,$this->card->slug)){
+
+                if ($validated['email'] == $user->email) {
+                    $this->card->update(['pin' => null]);
+                    session()->flash('success', 'Pin removed successfully');
+                    return redirect()->route('BusinessViewCard', $this->card->slug);
+                } else return session()->flash('error', 'Enter the correct email');
+
+            }else return session()->flash('error', 'Enter the correct email');
+
+        } else return session()->flash('error', 'Enter the correct email');
     }
 }

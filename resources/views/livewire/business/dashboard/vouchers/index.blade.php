@@ -59,9 +59,6 @@
                                         Name
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Type
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -83,7 +80,7 @@
                                         Edit
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Delete
+                                        Visibility
                                     </th>
                                 </tr>
                             </thead>
@@ -94,24 +91,12 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if (Str::length($card->name) > 10)
-                                                            {!! Str::substr($card->name, 0, 10) !!}...
+                                                        @if (Str::length($card->name) > 15)
+                                                            {!! Str::substr($card->name, 0, 15) !!}...
                                                         @else
                                                             {!! $card->name !!}
                                                         @endif
                                                     </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    {{-- <h6 class="mb-0 text-sm">
-                                                        {!! Str::ucfirst($card->type) !!}
-                                                    </h6> --}}
-                                                    <span class="badge bg-gradient-info">
-                                                        {!! strtoupper($card->type) !!}
-                                                    </span>
                                                 </div>
                                             </div>
                                         </td>
@@ -190,7 +175,7 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        0
+                                                        {{ Voucher::CountSold($card->id) }}
                                                     </h6>
                                                 </div>
                                             </div>
@@ -216,14 +201,25 @@
                                                     BANNED
                                                 </button>
                                             @else
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:click='DeleteConfirmation("{{ $card->slug }}")'>
-                                                    <span wire:loading
-                                                        wire:target='DeleteConfirmation("{{ $card->slug }}")'
-                                                        class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span>
-                                                    Delete
-                                                </button>
+                                                <!--Begin::Card is Published/Archived-->
+                                                @if ($card->isPublished())
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:click='ArchiveConfirmation("{{ $card->slug }}")'>
+                                                        <span wire:loading
+                                                            wire:target='ArchiveConfirmation("{{ $card->slug }}")'
+                                                            class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        Archive
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-sm btn-info"
+                                                        wire:click='Publish("{{ $card->id }}")'>
+                                                        <span wire:loading wire:target='Publish("{{ $card->id }}")'
+                                                            class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        Publish
+                                                    </button>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>
@@ -238,17 +234,17 @@
             </div>
         </div>
     </div>
-    @if ($delete)
-        <!--Begin::DeleteModel-->
-        @include('livewire.business.dashboard.partials.delete-modal')
-        <!--End::DeleteModel-->
+    @if ($archive)
+        <!--Begin::ArchiveModel-->
+        @include('livewire.business.dashboard.partials.archive-modal')
+        <!--End::ArchiveModel-->
     @endif
 
     <!--Begin::Script-->
     @section('scripts')
         <script>
-            Livewire.on('delete', function() {
-                $('#delete-notification').modal('show');
+            Livewire.on('archive', function() {
+                $('#archive-notification').modal('show');
             })
         </script>
     @endsection

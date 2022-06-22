@@ -3,9 +3,10 @@
 namespace App\Helpers\Ticket;
 
 use App\Models\User;
+use FrittenKeeZ\Vouchers\Models\Voucher;
 use FrittenKeeZ\Vouchers\Models\Redeemer;
-use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
+use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 
 class Ticket
 {
@@ -70,24 +71,15 @@ class Ticket
         } else return "Add Owner";
     }
 
-    /*End::Cards*/
-
-    /*Begin::Card Recharge History*/
-    public static function Recharge($voucher_id)
+    //Count Sold tickets
+    public static function CountSold($id)
     {
-        return VoucherRecharge::where('voucher_id', $voucher_id);
+        return Voucher::where('card_id', $id)
+            ->where('type', 'ticket')
+            ->count();
     }
+    /*End::Tickets*/
 
-    public static function LatestRechargePaginate($voucher_id, $quantity)
-    {
-        return self::Recharge($voucher_id)->latest()->paginate($quantity);
-    }
-
-    public static function RechargeCount($voucher_id)
-    {
-        return self::Recharge($voucher_id)->count();
-    }
-    /*End::Card Recharge History*/
 
     /*Begin::Card Redeem History*/
     public static function Redeem($voucher_id)
