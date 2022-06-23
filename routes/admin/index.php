@@ -32,7 +32,7 @@ use App\Http\Livewire\Admin\Dashboard\Vouchers\Edit\Index as EditVoucher;
 /*End::Vouchers*/
 
 /*Begin::Redeem*/
-use App\Http\Livewire\Admin\Dashboard\Cards\Check\Index as RedeemCard;
+use App\Http\Livewire\Admin\Dashboard\Redeem\Index as Redeem;
 /*End::Redeem*/
 
 /*Begin::Clients*/
@@ -92,7 +92,7 @@ Route::middleware(['auth', 'admin'])->prefix('mapanel')->group(function () {
     /*End::Vouchers*/
 
     /*Begin::Redeem*/
-    Route::get('RedeemCard', RedeemCard::class)->name('AdminRedeemCard');
+    Route::get('Redeem', Redeem::class)->name('AdminRedeemCard');
     /*End::Redeem*/
 
     /*Begin::Clients*/

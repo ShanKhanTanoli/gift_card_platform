@@ -2,30 +2,42 @@
 
 namespace App\Http\Livewire\Admin\Dashboard\Cards\Edit;
 
-use DateTime;
 use Exception;
-use App\Models\User;
 use Livewire\Component;
 use App\Helpers\Card\Card;
+use Livewire\WithFileUploads;
+use App\Helpers\Business\Business;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    public $card, $user_id, $name, $price, $balance, $expires_at, $visibility, $temporary_image;
+    use WithFileUploads;
+
+    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
+
+    public $temporary_image;
 
     public function mount($slug)
     {
+        //Begin::If this card is available
         if ($card = Card::FindBySlug($slug)) {
-            $this->card = $card;
-            $this->user_id = $card->user_id;
-            $this->name = $card->name;
-            $this->price = $card->price;
-            $this->balance = $card->balance;
-            $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
-            $this->visibility = $card->visibility;
+
+
+                $this->card = $card;
+                $this->name = $card->name;
+                $this->type = $card->type;
+                $this->background = $card->background;
+                $this->text_color = $card->text_color;
+                $this->price = $card->price;
+                $this->balance = $card->balance;
+                $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
+                $this->visibility = $card->visibility;
+
+
         } else {
             session()->flash('error', 'No such card found');
             return redirect(route('AdminCards'));
-        }
+        } //End::If this card is available
     }
 
     public function render()
@@ -36,54 +48,90 @@ class Index extends Component
 
     public function Update()
     {
-        //Begin::If Card Exists
+        //Begin::If this card is available
         if (Card::FindBySlug($this->card->slug)) {
 
-            $msg = [
-                'user_id.required' => 'Select card owner',
-                'user_id.numeric' => 'Select card owner',
+            //Begin::If Card is Banned
+            if (!$this->card->trashed()) {
 
-                'price.required' => 'Enter Price',
-                'price.numeric' => 'Enter Price',
+                $validated = $this->validate([
+                    'name' => 'required|string',
+                    'price' => 'required|numeric',
+                    'balance' => 'required|numeric',
+                    'expires_at' => 'required|date',
+                    'visibility' => 'required|numeric|in:1,0',
+                ]);
+                try {
+                    $this->card->update($validated);
+                    session()->flash('success', 'Updated Successfully');
+                    return redirect(route('AdminEditCard', $this->card->slug));
+                } catch (Exception $e) {
+                    return session()->flash('error', $e->getMessage());
+                }
+            } else {
+                session()->flash('error', 'This Card is banned');
+                return redirect(route('AdminCards'));
+            } //End::If Card is Banned
 
-                'balance.required' => 'Enter  Balance',
-                'balance.numeric' => 'Enter  Balance',
+        } else {
+            session()->flash('error', 'No such card found');
+            return redirect(route('AdminCards'));
+        }
+    }
 
-                'expires_at.required' => 'Enter Date',
-                'expires_at.date' => 'Enter Date',
 
-                'visibility.required' => 'Select card visibility',
-                'visibility.in' => 'Select card visibility',
-            ];
+    public function Customize()
+    {
+        //Begin::If this card is available
+        if (Card::FindBySlug($this->card->slug)) {
+
             $validated = $this->validate([
-                'name' => 'required|string',
-                'user_id' => 'required|numeric',
-                'price' => 'required|numeric',
-                'balance' => 'required|numeric',
-                'expires_at' => 'required|date',
-                'visibility' => 'required|numeric|in:1,0',
+                'text_color' => 'required|string',
+                'temporary_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            ]);
 
-            ], $msg);
 
-            try {
+            if ($validated['temporary_image']) {
 
-                $user = User::find($validated['user_id']);
+                $image = time() . '.' . $validated['temporary_image']->getClientOriginalExtension();
+                $path = $validated['temporary_image']->storeAs('public/images/cards/backgrounds/', $image);
 
                 $data = [
-                    'name' => $validated['name'],
-                    'type' => 'card',
-                    'price' => $validated['price'],
-                    'balance' => $validated['balance'],
-                    'expires_at' => new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at']))),
-                    'visibility' => $validated['visibility'],
-                    'user_id' => $user->id,
+                    'text_color' => $validated['text_color'],
+                    'background' => $path,
                 ];
+            } else {
 
+                $data = [
+                    'text_color' => $validated['text_color'],
+                ];
+            }
+
+
+            try {
                 $this->card->update($data);
                 session()->flash('success', 'Updated Successfully');
                 return redirect(route('AdminEditCard', $this->card->slug));
             } catch (Exception $e) {
-                return session()->flash('error', 'Something went wrong');
+                return session()->flash('error', $e->getMessage());
+            }
+        } else {
+            session()->flash('error', 'No such card found');
+            return redirect(route('AdminCards'));
+        }
+    }
+
+
+    public function RemoveBG()
+    {
+        //Begin::If this card is available
+        if (Card::FindBySlug($this->card->slug)) {
+            try {
+                $this->card->update(['background' => null]);
+                session()->flash('success', 'Updated Successfully');
+                return redirect(route('AdminEditCard', $this->card->slug));
+            } catch (Exception $e) {
+                return session()->flash('error', $e->getMessage());
             }
         } else {
             session()->flash('error', 'No such card found');

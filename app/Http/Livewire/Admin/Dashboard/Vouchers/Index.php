@@ -3,14 +3,14 @@
 namespace App\Http\Livewire\Admin\Dashboard\Vouchers;
 
 use Livewire\Component;
-use App\Helpers\Voucher\Voucher;
 use Livewire\WithPagination;
+use App\Helpers\Voucher\Voucher;
 
 class Index extends Component
 {
-    use WithPagination;
+    public $archive, $ban;
 
-    public $delete;
+    use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -23,33 +23,81 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($slug)
+
+    public function Edit($slug)
     {
-        return redirect(route('AdminViewSlug', $slug));
+        return redirect(route('AdminEditVoucher', $slug));
     }
 
-
-    public function Edit($code)
+    public function ArchiveConfirmation($slug)
     {
-        if ($card = Voucher::FindBySlug($code)) {
-            return redirect(route('AdminEditVoucher', $card->code));
+        if ($card = Voucher::FindBySlug($slug)) {
+            $this->archive = $card;
+            $this->emit(['archive']);
         } else return session()->flash('error', 'No such voucher found');
     }
 
-    public function DeleteConfirmation($code)
-    {
-        if ($card = Voucher::FindBySlug($code)) {
-            $this->delete = $card;
-            $this->emit(['delete']);
-        } else return session()->flash('error', 'No such voucher found');
-    }
-
-    public function Delete($id)
+    public function Archive($id)
     {
         if ($card = Voucher::FindById($id)) {
-            $card->delete();
-            session()->flash('success', 'Deleted Successfully');
-            return redirect(route('AdminVouchers'));
+            /*Begin::If voucher is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                session()->flash('success', 'Archived Successfully');
+                return redirect(route('AdminVouchers'));
+            } else return session()->flash('error', 'Voucher is banned');
+            /*End::If voucher is not Banned*/
         } else return session()->flash('error', 'No such voucher found');
     }
+
+    public function Publish($id)
+    {
+        if ($card = Voucher::FindById($id)) {
+            /*Begin::If voucher is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 1]);
+                session()->flash('success', 'Published Successfully');
+                return redirect(route('AdminVouchers'));
+            } else return session()->flash('error', 'Voucher is banned');
+            /*End::If voucher is not Banned*/
+        } else return session()->flash('error', 'No such voucher found');
+    }
+
+    public function BanConfirmation($slug)
+    {
+        if ($card = Voucher::FindBySlug($slug)) {
+            $this->ban = $card;
+            $this->emit(['ban']);
+        } else return session()->flash('error', 'No such voucher found');
+    }
+
+    public function Ban($id)
+    {
+        if ($card = Voucher::FindById($id)) {
+            /*Begin::If voucher is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                $card->delete();
+                session()->flash('success', 'Banned Successfully');
+                return redirect(route('AdminVouchers'));
+            } else return session()->flash('error', 'Voucher is banned');
+            /*End::If voucher is not Banned*/
+        } else return session()->flash('error', 'No such voucher found');
+    }
+
+    public function Unban($id)
+    {
+        if ($card = Voucher::FindById($id)) {
+            /*Begin::If voucher is not Banned*/
+            if ($card->trashed()) {
+                $card->update(['visibility' => 1]);
+                $card->restore();
+                session()->flash('success', 'Activated Successfully');
+                return redirect(route('AdminVouchers'));
+            } else return session()->flash('error', 'voucher is not banned');
+            /*End::If voucher is not Banned*/
+        } else return session()->flash('error', 'No such voucher found');
+    }
+
+
 }

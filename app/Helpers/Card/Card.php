@@ -55,6 +55,7 @@ class Card
         return self::All()->find($id);
     }
 
+
     public static function Expiry($slug)
     {
         return CardModel::where('slug', $slug)

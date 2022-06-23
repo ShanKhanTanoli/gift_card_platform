@@ -3,12 +3,13 @@
 namespace App\Http\Livewire\Admin\Dashboard\Tickets\View;
 
 use Livewire\Component;
-use App\Helpers\Ticket\Ticket;
+use App\Helpers\Card\Card;
 use Livewire\WithPagination;
+use App\Helpers\Ticket\Ticket;
 use App\Helpers\Business\Business;
-use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
-use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
+use FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException;
 
 class Index extends Component
 {
@@ -16,76 +17,35 @@ class Index extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    public $card, $business, $balance, $description;
+    public $card, $balance, $description;
 
     public $redeem_quantity = 3;
     public $recharge_quantity = 3;
 
     public function mount($slug)
     {
-        //Begin::If Ticket Exists
+        //Begin::If this ticket is available
         if ($card = Ticket::FindBySlug($slug)) {
             $this->card = $card;
-            $this->business = Business::Find($this->card->owner_id);
         } else {
             session()->flash('error', 'No such ticket found');
-            return redirect(route('AdminTickets'));
+            return redirect(route('AdminRedeem'));
         }
-        //End::If Ticket Exists
+        //End::If this ticket is available
     }
 
     public function render()
     {
-        $recharge = Ticket::Recharge($this->card->id)
-            ->latest()
-            ->take($this->recharge_quantity)
-            ->get();
-        $redeeming = Ticket::Redeem($this->card->id)
+        $redeeming = Card::Redeem($this->card->id)
             ->latest()
             ->take($this->redeem_quantity)
             ->get();
+
         return view('livewire.admin.dashboard.tickets.view.index')
-            ->with([
-                'recharge' => $recharge,
-                'redeeming' => $redeeming
-            ])->extends('layouts.dashboard');
+            ->with(['redeeming' => $redeeming])
+            ->extends('layouts.dashboard');
     }
 
-    public function LoadMoreRechargingHistory()
-    {
-        return $this->recharge_quantity += 3;
-    }
-
-    public function LoadMoreRedeemingHistory()
-    {
-        return $this->redeem_quantity += 3;
-    }
-
-    public function Recharge()
-    {
-        $validated = $this->validate([
-            'balance' => 'required|numeric',
-        ]);
-
-        //Begin::If this ticket is not expired
-        if (!$this->card->isExpired()) {
-            $this->card->update([
-                'balance' => $this->card->balance + $validated['balance'],
-            ]);
-            VoucherRecharge::create([
-                'stripe_id' => "Admin",
-                'voucher_id' => $this->card->id,
-                'user_id' => Auth::user()->id,
-                'amount' => $validated['balance'],
-            ]);
-            session()->flash('success', 'Ticket has been recharged successfully');
-            return redirect(route('AdminViewTicket', $this->card->code));
-        } else {
-            session()->flash('error', 'Expired ticket can not be recharged');
-            return redirect(route('AdminViewTicket', $this->card->code));
-        }
-        //End::If this ticket is not expired
-    }
 
     public function Redeem()
     {
@@ -96,37 +56,47 @@ class Index extends Component
 
         try {
 
-            //Begin::If Ticket has Zero Balance
+            //Begin::If ticket has Zero Balance
             if ($this->card->balance != 0) {
 
-                //Begin::If Ticket has Enough Balance
+                //Begin::If ticket has Enough Balance
                 if ($this->card->balance >= $validated['balance']) {
-                    Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], 'usd', Auth::user(), ['foo' => 'bar']);
+
+                    Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], Business::Currency($this->card->user_id), $this->card->user_id, ['redeem' => 'success']);
+
                     $this->card->update([
-                        'balance' => $this->card->balance - $validated['balance'],
+                        'balance' => 0,
                     ]);
+
+                    session()->flash('success', 'Ticket has been redeemed successfully');
+                    return redirect(route('AdminViewTicket', $this->card->slug));
                 } else {
                     session()->flash('error', "Ticket has not enough balance");
-                    return redirect(route('AdminViewTicket', $this->card->code));
+                    return redirect(route('AdminViewTicket', $this->card->slug));
                 }
-                //End::If Ticket has Enough Balance
+                //End::If ticket has Enough Balance
 
             } else {
                 session()->flash('error', "Ticket has zero balance");
-                return redirect(route('AdminViewTicket', $this->card->code));
+                return redirect(route('AdminViewTicket', $this->card->slug));
             }
-            //End::If Ticket has Zero Balance
+            //End::If ticket has Zero Balance
 
-            session()->flash('success', 'Ticket has been redeemed successfully');
-            return redirect(route('AdminViewTicket', $this->card->code));
-        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException $e) {
+            //End::If this ticket is available
+        } catch (VoucherNotFoundException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('AdminViewTicket', $this->card->code));
-        } catch (\FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException $e) {
+            return redirect(route('AdminViewTicket', $this->card->slug));
+        } catch (VoucherAlreadyRedeemedException $e) {
             session()->flash('error', $e->getMessage());
-            return redirect(route('AdminViewTicket', $this->card->code));
+            return redirect(route('AdminViewTicket', $this->card->slug));
         }
+        //End::If this ticket is available
 
-        //End::If this ticket is not expired
+        //End::If this card is not expired
+    }
+
+    public function LoadMoreRedeemingHistory()
+    {
+        return $this->redeem_quantity += 3;
     }
 }

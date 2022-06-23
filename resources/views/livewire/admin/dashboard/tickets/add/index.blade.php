@@ -6,14 +6,27 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Add Card
+                            Add Ticket
                         </h6>
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="container">
-                        <form>
+                        <form wire:submit.prevent='Add'>
                             <div class="row">
+                                <div class="col-md-12">
+                                    <div class="input-group input-group-static my-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" wire:model.defer='name' value="{{ old('name') }}"
+                                            class="form-control  @error('name') is-invalid @enderror"
+                                            placeholder="Enter Name ">
+                                        @error('name')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
                                         <label for="price">Price
@@ -58,20 +71,14 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
-                                        <label for="user_id">Card Owner</label>
-                                        <select wire:model.defer='user_id'
-                                            class="form-control  @error('user_id') is-invalid @enderror">
-                                            <option value="">Select Owner</option>
-                                            @forelse(Business::All()->get() as $business)
-                                                <option value="{{ $business->id }}">
-                                                    Name : {{ $business->name }}
-                                                    Email : {{ $business->email }}
-                                                </option>
-                                            @empty
-                                                <option value="">Please Add Business</option>
-                                            @endforelse
+                                        <label for="visibility">Card Visibility</label>
+                                        <select wire:model.defer='visibility'
+                                            class="form-control  @error('visibility') is-invalid @enderror">
+                                            <option value="">Select Visibility</option>
+                                            <option value="1">Publish</option>
+                                            <option value="0">Archive</option>
                                         </select>
-                                        @error('user_id')
+                                        @error('visibility')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -79,24 +86,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="quantity">Quantity (1-30)</label>
-                                        <select wire:model.defer='quantity'
-                                            class="form-control  @error('quantity') is-invalid @enderror">
-                                            <option value="">Select Quantity</option>
-                                            @for ($i = 1; $i < 31; $i++)
-                                                <option value="{{ $i }}">{{ $i }} Cards</option>
-                                            @endfor
-                                        </select>
-                                        @error('quantity')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <button type="button" class="btn btn-primary" wire:attr='disabled' wire:click='Add'>
+                                    <button type="submit" class="btn btn-primary" wire:attr='disabled'>
                                         <span wire:loading class="spinner-border spinner-border-sm" role="status"
                                             aria-hidden="true"></span>
                                         Save Changes

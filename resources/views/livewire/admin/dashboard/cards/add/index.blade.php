@@ -14,35 +14,13 @@
                     <div class="container">
                         <form wire:submit.prevent='Add'>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="input-group input-group-static my-3">
                                         <label for="name">Name</label>
                                         <input type="text" wire:model.defer='name' value="{{ old('name') }}"
                                             class="form-control  @error('name') is-invalid @enderror"
                                             placeholder="Enter Name ">
                                         @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group input-group-static my-3">
-                                        <label for="user_id">Card Owner</label>
-                                        <select wire:model.defer='user_id'
-                                            class="form-control  @error('user_id') is-invalid @enderror">
-                                            <option value="">Select Owner</option>
-                                            @forelse(Business::All()->get() as $business)
-                                                <option value="{{ $business->id }}">
-                                                    Name : {{ $business->name }}
-                                                    Email : {{ $business->email }}
-                                                </option>
-                                            @empty
-                                                <option value="">Please Add Business</option>
-                                            @endforelse
-                                        </select>
-                                        @error('user_id')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>

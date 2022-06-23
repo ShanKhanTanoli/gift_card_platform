@@ -3,14 +3,14 @@
 namespace App\Http\Livewire\Admin\Dashboard\Tickets;
 
 use Livewire\Component;
-use App\Helpers\Ticket\Ticket;
 use Livewire\WithPagination;
+use App\Helpers\Ticket\Ticket;
 
 class Index extends Component
 {
-    use WithPagination;
+    public $archive,$ban;
 
-    public $delete;
+    use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -23,33 +23,80 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($code)
+
+    public function Edit($slug)
     {
-        return redirect(route('AdminViewTicket', $code));
+        return redirect(route('AdminEditTicket', $slug));
     }
 
-
-    public function Edit($code)
+    public function ArchiveConfirmation($slug)
     {
-        if ($card = Ticket::FindBySlug($code)) {
-            return redirect(route('AdminEditTicket', $card->code));
+        if ($card = Ticket::FindBySlug($slug)) {
+            $this->archive = $card;
+            $this->emit(['archive']);
         } else return session()->flash('error', 'No such ticket found');
     }
 
-    public function DeleteConfirmation($code)
-    {
-        if ($card = Ticket::FindBySlug($code)) {
-            $this->delete = $card;
-            $this->emit(['delete']);
-        } else return session()->flash('error', 'No such ticket found');
-    }
-
-    public function Delete($id)
+    public function Archive($id)
     {
         if ($card = Ticket::FindById($id)) {
-            $card->delete();
-            session()->flash('success', 'Deleted Successfully');
-            return redirect(route('AdminTickets'));
+            /*Begin::If ticket is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                session()->flash('success', 'Archived Successfully');
+                return redirect(route('AdminTickets'));
+            } else return session()->flash('error', 'Ticket is banned');
+            /*End::If ticket is not Banned*/
+        } else return session()->flash('error', 'No such ticket found');
+    }
+
+    public function Publish($id)
+    {
+        if ($card = Ticket::FindById($id)) {
+            /*Begin::If ticket is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 1]);
+                session()->flash('success', 'Published Successfully');
+                return redirect(route('AdminTickets'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If ticket is not Banned*/
+        } else return session()->flash('error', 'No such ticket found');
+    }
+
+
+    public function BanConfirmation($slug)
+    {
+        if ($card = Ticket::FindBySlug($slug)) {
+            $this->ban = $card;
+            $this->emit(['ban']);
+        } else return session()->flash('error', 'No such ticket found');
+    }
+
+    public function Ban($id)
+    {
+        if ($card = Ticket::FindById($id)) {
+            /*Begin::If ticket is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                $card->delete();
+                session()->flash('success', 'Banned Successfully');
+                return redirect(route('AdminTickets'));
+            } else return session()->flash('error', 'Ticket is banned');
+            /*End::If ticket is not Banned*/
+        } else return session()->flash('error', 'No such ticket found');
+    }
+
+    public function Unban($id)
+    {
+        if ($card = Ticket::FindById($id)) {
+            /*Begin::If ticket is not Banned*/
+            if ($card->trashed()) {
+                $card->update(['visibility' => 1]);
+                $card->restore();
+                session()->flash('success', 'Activated Successfully');
+                return redirect(route('AdminTickets'));
+            } else return session()->flash('error', 'Ticket is not banned');
+            /*End::If ticket is not Banned*/
         } else return session()->flash('error', 'No such ticket found');
     }
 }

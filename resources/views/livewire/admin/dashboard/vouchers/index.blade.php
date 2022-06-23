@@ -1,45 +1,7 @@
 <div class="container-fluid">
     @include('errors.alerts')
     <div class="row mb-4">
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminCards') }}">
-                <div class="card">
-                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
-                        <div
-                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                            <i class="fas fa-credit-card opacity-10"></i>
-                        </div>
-                        <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
-                                Cards</p>
-                            <h4 class="mb-0">
-                                {{ Card::count() }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminTickets') }}">
-                <div class="card">
-                    <div class="card-header p-3 pt-2" style="border-radius: 0;">
-                        <div
-                            class="icon icon-lg icon-shape bg-gradient-primary shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                            <i class="fas fa-ticket-alt opacity-10"></i>
-                        </div>
-                        <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
-                                Tickets</p>
-                            <h4 class="mb-0">
-                                {{ Ticket::count() }}
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-6 col-sm-12 mb-xl-0 mb-4">
             <a href="{{ route('AdminVouchers') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
@@ -48,18 +10,19 @@
                             <i class="fas fa-credit-card opacity-10"></i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">
+                            <p
+                                class="text-sm mb-0 text-capitalize @if (Request::path() == 'Admin/Vouchers') text-primary @endif">
                                 Vouchers</p>
-                            <h4 class="mb-0">
-                                {{ Voucher::count() }}
+                            <h4 class="mb-0 @if (Request::path() == 'Admin/Vouchers') text-primary @endif">
+                                {{ Voucher::Count() }}
                             </h4>
                         </div>
                     </div>
                 </div>
             </a>
         </div>
-        <div class="col-xl-3 col-sm-12 mb-xl-0 mb-4">
-            <a href="{{ route('AdminAddCard') }}">
+        <div class="col-xl-6 col-sm-12 mb-xl-0 mb-4">
+            <a href="{{ route('AdminAddVoucher') }}">
                 <div class="card">
                     <div class="card-header p-3 pt-2" style="border-radius: 0;">
                         <div
@@ -69,7 +32,7 @@
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Add New</p>
                             <h4 class="mb-0">
-                                Card
+                                Voucher
                             </h4>
                         </div>
                     </div>
@@ -83,7 +46,7 @@
                 <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                     <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
                         <h6 class="text-white text-capitalize ps-3">
-                            Cards
+                            Vouchers
                         </h6>
                     </div>
                 </div>
@@ -93,7 +56,7 @@
                             <thead>
                                 <tr>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Code
+                                        Name
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
@@ -111,16 +74,16 @@
                                         Status
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Owner
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View
+                                        Sold
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Edit
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Delete
+                                        Visibility
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Ban/Unban
                                     </th>
                                 </tr>
                             </thead>
@@ -131,7 +94,11 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ $card->code }}
+                                                        @if (Str::length($card->name) > 15)
+                                                            {!! Str::substr($card->name, 0, 15) !!}...
+                                                        @else
+                                                            {!! $card->name !!}
+                                                        @endif
                                                     </h6>
                                                 </div>
                                             </div>
@@ -177,56 +144,100 @@
                                         <td class="align-middle">
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
+                                                    <!--Begin::Card is Banned-->
+                                                    @if ($card->trashed())
+                                                        <span class="badge bg-gradient-danger">
+                                                            BANNED
+                                                        </span>
+                                                    @else
+                                                        <!--Begin::Card is Expired-->
                                                         @if ($card->isExpired())
                                                             <span class="badge bg-gradient-danger">
-                                                                Expired
+                                                                {{ strtoupper('Expired') }}
                                                             </span>
                                                         @else
-                                                            <span class="badge bg-gradient-success">
-                                                                Active
-                                                            </span>
+                                                            <!--Begin::Card is Published/Archived-->
+                                                            @if ($card->isPublished())
+                                                                <span class="badge bg-gradient-info">
+                                                                    {{ strtoupper('Published') }}
+                                                                </span>
+                                                            @else
+                                                                <span class="badge bg-gradient-danger">
+                                                                    {{ strtoupper('Archived') }}
+                                                                </span>
+                                                            @endif
+                                                            <!--End::Card is Published/Archived-->
                                                         @endif
-                                                    </h6>
+                                                        <!--End::Card is Expired-->
+                                                    @endif
+                                                    <!--End::Card is Banned-->
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="align-middle">
+                                        <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        {{ Str::substr(Card::FindOwner($card->code)->name, 0, 12) }}
+                                                        {{ Voucher::CountSold($card->id) }}
                                                     </h6>
                                                 </div>
                                             </div>
                                         </td>
                                         <td class="align-middle">
-                                            <button class="btn btn-sm btn-info"
-                                                wire:click='View("{{ $card->code }}")'>
-                                                <span wire:loading wire:target='View("{{ $card->code }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                View
-                                            </button>
-                                        </td>
-                                        <td class="align-middle">
                                             <button class="btn btn-sm btn-success"
-                                                wire:click='Edit("{{ $card->code }}")'>
-                                                <span wire:loading wire:target='Edit("{{ $card->code }}")'
+                                                wire:click='Edit("{{ $card->slug }}")'>
+                                                <span wire:loading wire:target='Edit("{{ $card->slug }}")'
                                                     class="spinner-border spinner-border-sm" role="status"
                                                     aria-hidden="true"></span>
                                                 Edit
                                             </button>
                                         </td>
                                         <td class="align-middle">
-                                            <button class="btn btn-sm btn-danger"
-                                                wire:click='DeleteConfirmation("{{ $card->code }}")'>
-                                                <span wire:loading
-                                                    wire:target='DeleteConfirmation("{{ $card->code }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                Delete
-                                            </button>
+                                            @if ($card->trashed())
+                                                <button class="btn btn-sm btn-danger disabled">
+                                                    BANNED
+                                                </button>
+                                            @else
+                                                <!--Begin::Card is Published/Archived-->
+                                                @if ($card->isPublished())
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:click='ArchiveConfirmation("{{ $card->slug }}")'>
+                                                        <span wire:loading
+                                                            wire:target='ArchiveConfirmation("{{ $card->slug }}")'
+                                                            class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        Archive
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-sm btn-info"
+                                                        wire:click='Publish("{{ $card->id }}")'>
+                                                        <span wire:loading wire:target='Publish("{{ $card->id }}")'
+                                                            class="spinner-border spinner-border-sm" role="status"
+                                                            aria-hidden="true"></span>
+                                                        Publish
+                                                    </button>
+                                                @endif
+                                            @endif
+                                        </td>
+                                        <td class="align-middle">
+                                            @if ($card->trashed())
+                                                <button class="btn btn-sm btn-danger"
+                                                    wire:click='Unban("{{ $card->id }}")'>
+                                                    <span wire:loading wire:target='Unban("{{ $card->id }}")'
+                                                        class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    Unban
+                                                </button>
+                                            @else
+                                                <button class="btn btn-sm btn-info"
+                                                    wire:click='BanConfirmation("{{ $card->slug }}")'>
+                                                    <span wire:loading
+                                                        wire:target='BanConfirmation("{{ $card->slug }}")'
+                                                        class="spinner-border spinner-border-sm" role="status"
+                                                        aria-hidden="true"></span>
+                                                    Ban
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -240,21 +251,29 @@
             </div>
         </div>
     </div>
+    @if ($archive)
+        <!--Begin::ArchiveModel-->
+        @include('livewire.admin.dashboard.partials.archive-modal')
+        <!--End::ArchiveModel-->
+    @endif
 
-    @if ($delete)
-        <!--Begin::DeleteModel-->
-        @include('livewire.admin.dashboard.partials.delete-modal')
-        <!--End::DeleteModel-->
+    @if ($ban)
+        <!--Begin::BanModel-->
+        @include('livewire.admin.dashboard.partials.ban-modal')
+        <!--End::BanModel-->
     @endif
 
     <!--Begin::Script-->
     @section('scripts')
         <script>
-            Livewire.on('delete', function() {
-                $('#delete-notification').modal('show');
+            Livewire.on('archive', function() {
+                $('#archive-notification').modal('show');
+            })
+
+            Livewire.on('ban', function() {
+                $('#ban-notification').modal('show');
             })
         </script>
     @endsection
     <!--End::Script-->
-
 </div>

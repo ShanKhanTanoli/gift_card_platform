@@ -4,13 +4,15 @@ namespace App\Http\Livewire\Admin\Dashboard\Tickets\Add;
 
 use DateTime;
 use Exception;
-use App\Models\User;
 use Livewire\Component;
-use FrittenKeeZ\Vouchers\Facades\Vouchers;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Models\Card;
 
 class Index extends Component
 {
-    public $price, $balance, $expires_at, $quantity, $user_id;
+    public $name, $price, $balance, $expires_at, $user_id, $visibility;
+
     public function render()
     {
         return view('livewire.admin.dashboard.tickets.add.index')
@@ -20,37 +22,46 @@ class Index extends Component
     public function Add()
     {
         $msg = [
-            'user_id.required' => 'Enter Price',
-            'user_id.numeric' => 'Enter Price',
+            'type.required' => 'Select card type',
+            'type.in' => 'Select card type',
+
             'price.required' => 'Enter Price',
             'price.numeric' => 'Enter Price',
-            'balance.required' => 'Enter Balance Amount',
-            'balance.numeric' => 'Enter Balance Amount',
+
+            'balance.required' => 'Enter  Balance',
+            'balance.numeric' => 'Enter  Balance',
+
             'expires_at.required' => 'Enter Date',
             'expires_at.date' => 'Enter Date',
-            'quantity.required' => 'Enter Quantity',
-            'quantity.numeric' => 'Enter Quantity',
+
+            'visibility.required' => 'Select card visibility',
+            'visibility.in' => 'Select card visibility',
+
         ];
         $validated = $this->validate([
-            'user_id' => 'required|numeric',
+            'name' => 'required|string',
             'price' => 'required|numeric',
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
-            'quantity' => 'required|numeric',
-        ], $msg);
+            'visibility' => 'required|numeric|in:1,0',
 
+        ], $msg);
+        $data = [
+            'name' => $validated['name'],
+            'type' => 'ticket',
+            'price' => $validated['price'],
+            'balance' => $validated['balance'],
+            'expires_at' => new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at']))),
+            'visibility' => $validated['visibility'],
+            'user_id' => Auth::user()->id,
+            'slug' => strtoupper(Str::random(15)),
+        ];
         try {
-            $timestamp = new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at'])));
-            $user = User::find($validated['user_id']);
-            Vouchers::withOwner($user->id)
-                ->withExpireDate($timestamp)
-                ->withPrice($validated['price'])
-                ->withBalance($validated['balance'])
-                ->create($validated['quantity']);
+            $card = Card::create($data);
             session()->flash('success', 'Added Successfully');
-            return redirect(route('AdminTickets'));
+            return redirect(route('BusinessEditTicket', $card->slug));
         } catch (Exception $e) {
-            return session()->flash('error', $e->getMessage());
+            return session()->flash('error', 'Something went wrong');
         }
     }
 }

@@ -4,14 +4,14 @@ namespace App\Http\Livewire\Admin\Dashboard\Cards;
 
 use Livewire\Component;
 use App\Helpers\Card\Card;
-use FrittenKeeZ\Vouchers\Models\Voucher;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
 
 class Index extends Component
 {
-    use WithPagination;
+    public $archive, $ban;
 
-    public $delete;
+    use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -24,49 +24,78 @@ class Index extends Component
             ->section('content');
     }
 
-    public function View($slug)
-    {
-        return redirect(route('AdminViewCard', $slug));
-    }
-
-
     public function Edit($slug)
     {
         return redirect(route('AdminEditCard', $slug));
     }
 
-    public function DeleteConfirmation($slug)
+    public function ArchiveConfirmation($slug)
     {
         if ($card = Card::FindBySlug($slug)) {
-            $this->delete = $card;
-            $this->emit(['delete']);
+            $this->archive = $card;
+            $this->emit(['archive']);
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Delete($id)
+    public function Archive($id)
     {
         if ($card = Card::FindById($id)) {
-            $card->forceDelete();
-            session()->flash('success', 'Deleted Successfully');
-            return redirect(route('AdminCards'));
+            /*Begin::If card is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                session()->flash('success', 'Archived Successfully');
+                return redirect(route('AdminCards'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If card is not Banned*/
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Block($slug)
+    public function Publish($id)
     {
-        if ($card = Card::FindBySlug($slug)) {
-            $card->delete();
-            session()->flash('success', 'Blocked Successfully');
-            return redirect(route('AdminCards'));
+        if ($card = Card::FindById($id)) {
+            /*Begin::If card is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 1]);
+                session()->flash('success', 'Published Successfully');
+                return redirect(route('AdminCards'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If card is not Banned*/
         } else return session()->flash('error', 'No such card found');
     }
 
-    public function Unblock($slug)
+    public function BanConfirmation($slug)
     {
         if ($card = Card::FindBySlug($slug)) {
-            $card->restore();
-            session()->flash('success', 'Blocked Successfully');
-            return redirect(route('AdminCards'));
+            $this->ban = $card;
+            $this->emit(['ban']);
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Ban($id)
+    {
+        if ($card = Card::FindById($id)) {
+            /*Begin::If card is not Banned*/
+            if (!$card->trashed()) {
+                $card->update(['visibility' => 0]);
+                $card->delete();
+                session()->flash('success', 'Banned Successfully');
+                return redirect(route('AdminCards'));
+            } else return session()->flash('error', 'Card is banned');
+            /*End::If card is not Banned*/
+        } else return session()->flash('error', 'No such card found');
+    }
+
+    public function Unban($id)
+    {
+        if ($card = Card::FindById($id)) {
+            /*Begin::If card is not Banned*/
+            if ($card->trashed()) {
+                $card->update(['visibility' => 1]);
+                $card->restore();
+                session()->flash('success', 'Activated Successfully');
+                return redirect(route('AdminCards'));
+            } else return session()->flash('error', 'Card is not banned');
+            /*End::If card is not Banned*/
         } else return session()->flash('error', 'No such card found');
     }
 }
