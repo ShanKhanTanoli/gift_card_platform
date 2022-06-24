@@ -15,19 +15,6 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="input-group input-group-static my-3">
-                                <label for="old_pin">Old Pin</label>
-                                <input type="password" wire:model.defer='old_pin' value="{{ old('old_pin') }}"
-                                    class="form-control  @error('old_pin') is-invalid @enderror"
-                                    placeholder="Enter Old Pin">
-                                @error('old_pin')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="input-group input-group-static my-3">
                                 <label for="pin">New Pin</label>
                                 <input type="password" wire:model.defer='pin' value="{{ old('pin') }}"
                                     class="form-control  @error('pin') is-invalid @enderror"

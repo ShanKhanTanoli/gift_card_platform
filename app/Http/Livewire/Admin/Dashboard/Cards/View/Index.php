@@ -2,14 +2,13 @@
 
 namespace App\Http\Livewire\Admin\Dashboard\Cards\View;
 
-use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Helpers\Business\Business;
-use App\Helpers\Client\Client;
 use App\Helpers\SoldCard\SoldCard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
@@ -19,7 +18,7 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $pin, $pin_confirmation, $old_pin, $email;
+    public $pin, $pin_confirmation, $email;
 
     protected $paginationTheme = 'bootstrap';
 
@@ -141,30 +140,6 @@ class Index extends Component
         return $this->redeem_quantity += 3;
     }
 
-    public function Pin()
-    {
-        $validated = $this->validate([
-            'pin' => 'required|numeric',
-        ]);
-
-        if (Hash::check($validated['pin'], $this->card->pin)) {
-            Session()->put('validate_pin', true);
-            return redirect()->route('AdminViewCard', $this->card->slug);
-        } else return session()->flash('error', 'Please enter the correct pin code');
-    }
-
-    public function RemovePin()
-    {
-        $validated = $this->validate([
-            'pin' => 'required|numeric',
-        ]);
-
-        if (Hash::check($validated['pin'], $this->card->pin)) {
-            $this->card->update(['pin' => null]);
-            session()->flash('success', 'Pin removed successfully');
-            return redirect()->route('AdminViewCard', $this->card->slug);
-        } else return session()->flash('error', 'Please enter the correct pin code');
-    }
 
     public function AddPin()
     {
@@ -178,45 +153,37 @@ class Index extends Component
         return redirect()->route('AdminViewCard', $this->card->slug);
     }
 
-    public function ChangePin()
+    public function RemovePin()
     {
-        $pin = $this->validate([
-            'old_pin' => 'required|numeric',
-        ]);
 
-        if (Hash::check($pin['old_pin'], $this->card->pin)) {
-
-            $validated = $this->validate([
-                'pin' => 'required|numeric|confirmed',
-                'pin_confirmation' => 'required|numeric',
-            ]);
-
-            $this->card->update(['pin' => Hash::make($validated['pin'])]);
-            session()->flash('success', 'Pin changed successfully');
-            return redirect()->route('AdminViewCard', $this->card->slug);
-        } else return session()->flash('error', 'Please enter the correct pin code');
+        $this->card->update(['pin' => null]);
+        session()->flash('success', 'Pin removed successfully');
+        return redirect()->route('AdminViewCard', $this->card->slug);
     }
 
-    public function ForgotPin()
+    public function ChangePin()
     {
         $validated = $this->validate([
-            'email' => 'required|email',
+            'pin' => 'required|numeric|confirmed',
+            'pin_confirmation' => 'required|numeric',
         ]);
 
-        $user = User::where('email',$validated['email'])->first();
+        $this->card->update(['pin' => Hash::make($validated['pin'])]);
+        session()->flash('success', 'Pin changed successfully');
+        return redirect()->route('AdminViewCard', $this->card->slug);
+    }
 
-        if ($user) {
+    public function Ban()
+    {
+        $this->card->delete();
+        session()->flash('success', 'Banned Successfully');
+        return redirect()->route('AdminViewCard', $this->card->slug);
+    }
 
-            if(Client::FindCardBySlug($user->id,$this->card->slug)){
-
-                if ($validated['email'] == $user->email) {
-                    $this->card->update(['pin' => null]);
-                    session()->flash('success', 'Pin removed successfully');
-                    return redirect()->route('AdminViewCard', $this->card->slug);
-                } else return session()->flash('error', 'Enter the correct email');
-
-            }else return session()->flash('error', 'Enter the correct email');
-
-        } else return session()->flash('error', 'Enter the correct email');
+    public function Unban()
+    {
+        $this->card->restore();
+        session()->flash('success', 'Unban Successfully');
+        return redirect()->route('AdminViewCard', $this->card->slug);
     }
 }

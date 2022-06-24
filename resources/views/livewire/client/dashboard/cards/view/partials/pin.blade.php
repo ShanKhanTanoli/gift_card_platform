@@ -1,5 +1,7 @@
 <div class="container-fluid">
+    <!--Begin::Alerts-->
     @include('errors.alerts')
+    <!--End::Alerts-->
     <div class="row mt-3">
         <div class="col-12">
             <div class="card my-4">
@@ -73,19 +75,19 @@
     </div>
 
     <!--Begin::Add Pin Modal-->
-    @include('livewire.business.dashboard.cards.view.partials.add-pin-modal')
+    @include('livewire.client.dashboard.cards.pin.partials.add-pin-modal')
     <!--End::Add Pin Modal-->
 
     <!--Begin::Remove Pin Modal-->
-    @include('livewire.business.dashboard.cards.view.partials.remove-pin-modal')
+    @include('livewire.client.dashboard.cards.pin.partials.remove-pin-modal')
     <!--End::Remove Pin Modal-->
 
     <!--Begin::Change Pin Modal-->
-    @include('livewire.business.dashboard.cards.view.partials.change-pin-modal')
+    @include('livewire.client.dashboard.cards.pin.partials.change-pin-modal')
     <!--End::Change Pin Modal-->
 
     <!--Begin::Forgot Pin Modal-->
-    @include('livewire.business.dashboard.cards.view.partials.forgot-pin-modal')
+    @include('livewire.client.dashboard.cards.pin.partials.forgot-pin-modal')
     <!--End::Forgot Pin Modal-->
 
 </div>

@@ -1,5 +1,10 @@
 <div class="container-fluid py-4">
+    <!--Begin::Alerts-->
     @include('errors.alerts')
+    <!--End::Alerts-->
+    <!--Begin::Card Status-->
+    @include('livewire.admin.dashboard.cards.view.partials.card-status')
+    <!--End::Card Status-->
     <div class="row">
         <!--Begin::Card-->
         <div class="col-xl-4 mb-xl-0 mb-4">
@@ -57,7 +62,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header pb-0">
-                    <h6 class="mb-0">Card Information</h6>
+                    <h6 class="mb-0">Card Information (@if($card->pin) <i class="fas fa-lock"></i> Pin Locked @else <i class="fas fa-lock-open"></i> No Pin @endif)</h6>
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
@@ -104,25 +109,34 @@
                             </div>
                             <div class="ms-auto text-end">
 
+                                @if($card->trashed())
+                                <button type="button" wire:click="Unban"
+                                        class="btn btn-link text-success px-1 mb-0">
+                                        <i class="fas fa-check text-sm me-2">
+                                        </i>
+                                        Unban
+                                    </button>
+                                @else
+                                <button type="button" wire:click="Ban"
+                                        class="btn btn-link text-danger px-1 mb-0">
+                                        <i class="fas fa-ban text-sm me-2">
+                                        </i>
+                                        Ban
+                                </button>
+                                @endif
+
                                 @if ($card->pin)
-                                    <a class="btn btn-link text-dark px-1 mb-0" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#RemovePinModal">
+                                    <button type="button" wire:click="RemovePin"
+                                        class="btn btn-link text-dark px-1 mb-0">
                                         <i class="fas fa-lock-open text-sm me-2">
                                         </i>
                                         Remove Pin
-
-                                    </a>
+                                    </button>
                                     <a class="btn btn-link text-dark px-1 mb-0" href="#" data-bs-toggle="modal"
                                         data-bs-target="#ChangePinModal">
                                         <i class="fas fa-key text-sm me-2">
                                         </i>
                                         Change Pin
-                                    </a>
-                                    <a class="btn btn-link text-dark px-1 mb-0" href="#" data-bs-toggle="modal"
-                                        data-bs-target="#ForgotPinModal">
-                                        <i class="fas fa-lock text-sm me-2">
-                                        </i>
-                                        Forgot Pin
                                     </a>
                                 @else
                                     <a class="btn btn-link text-dark px-1 mb-0" href="#" data-bs-toggle="modal"
@@ -133,6 +147,7 @@
                                     </a>
                                 @endif
 
+                                @if(!$card->trashed())
                                 <a class="btn btn-link text-dark px-1 mb-0" href="#" data-bs-toggle="modal"
                                     data-bs-target="#RechargeModal">
                                     <i class="fas fa-money-check-alt text-sm me-2">
@@ -151,6 +166,7 @@
                                     <span class="badge bg-gradient-danger">
                                         ZER0 BALANCE
                                     </span>
+                                @endif
                                 @endif
 
                                 <button type="button" class="btn btn-link text-dark px-1 mb-0" id="PrintNow">
@@ -282,33 +298,26 @@
         @if (!$card->isExpired())
 
             <!--Begin::Recharge Modal-->
-            @include('livewire.business.dashboard.cards.view.partials.recharge-modal')
+            @include('livewire.admin.dashboard.cards.view.partials.recharge-modal')
             <!--End::Recharge Modal-->
 
             @if ($card->balance != 0)
                 <!--Begin::Redeem Modal-->
-                @include('livewire.business.dashboard.cards.view.partials.redeem-modal')
+                @include('livewire.admin.dashboard.cards.view.partials.redeem-modal')
                 <!--End::Redeem Modal-->
             @endif
         @endif
 
         <!--Begin::Add Pin Modal-->
-        @include('livewire.business.dashboard.cards.view.partials.add-pin-modal')
+        @include('livewire.admin.dashboard.cards.view.partials.add-pin-modal')
         <!--End::Add Pin Modal-->
 
-        <!--Begin::Remove Pin Modal-->
-        @include('livewire.business.dashboard.cards.view.partials.remove-pin-modal')
-        <!--End::Remove Pin Modal-->
-
         <!--Begin::Change Pin Modal-->
-        @include('livewire.business.dashboard.cards.view.partials.change-pin-modal')
+        @include('livewire.admin.dashboard.cards.view.partials.change-pin-modal')
         <!--End::Change Pin Modal-->
 
-        <!--Begin::Forgot Pin Modal-->
-        @include('livewire.business.dashboard.cards.view.partials.forgot-pin-modal')
-        <!--End::Forgot Pin Modal-->
-
     </div>
+
     <script>
         $(document).ready(function() {
             function printData() {
