@@ -2,12 +2,11 @@
 
 namespace App\Http\Livewire\Admin\Dashboard\Vouchers\View;
 
-use App\Models\User;
 use Livewire\Component;
 use App\Helpers\Card\Card;
 use Livewire\WithPagination;
-use App\Helpers\Voucher\Voucher;
 use App\Helpers\Business\Business;
+use App\Helpers\SoldVoucher\SoldVoucher;
 use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
@@ -28,18 +27,21 @@ class Index extends Component
     public function mount($slug)
     {
         //Begin::If this Voucher is available
-        if ($card = Voucher::FindBySlug($slug)) {
+        if ($card = SoldVoucher::FindBySlug($slug)) {
+
             $this->card = $card;
+            $this->balance = $card->balance;
+
         } else {
             session()->flash('error', 'No such voucher found');
-            return redirect(route('AdminRedeem'));
+            return redirect(route('AdminRedeemCard'));
         }
         //End::If this Voucher is available
     }
 
     public function render()
     {
-        $redeeming = Card::Redeem($this->card->id)
+        $redeeming = SoldVoucher::Redeem($this->card->id)
             ->latest()
             ->take($this->redeem_quantity)
             ->get();
@@ -101,5 +103,19 @@ class Index extends Component
         //End::If this voucher is available
 
         //End::If this card is not expired
+    }
+
+    public function Ban()
+    {
+        $this->card->delete();
+        session()->flash('success', 'Banned Successfully');
+        return redirect()->route('AdminViewVoucher', $this->card->slug);
+    }
+
+    public function Unban()
+    {
+        $this->card->restore();
+        session()->flash('success', 'Unban Successfully');
+        return redirect()->route('AdminViewVoucher', $this->card->slug);
     }
 }

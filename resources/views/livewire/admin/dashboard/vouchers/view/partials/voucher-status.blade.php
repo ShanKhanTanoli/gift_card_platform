@@ -1,36 +1,44 @@
-    <!--Begin::Card is Banned-->
+    <!--Begin::Voucher is Banned-->
     @if ($card->trashed())
         <div class="alert alert-danger">
             <strong class="text-white">
-                This Card is banned.
+                This Voucher is banned.
             </strong>
         </div>
     @else
-        <!--Begin::Card is Expired-->
+        <!--Begin::Voucher is Expired-->
         @if ($card->isExpired())
             <div class="alert alert-danger">
                 <strong class="text-white">
-                    This Card is expired.
+                    This Voucher is expired.
                 </strong>
             </div>
         @else
-            <!--Begin::Card is not Active-->
+            <!--Begin::Voucher is not Active-->
             @if (!$card->isActive())
                 <div class="alert alert-danger">
                     <strong class="text-white">
-                        This Card is not Active.
+                        This Voucher is not Active.
                     </strong>
                 </div>
             @else
-            <!--Begin::Card is Active-->
+            <!--Begin::Voucher is Active-->
+            @if($card->isRedeemed())
+            <div class="alert alert-danger">
+                <strong class="text-white">
+                    This Voucher is Redeemed.
+                </strong>
+            </div>
+            @else
             <div class="alert alert-success">
                 <strong class="text-white">
-                    This Card is Active.
+                    This Voucher is Active.
                 </strong>
             </div>
             @endif
-            <!--End::Card is Active-->
+            @endif
+            <!--End::Voucher is Active-->
         @endif
-        <!--End::Card is Expired-->
+        <!--End::Voucher is Expired-->
     @endif
-    <!--End::Card is Banned-->
+    <!--End::Voucher is Banned-->

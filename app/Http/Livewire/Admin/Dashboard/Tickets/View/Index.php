@@ -3,10 +3,10 @@
 namespace App\Http\Livewire\Admin\Dashboard\Tickets\View;
 
 use Livewire\Component;
-use App\Helpers\Card\Card;
 use Livewire\WithPagination;
-use App\Helpers\Ticket\Ticket;
 use App\Helpers\Business\Business;
+use Illuminate\Support\Facades\Auth;
+use App\Helpers\SoldTicket\SoldTicket;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Exceptions\VoucherNotFoundException;
 use FrittenKeeZ\Vouchers\Exceptions\VoucherAlreadyRedeemedException;
@@ -22,21 +22,25 @@ class Index extends Component
     public $redeem_quantity = 3;
     public $recharge_quantity = 3;
 
+
     public function mount($slug)
     {
         //Begin::If this ticket is available
-        if ($card = Ticket::FindBySlug($slug)) {
+        if ($card = SoldTicket::FindBySlug($slug)) {
+
             $this->card = $card;
+            $this->balance = $card->balance;
+            
         } else {
             session()->flash('error', 'No such ticket found');
-            return redirect(route('AdminRedeem'));
+            return redirect(route('AdminRedeemCard'));
         }
         //End::If this ticket is available
     }
 
     public function render()
     {
-        $redeeming = Card::Redeem($this->card->id)
+        $redeeming = SoldTicket::Redeem($this->card->id)
             ->latest()
             ->take($this->redeem_quantity)
             ->get();
@@ -46,6 +50,11 @@ class Index extends Component
             ->extends('layouts.dashboard');
     }
 
+
+    public function LoadMoreRedeemingHistory()
+    {
+        return $this->redeem_quantity += 3;
+    }
 
     public function Redeem()
     {
@@ -59,10 +68,10 @@ class Index extends Component
             //Begin::If ticket has Zero Balance
             if ($this->card->balance != 0) {
 
-                //Begin::If ticket has Enough Balance
+                //Begin::If voucher has Enough Balance
                 if ($this->card->balance >= $validated['balance']) {
 
-                    Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], Business::Currency($this->card->user_id), $this->card->user_id, ['redeem' => 'success']);
+                    Vouchers::redeem($this->card->code, $validated['balance'], $validated['description'], Business::Currency(Auth::user()->id), Auth::user(), ['redeem' => 'success']);
 
                     $this->card->update([
                         'balance' => 0,
@@ -80,7 +89,7 @@ class Index extends Component
                 session()->flash('error', "Ticket has zero balance");
                 return redirect(route('AdminViewTicket', $this->card->slug));
             }
-            //End::If ticket has Zero Balance
+            //End::If voucher has Zero Balance
 
             //End::If this ticket is available
         } catch (VoucherNotFoundException $e) {
@@ -95,8 +104,17 @@ class Index extends Component
         //End::If this card is not expired
     }
 
-    public function LoadMoreRedeemingHistory()
+    public function Ban()
     {
-        return $this->redeem_quantity += 3;
+        $this->card->delete();
+        session()->flash('success', 'Banned Successfully');
+        return redirect()->route('AdminViewTicket', $this->card->slug);
+    }
+
+    public function Unban()
+    {
+        $this->card->restore();
+        session()->flash('success', 'Unban Successfully');
+        return redirect()->route('AdminViewTicket', $this->card->slug);
     }
 }

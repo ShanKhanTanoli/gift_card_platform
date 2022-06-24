@@ -1,5 +1,10 @@
 <div class="container-fluid py-4">
+    <!--Begin::Alerts-->
     @include('errors.alerts')
+    <!--End::Alerts-->
+    <!--Begin::Voucher Status-->
+    @include('livewire.admin.dashboard.vouchers.view.partials.voucher-status')
+    <!--End::Voucher Status-->
     <div class="row">
         <!--Begin::Voucher-->
         <div class="col-xl-4 mb-xl-0 mb-4">
@@ -64,6 +69,12 @@
                         <li class="list-group-item border-0 d-flex mb-1 bg-gray-100 border-radius-lg">
                             <div class="d-flex flex-column">
                                 <span class="mb-2 text-xs">
+                                    Brand:
+                                    <span class="badge bg-info ms-sm-2">
+                                        {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
+                                    </span>
+                                </span>
+                                <span class="mb-2 text-xs">
                                     Voucher:
                                     @if ($find = Voucher::FindById($card->card_id))
                                         <span class="badge bg-info ms-sm-2">
@@ -112,30 +123,50 @@
                             </div>
                             <div class="ms-auto text-end">
 
-                                <!--Begin::If card is not expired-->
-                                @if (!$card->isExpired())
-                                    <!--Begin::If card is not redeemed-->
-                                    @if (!$card->isRedeemed())
-                                        @if ($card->balance != 0)
-                                            <a class="btn btn-link text-dark px-3 mb-0" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#RedeemModal">
-                                                <i class="fas fa-money-bill text-sm me-2">
-                                                </i>
-                                                Redeem
-                                            </a>
+                                @if ($card->trashed())
+                                    <button type="button" wire:click="Unban"
+                                        class="btn btn-link text-success px-1 mb-0">
+                                        <i class="fas fa-check text-sm me-2">
+                                        </i>
+                                        Unban
+                                    </button>
+                                @else
+                                    <button type="button" wire:click="Ban"
+                                        class="btn btn-link text-danger px-1 mb-0">
+                                        <i class="fas fa-ban text-sm me-2">
+                                        </i>
+                                        Ban
+                                    </button>
+                                @endif
+
+
+                                @if (!$card->trashed())
+                                    <!--Begin::If card is not expired-->
+                                    @if (!$card->isExpired())
+                                        <!--Begin::If card is not redeemed-->
+                                        @if (!$card->isRedeemed())
+                                            @if ($card->balance != 0)
+                                                <a class="btn btn-link text-dark px-3 mb-0" href="#"
+                                                    data-bs-toggle="modal" data-bs-target="#RedeemModal">
+                                                    <i class="fas fa-money-bill text-sm me-2">
+                                                    </i>
+                                                    Redeem
+                                                </a>
+                                            @else
+                                                <span class="badge bg-gradient-danger">
+                                                    ZER0 BALANCE
+                                                </span>
+                                            @endif
                                         @else
                                             <span class="badge bg-gradient-danger">
-                                                ZER0 BALANCE
+                                                REDEEMED
                                             </span>
                                         @endif
-                                    @else
-                                        <span class="badge bg-gradient-danger">
-                                            REDEEMED
-                                        </span>
+                                        <!--Begin::If card is not redeemed-->
                                     @endif
-                                    <!--Begin::If card is not redeemed-->
+                                    <!--End::If card is not expired-->
                                 @endif
-                                <!--End::If card is not expired-->
+
                                 <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow">
                                     <i class="fas fa-print text-sm me-2"></i>
                                     Print Voucher
@@ -147,14 +178,10 @@
             </div>
         </div>
         <!--End::Voucher Information-->
-
     </div>
-
-
     <div class="row mt-4">
-
         <!--Begin::Card Redeem History-->
-        <div class="col-lg-6 col-12">
+        <div class="col-lg-12 col-12">
             <div class="card h-100 mb-4">
                 <div class="card-header pb-0 px-3">
                     <div class="row">
@@ -211,7 +238,6 @@
             </div>
         </div>
         <!--End::Card Redeem History-->
-
         @if (!$card->isExpired())
             @if ($card->balance != 0)
                 <!--Begin::Redeem Modal-->

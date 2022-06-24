@@ -2,9 +2,9 @@
     <!--Begin::Alerts-->
     @include('errors.alerts')
     <!--End::Alerts-->
-    <!--Begin::Card Status-->
-    @include('livewire.admin.dashboard.cards.view.partials.ticket-status')
-    <!--End::Card Status-->
+    <!--Begin::Ticket Status-->
+    @include('livewire.admin.dashboard.tickets.view.partials.ticket-status')
+    <!--End::Ticket Status-->
     <div class="row">
         <!--Begin::Ticket-->
         <div class="col-xl-4 mb-xl-0 mb-4">
@@ -116,31 +116,47 @@
                                 @endif
                             </div>
                             <div class="ms-auto text-end">
-
-                                <!--Begin::If card is not expired-->
-                                @if (!$card->isExpired())
-                                    <!--Begin::If card is not redeemed-->
-                                    @if (!$card->isRedeemed())
-                                        @if ($card->balance != 0)
-                                            <a class="btn btn-link text-dark px-3 mb-0" href="#"
-                                                data-bs-toggle="modal" data-bs-target="#RedeemModal">
-                                                <i class="fas fa-money-bill text-sm me-2">
-                                                </i>
-                                                Redeem
-                                            </a>
+                                @if ($card->trashed())
+                                    <button type="button" wire:click="Unban"
+                                        class="btn btn-link text-success px-1 mb-0">
+                                        <i class="fas fa-check text-sm me-2">
+                                        </i>
+                                        Unban
+                                    </button>
+                                @else
+                                    <button type="button" wire:click="Ban"
+                                        class="btn btn-link text-danger px-1 mb-0">
+                                        <i class="fas fa-ban text-sm me-2">
+                                        </i>
+                                        Ban
+                                    </button>
+                                @endif
+                                @if (!$card->trashed())
+                                    <!--Begin::If card is not expired-->
+                                    @if (!$card->isExpired())
+                                        <!--Begin::If card is not redeemed-->
+                                        @if (!$card->isRedeemed())
+                                            @if ($card->balance != 0)
+                                                <a class="btn btn-link text-dark px-3 mb-0" href="#"
+                                                    data-bs-toggle="modal" data-bs-target="#RedeemModal">
+                                                    <i class="fas fa-money-bill text-sm me-2">
+                                                    </i>
+                                                    Redeem
+                                                </a>
+                                            @else
+                                                <span class="badge bg-gradient-danger">
+                                                    ZER0 BALANCE
+                                                </span>
+                                            @endif
                                         @else
                                             <span class="badge bg-gradient-danger">
-                                                ZER0 BALANCE
+                                                REDEEMED
                                             </span>
                                         @endif
-                                    @else
-                                        <span class="badge bg-gradient-danger">
-                                            REDEEMED
-                                        </span>
+                                        <!--Begin::If card is not redeemed-->
                                     @endif
-                                    <!--Begin::If card is not redeemed-->
+                                    <!--End::If card is not expired-->
                                 @endif
-                                <!--End::If card is not expired-->
                                 <button type="button" class="btn btn-link text-dark px-3 mb-0" id="PrintNow">
                                     <i class="fas fa-print text-sm me-2"></i>
                                     Print Ticket

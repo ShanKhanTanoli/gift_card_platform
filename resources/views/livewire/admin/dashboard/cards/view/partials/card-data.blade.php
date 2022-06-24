@@ -69,6 +69,12 @@
                         <li class="list-group-item border-0 d-flex mb-1 bg-gray-100 border-radius-lg">
                             <div class="d-flex flex-column">
                                 <span class="mb-2 text-xs">
+                                    Brand: 
+                                    <span class="badge bg-info ms-sm-2">
+                                        {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
+                                    </span>
+                                </span>
+                                <span class="mb-2 text-xs">
                                     Card:
                                     @if ($find = Card::FindById($card->card_id))
                                         <span class="badge bg-info ms-sm-2">

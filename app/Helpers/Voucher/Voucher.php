@@ -13,7 +13,7 @@ class Voucher
     /*Begin::Vouchers*/
     public static function All()
     {
-        return Card::withTrashed()->where('type', 'voucher')
+        return Card::withTrashed()->where('type','voucher')
             ->latest();
     }
 

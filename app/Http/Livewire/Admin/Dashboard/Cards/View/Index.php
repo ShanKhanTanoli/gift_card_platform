@@ -32,6 +32,7 @@ class Index extends Component
         //Begin::If this card is available
         if ($card = SoldCard::FindBySlug($slug)) {
             $this->card = $card;
+            $this->balance = $card->balance;
         } else {
             session()->flash('error', 'No such card found');
             return redirect(route('AdminCards'));
