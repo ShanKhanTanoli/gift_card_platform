@@ -2,8 +2,11 @@
 
 namespace App\Helpers\Stripe\Traits;
 
+use DateTime;
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 use FrittenKeeZ\Vouchers\Models\VoucherRecharge;
 
@@ -86,7 +89,7 @@ trait StripeCard
         }
     }
 
-    public static function ChargeClientCard($card, $amount, $currency, $application_fee_amount, $comission_percentage, $stripe_account,$voucher_id)
+    public static function ChargeClientCard($card, $amount, $currency, $application_fee_amount, $comission_percentage, $stripe_account,$voucher)
     {
         try {
             if ($stripe = self::Client()) {
@@ -100,12 +103,54 @@ trait StripeCard
                     'application_fee_amount' => $application_fee_amount * 100,
                 ], ['stripe_account' => $stripe_account]);
 
+                //Card Expiry date
+                $expiry = new DateTime(date('Y-m-d H:i:s', strtotime($voucher->expires_at)));
+                
+                //Begin::If Card is a Card
+                if ($voucher->type == "card") {
+                    $soldvoucher = Vouchers::withType($voucher->type)
+                        ->withCard($voucher->id)
+                        ->withPrice($voucher->price)
+                        ->withBalance($voucher->balance)
+                        ->withOwner($voucher->user_id)
+                        ->withExpireDate($expiry)
+                        ->create();
+                } //End::If Card is a Card
+
+                 //Begin::If Card is a Ticket
+                 if ($voucher->type == "ticket") {
+                    $soldvoucher = Vouchers::withType($voucher->type)
+                        ->withMask(strtolower(Str::random(15)))
+                        ->withCard($voucher->id)
+                        ->withPrice($voucher->price)
+                        ->withBalance($voucher->balance)
+                        ->withOwner($voucher->user_id)
+                        ->withExpireDate($expiry)
+                        ->withoutSeparator()
+                        ->withoutPrefix()
+                        ->withoutSuffix()
+                        ->create();
+                } //End::If Card is a Ticket
+
+                //Begin::If Card is a Voucher
+                if ($voucher->type == "voucher") {
+                    $soldvoucher = Vouchers::withType($voucher->type)
+                        ->withCharacters('A1B2C3D4E5F6G7H8I9JKLMOP')
+                        ->withCard($voucher->id)
+                        ->withPrice($voucher->price)
+                        ->withBalance($voucher->balance)
+                        ->withOwner($voucher->user_id)
+                        ->withExpireDate($expiry)
+                        ->create();
+                } //End::If Card is a Voucher
+                
                 ClientVoucher::create([
                     'stripe_id' => $charge->id,
-                    'voucher_id' => $voucher_id,
+                    'voucher_id' => $soldvoucher->id,
                     'user_id' => Auth::user()->id,
                     'price' => $amount,
                     'currency' => $currency,
+                    'payment_type' => 'Stripe',
                     'comission_percentage' => $comission_percentage,
                     'final_amount' => $amount-$application_fee_amount,
                 ]);

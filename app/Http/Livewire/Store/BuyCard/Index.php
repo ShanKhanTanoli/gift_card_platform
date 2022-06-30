@@ -10,6 +10,7 @@ use App\Helpers\Client\Client;
 use App\Helpers\Stripe\Stripe;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 
 class Index extends Component
 {
@@ -26,13 +27,12 @@ class Index extends Component
 
     public function mount($slug)
     {
-        if ($card = Card::FindBySlug($slug)) {
-            //If Card can be purchased
-            if (Card::CanBePurchased($card->slug)) {
+        if ($card = CardModel::where('slug', $slug)->first()) {
+            if(!$card->isExpired()){
                 $this->card = $card;
                 $this->store = Business::Store($card->user_id);
                 $this->business = $card->user_id;
-            } else return redirect()->back();
+            }else abort(404);
         } else abort(404);
     }
 
@@ -60,6 +60,8 @@ class Index extends Component
             'cvc' => $validated['card_cvc'],
         ];
 
+        //4242424242424242
+
         $price = $this->card->price;
         //Begin::If Client is logged in
         if ($client = Auth::user()) {
@@ -85,22 +87,37 @@ class Index extends Component
                             $this->application_fee,
                             $this->comission_percentage,
                             $user->account_id,
-                            $this->card->id,
+                            $this->card,
                         );
                         //Begin::If payment is true
                         if ($pay) {
                             $this->card->update(['sold' => true]);
                             session()->flash('success', 'Paid Successfully');
+
+                        //Begin::If Card is a Card
+                        if ($this->card->type == "card") {
                             return redirect(route('ClientCards'));
+                        }
+
+                         //Begin::If Card is a Voucher
+                         if ($this->card->type == "voucher") {
+                            return redirect(route('ClientVouchers'));
+                        }
+
+                         //Begin::If Card is a Ticket
+                         if ($this->card->type == "ticket") {
+                            return redirect(route('ClientTickets'));
+                        }
+
                         }
                         //End::If payment is true
                     } else return session()->flash('error', 'Something went wrong');
                     //End::Setting Up Account Id
-                } else return session()->flash('error', 'Something went wrong');
+                } else return session()->flash('error', 'Not Found');
                 //End::Find Business
-            } else return session()->flash('error', 'Something went wrong');
+            } else return session()->flash('error', 'Please log in to continue');
             //End::Client Is
-        } else return session()->flash('error', 'Something went wrong');
+        } else return session()->flash('error', 'Please log in to continue');
         //End::Client is logged in
 
         //4242424242424242

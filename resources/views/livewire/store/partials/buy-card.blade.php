@@ -2,7 +2,7 @@
     <div class="container">
         <div class="section-title aos-init aos-animate" data-aos="fade-up">
             <h2>Buy</h2>
-            <p>Card</p>
+            <p>{{ $card->type }}</p>
         </div>
         <div class="row">
             <div class="col-lg-4 aos-init aos-animate" data-aos="fade-right" data-aos-delay="100">

@@ -90,6 +90,9 @@
                                         Code
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Price
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Balance
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -152,6 +155,20 @@
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm">
                                                             {{ $voucher->code }}
+                                                        </h6>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="d-flex px-2 py-1">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm">
+                                                            @if ($card = Card::FindById($voucher->card_id))
+                                                                {{ $card->price }}
+                                                                {{ strtoupper(Business::Currency(Auth::user()->id)) }}
+                                                            @else
+                                                                NOT FOUND
+                                                            @endif
                                                         </h6>
                                                     </div>
                                                 </div>

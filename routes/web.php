@@ -10,17 +10,10 @@ use FrittenKeeZ\Vouchers\Models\ClientVoucher;
 
 Route::get('debug', function () {
 
-    $voucher = Vouchers::withType('ticket')
-        ->withCharacters("abcdefghijklmnop")
-        ->withoutSeparator()
-        ->withCard(2)
-        ->withPrice(0)
-        ->withBalance(10)
-        ->withOwner(2)
-        ->create();
+    $user = Auth::user();
 
-    dd($voucher);
-
+    dd($user);
+    
     //Verified Business Account
     $verified_business = 'acct_1KVjQIRYVF7b7SlI';
 

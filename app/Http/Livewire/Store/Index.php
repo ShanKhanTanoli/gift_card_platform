@@ -14,6 +14,7 @@ use App\Helpers\Business\Business;
 use Illuminate\Support\Facades\Auth;
 use FrittenKeeZ\Vouchers\Facades\Vouchers;
 use FrittenKeeZ\Vouchers\Models\ClientVoucher;
+use FrittenKeeZ\Vouchers\Models\Card as CardModel;
 
 class Index extends Component
 {
@@ -47,11 +48,10 @@ class Index extends Component
 
     public function BuyNow($slug)
     {
-        if ($card = Business::FindCardBySlug($this->business, $slug)) {
-            //If Card can be purchased
-            if (Card::CanBePurchased($card->slug)) {
+        if ($card = CardModel::where('slug', $slug)->first()) {
+            if (!$card->isExpired()) {
                 return redirect(route('BuyCard', $card->slug));
-            } else return redirect()->back();
+            } else return session()->flash('error', 'Something went wrong');
         } else return session()->flash('error', 'Something went wrong');
     }
 

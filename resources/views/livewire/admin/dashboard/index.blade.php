@@ -1,6 +1,6 @@
 <div class="container-fluid py-4">
     <div class="row">
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
@@ -22,7 +22,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mt-5 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
@@ -88,7 +88,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mt-5 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
@@ -110,7 +110,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-12 mb-xl-0 mb-4">
+        <div class="col-xl-4 col-sm-12 mt-5 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-header p-3 pt-2">
                     <div
