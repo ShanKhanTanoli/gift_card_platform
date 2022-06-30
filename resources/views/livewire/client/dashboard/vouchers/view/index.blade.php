@@ -13,12 +13,12 @@
         <div class="col-xl-4 mb-xl-0 mb-4">
             <div class="card bg-transparent shadow-xl" id="PrintDev">
                 <div class="overflow-hidden position-relative border-radius-xl">
-                    <img src="@if ($card->background) {{ asset(Storage::url($card->background)) }} @else {{ asset('dashboard/img/illustrations/bg-3.jpg') }} @endif"
-                        class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
+                    <img src="@if ($voucher = Voucher::FindById($card->card_id)) {{ asset(Storage::url($voucher->background)) }} @else {{ asset('dashboard/img/illustrations/bg-3.jpg') }} @endif"
+                    class="position-absolute start-0 top-0 w-100 z-index-1 h-100" alt="Card-Background">
                     <div class="card-body position-relative z-index-1 p-3">
                         <div class="d-flex">
                             <div class="col-6">
-                                <h6 class="mt-0 mb-0 pb-0" style="color: {{ $card->text_color }} !important;">
+                                <h6 class="mt-0 mb-0 pb-0" style="@if ($voucher = Voucher::FindById($card->card_id)) color: {{ $voucher->text_color }} !important; @endif">
                                     {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
                                     @if ($find = Voucher::FindById($card->card_id))
                                         - {{ Str::ucfirst($card->type) }}
@@ -26,7 +26,8 @@
                                 </h6>
                             </div>
                             <div class="col-6">
-                                <h6 class="mt-0 mb-0 pb-0" style="text-align: right; color:{{ $card->text_color }}!important;">
+                                <h6 class="mt-0 mb-0 pb-0"
+                                    style="text-align: right; @if ($voucher = Voucher::FindById($card->card_id)) color: {{ $voucher->text_color }} !important; @endif">
                                     @if ($find = Voucher::FindById($card->card_id))
                                         {{ Str::substr($find->name, 0, 15) }}
                                     @endif
@@ -35,7 +36,7 @@
                         </div>
                         <div class="d-flex">
                             <div class="col-8">
-                                <h6 class="mt-5 pb-0" style="color: {{ $card->text_color }} ;">
+                                <h6 class="mt-5 pb-0" style="@if ($voucher = Voucher::FindById($card->card_id)) color: {{ $voucher->text_color }} !important; @endif">
                                     {{ $card->code }}
                                 </h6>
                             </div>
@@ -47,8 +48,9 @@
                         </div>
                         <div class="d-flex">
                             <div>
-                                <p class="text-sm opacity-8 mb-0" style="color: {{ $card->text_color }} !important;">Expiry</p>
-                                <h6 class="mb-0" style="color: {{ $card->text_color }} !important;">
+                                <p class="text-sm opacity-8 mb-0" style="@if ($voucher = Voucher::FindById($card->card_id)) color: {{ $voucher->text_color }} !important; @endif">
+                                    Expiry</p>
+                                <h6 class="mb-0" style="@if ($voucher = Voucher::FindById($card->card_id)) color: {{ $voucher->text_color }} !important; @endif">
                                     {{ date('d/m/Y', strtotime($card->expires_at)) }}
                                 </h6>
                             </div>

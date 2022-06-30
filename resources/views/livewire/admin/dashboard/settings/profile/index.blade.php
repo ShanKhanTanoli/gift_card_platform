@@ -19,7 +19,7 @@
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="container">
-                                <form>
+                                <form wire:submit.prevent='UpdateProfile'>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="input-group input-group-static my-3">
@@ -54,8 +54,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-6">
-                                            <button type="button" class="btn btn-primary" wire:attr='disabled'
-                                                wire:click='UpdateProfile'>
+                                            <button type="submit" class="btn btn-primary" wire:attr='disabled'>
                                                 <span wire:loading class="spinner-border spinner-border-sm"
                                                     role="status" aria-hidden="true"></span>
                                                 Save Changes

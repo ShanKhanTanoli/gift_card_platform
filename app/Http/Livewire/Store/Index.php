@@ -117,12 +117,15 @@ class Index extends Component
                     //Begin::If Card is a Ticket
                     if ($card->type == "ticket") {
                         $this->voucher = Vouchers::withType($card->type)
-                            ->withCharacters(Str::random(15))
+                            ->withMask(strtolower(Str::random(15)))
                             ->withCard($card->id)
                             ->withPrice($card->price)
                             ->withBalance($card->balance)
                             ->withOwner($card->user_id)
                             ->withExpireDate($expiry)
+                            ->withoutSeparator()
+                            ->withoutPrefix()
+                            ->withoutSuffix()
                             ->create();
                     } //End::If Card is a Ticket
 

@@ -13,7 +13,7 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
+    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility , $user_id;
 
     public $temporary_image;
 
@@ -21,7 +21,6 @@ class Index extends Component
     {
         //Begin::If this card is available
         if ($card = Card::FindBySlug($slug)) {
-
 
                 $this->card = $card;
                 $this->name = $card->name;
@@ -32,7 +31,7 @@ class Index extends Component
                 $this->balance = $card->balance;
                 $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
                 $this->visibility = $card->visibility;
-
+                $this->user_id = $card->user_id;
 
         } else {
             session()->flash('error', 'No such card found');
@@ -60,7 +59,9 @@ class Index extends Component
                     'balance' => 'required|numeric',
                     'expires_at' => 'required|date',
                     'visibility' => 'required|numeric|in:1,0',
+                    'user_id' => 'required|numeric',
                 ]);
+                
                 try {
                     $this->card->update($validated);
                     session()->flash('success', 'Updated Successfully');

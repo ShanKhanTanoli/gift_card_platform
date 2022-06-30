@@ -44,6 +44,7 @@ class Index extends Component
             'expires_at' => 'required|date',
             'user_id' => 'required|numeric',
             'visibility' => 'required|numeric|in:1,0',
+            'user_id' => 'required|numeric',
 
         ], $msg);
         $data = [

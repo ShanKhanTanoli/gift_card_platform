@@ -14,7 +14,7 @@
                     <div class="container">
                         <form wire:submit.prevent='Add'>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
                                         <label for="name">Name</label>
                                         <input type="text" wire:model.defer='name' value="{{ old('name') }}"
@@ -27,6 +27,28 @@
                                         @enderror
                                     </div>
                                 </div>
+                                @if (Business::count() > 0)
+                                    <div class="col-md-6">
+                                        <div class="input-group input-group-static my-3">
+                                            <label for="user_id">Business</label>
+                                            <select wire:model.defer='user_id'
+                                                class="form-control  @error('user_id') is-invalid @enderror">
+                                                <option value="">Select Business</option>
+                                                @foreach (Business::all()->latest()->get()
+    as $business)
+                                                    <option value="{{ $business->id }}">
+                                                        {{ $business->name }} - {{ $business->email }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('user_id')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                @endif
                                 <div class="col-md-6">
                                     <div class="input-group input-group-static my-3">
                                         <label for="price">Price

@@ -37,7 +37,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.vouchers.edit.index')
+        return view('livewire.admin.dashboard.vouchers.edit.index')
             ->extends('layouts.dashboard');
     }
 
@@ -53,6 +53,7 @@ class Index extends Component
                 'expires_at' => 'required|date',
                 'user_id' => 'required|numeric',
                 'visibility' => 'required|numeric|in:1,0',
+                'user_id' => 'required|numeric',
             ]);
             try {
                 $this->card->update($validated);

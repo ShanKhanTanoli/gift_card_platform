@@ -44,6 +44,7 @@ class Index extends Component
             'balance' => 'required|numeric',
             'expires_at' => 'required|date',
             'visibility' => 'required|numeric|in:1,0',
+            'user_id' => 'required|numeric',
 
         ], $msg);
         $data = [
@@ -53,7 +54,7 @@ class Index extends Component
             'balance' => $validated['balance'],
             'expires_at' => new DateTime(date('Y-m-d H:i:s', strtotime($validated['expires_at']))),
             'visibility' => $validated['visibility'],
-            'user_id' => Auth::user()->id,
+            'user_id' => $validated['user_id'],
             'slug' => strtoupper(Str::random(15)),
         ];
         try {

@@ -59,6 +59,12 @@
                                         Name
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Brand
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Owner
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Price
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -98,6 +104,28 @@
                                                             {!! Str::substr($card->name, 0, 15) !!}...
                                                         @else
                                                             {!! $card->name !!}
+                                                        @endif
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        {{ Str::substr(Business::DisplayStoreName($card->user_id), 0, 20) }}
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
+                                                    <h6 class="mb-0 text-sm">
+                                                        @if ($business = Business::Find($card->user_id))
+                                                            {!! Str::substr($business->name, 0, 20) !!}...
+                                                        @else
+                                                            NOT FOUND
                                                         @endif
                                                     </h6>
                                                 </div>

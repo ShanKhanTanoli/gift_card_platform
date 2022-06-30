@@ -1,9 +1,7 @@
 <div class="container-fluid my-3 py-3">
     <div class="row mb-5">
         <!--Begin::Sidebar-->
-        @include(
-            'livewire.admin.dashboard.settings.partials.sidebar'
-        )
+        @include('livewire.admin.dashboard.settings.partials.sidebar')
         <!--Begin::Sidebar-->
         <div class="col-lg-9 mt-lg-0 mt-4">
             <!--Begin::Alerts-->
@@ -21,7 +19,7 @@
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="container">
-                                <form>
+                                <form wire:submit.prevent='Update'>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="input-group input-group-static my-3">
@@ -83,8 +81,7 @@
                                             <div class="input-group input-group-static my-3">
                                                 <label for="company_address">Company Address</label>
                                                 <textarea wire:model.defer='company_address' class="form-control  @error('company_address') is-invalid @enderror"
-                                                    cols="30" rows="10"
-                                                    placeholder="Enter Company Address">{{ old('company_address') }}</textarea>
+                                                    cols="30" rows="10" placeholder="Enter Company Address">{{ old('company_address') }}</textarea>
                                                 @error('company_address')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -95,8 +92,7 @@
                                     </div>
                                     <div class="row mt-2">
                                         <div class="col-md-6">
-                                            <button type="button" class="btn btn-primary" wire:attr='disabled'
-                                                wire:click='Update'>
+                                            <button type="submit" class="btn btn-primary" wire:attr='disabled'>
                                                 <span wire:loading class="spinner-border spinner-border-sm"
                                                     role="status" aria-hidden="true"></span>
                                                 Save Changes

@@ -11,7 +11,7 @@ class Index extends Component
 {
     use WithFileUploads;
 
-    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility;
+    public $card, $type, $name, $background, $text_color, $price, $balance, $expires_at, $visibility,$user_id;
 
     public $temporary_image;
 
@@ -30,6 +30,8 @@ class Index extends Component
             $this->balance = $card->balance;
             $this->expires_at = date('Y-m-d', strtotime($card->expires_at));
             $this->visibility = $card->visibility;
+            $this->user_id = $card->user_id;
+            
         } else {
             session()->flash('error', 'No such tickets found');
             return redirect(route('AdminTickets'));
@@ -38,7 +40,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.business.dashboard.tickets.edit.index')
+        return view('livewire.admin.dashboard.tickets.edit.index')
             ->extends('layouts.dashboard');
     }
 
@@ -53,6 +55,7 @@ class Index extends Component
                 'balance' => 'required|numeric',
                 'expires_at' => 'required|date',
                 'visibility' => 'required|numeric|in:1,0',
+                'user_id' => 'required|numeric',
             ]);
             try {
                 $this->card->update($validated);

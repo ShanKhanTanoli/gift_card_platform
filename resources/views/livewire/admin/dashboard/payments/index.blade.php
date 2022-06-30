@@ -22,13 +22,13 @@
                                         Charge ID
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                        Method
+                                    </th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Card
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Payer
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View Payer
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Paid Amount
@@ -40,13 +40,7 @@
                                         Final Amount
                                     </th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        Card Expiry
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                         Date
-                                    </th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                        View Card
                                     </th>
                                 </tr>
                             </thead>
@@ -74,11 +68,33 @@
                                         <td>
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
+                                                    <span class="badge bg-info">
+                                                        {{ Str::upper($payment->payment_type) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex px-2 py-1">
+                                                <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            {{ $card->code }}
-                                                        @else
-                                                            {{ __('Not Found') }}
+
+                                                        @if ($card = SoldCard::FindById($payment->voucher_id))
+                                                            @if ($find = Card::FindById($card->card_id))
+                                                                {{ $find->name }}
+                                                            @endif
+                                                        @endif
+
+                                                        @if ($card = SoldTicket::FindById($payment->voucher_id))
+                                                            @if ($find = Ticket::FindById($card->card_id))
+                                                                {{ $find->name }}
+                                                            @endif
+                                                        @endif
+
+                                                        @if ($card = SoldVoucher::FindById($payment->voucher_id))
+                                                            @if ($find = Voucher::FindById($card->card_id))
+                                                                {{ $find->name }}
+                                                            @endif
                                                         @endif
                                                     </h6>
                                                 </div>
@@ -89,25 +105,16 @@
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
                                                         @if ($user = User::find($payment->user_id))
-                                                            {{ $user->name }}
+                                                            <a class="btn btn-sm btn-info"
+                                                                href="{{ route('AdminEditClient', $user->slug) }}">
+                                                                {{ $user->name }}
+                                                            </a>
                                                         @else
                                                             {{ __('DELETED') }}
                                                         @endif
                                                     </h6>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            @if ($user = User::find($payment->user_id))
-                                                <a class="btn btn-sm btn-info"
-                                                    href="{{ route('AdminEditClient', $user->slug) }}">
-                                                    View
-                                                </a>
-                                            @else
-                                                <h6 class="mb-0 text-sm">
-                                                    {{ __('DELETED') }}
-                                                </h6>
-                                            @endif
                                         </td>
                                         <td>
                                             <div class="d-flex px-2 py-1">
@@ -142,33 +149,10 @@
                                             <div class="d-flex px-2 py-1">
                                                 <div class="d-flex flex-column justify-content-center">
                                                     <h6 class="mb-0 text-sm">
-                                                        @if ($card = Card::FindById($payment->voucher_id))
-                                                            {{ date('d M Y', strtotime($card->expires_at)) }}
-                                                        @else
-                                                            {{ __('Not Found') }}
-                                                        @endif
-                                                    </h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="d-flex px-2 py-1">
-                                                <div class="d-flex flex-column justify-content-center">
-                                                    <h6 class="mb-0 text-sm">
                                                         {{ date('d M Y', strtotime($payment->created_at)) }}
                                                     </h6>
                                                 </div>
                                             </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <button class="btn btn-sm btn-info"
-                                                wire:click='ViewCard("{{ $payment->voucher_id }}")'>
-                                                <span wire:loading
-                                                    wire:target='ViewCard("{{ $payment->voucher_id }}")'
-                                                    class="spinner-border spinner-border-sm" role="status"
-                                                    aria-hidden="true"></span>
-                                                View
-                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
